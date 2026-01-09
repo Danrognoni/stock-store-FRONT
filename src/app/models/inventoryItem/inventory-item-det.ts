@@ -1,3 +1,5 @@
+import { ProductDet } from "../product/product-det";
+
 export interface InventoryItemDet {
     id:string;
     product:ProductDet[];
