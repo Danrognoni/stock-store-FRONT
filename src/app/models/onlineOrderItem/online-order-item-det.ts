@@ -1,8 +1,7 @@
 import { ProductList } from "../product/product-list";
 
-export interface InventoryItemDet {
+export interface OnlineOrderItemDet {
     id:string;
     product:ProductList;
-    stock:number;
-    expireDate:Date;
+    amount:number;
 }
