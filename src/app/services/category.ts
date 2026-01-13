@@ -5,7 +5,7 @@ import { CategoryRequest } from '../models/category/category-request';
 @Injectable({
   providedIn: 'root',
 })
-export class Category {
+export class CategoryService {
   readonly apiurl = "localhost:8080/api/categories"
   http = inject(HttpClient)
 

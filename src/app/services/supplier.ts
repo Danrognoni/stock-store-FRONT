@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class Product {
+export class supplierService {
   readonly apiUrl = "localhost:8080/api/suppliers";
   http = inject(HttpClient);
 
@@ -46,8 +46,9 @@ export class Product {
     return this.http.get<any>(url);
   }
 
-  sendOrderToSupplier(items: SupplierOrder[], supplierId: number): Observable<void> {
+  sendOrderToSupplier(items: SupplierOrder[], supplierId: number): Observable <void> {
     const url = `${this.apiUrl}/${supplierId}/send-order`;
     return this.http.post<void>(url, items);
   }
+
 }

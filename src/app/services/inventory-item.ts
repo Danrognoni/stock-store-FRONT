@@ -5,7 +5,7 @@ import { InventoryItemRequest } from '../models/inventoryItem/inventory-item-req
 @Injectable({
   providedIn: 'root',
 })
-export class Product {
+export class inventoryItemService {
   readonly apiUrl = "localhost:8080/api/inventory-items";
   http = inject(HttpClient);
 

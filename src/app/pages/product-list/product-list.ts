@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { PageEvent } from '@angular/material/paginator';
@@ -15,7 +15,7 @@ import { ProductDet } from '../../models/product/product-det';
   imports: [MatCardModule, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductList {
+export class ProductList implements OnInit{
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
   pageSize = signal<number>(18);
@@ -88,4 +88,5 @@ export class ProductList {
     this.pageSize.set(event.pageSize);
     this.getProducts();
   }
+
 }
