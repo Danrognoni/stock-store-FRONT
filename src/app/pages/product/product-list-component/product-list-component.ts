@@ -1,21 +1,19 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { PageEvent } from '@angular/material/paginator';
-import { ProductService } from '../../services/product';
-import { ProductDet } from '../../models/product/product-det';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { ProductService } from '../../../services/product';
+import { ProductDet } from '../../../models/product/product-det';
+import { MatDividerModule } from '@angular/material/divider';
+import { RouterLink } from '@angular/router';
 
-/**
- * @title Card overview
- */
 @Component({
-  selector: 'product-list',
-  templateUrl: 'product-list.html',
-  styleUrl: 'product-list.css',
-  imports: [MatCardModule, MatButtonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-product-list',
+  templateUrl: './product-list-component.html',
+  styleUrl: './product-list-component.css',
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink],
 })
-export class ProductList implements OnInit{
+export class ProductListComponent implements OnInit{
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
   pageSize = signal<number>(18);

@@ -1,0 +1,27 @@
+<mat-card>
+  <input type="text" #txtSearch placeholder="Buscar productos" (input)="searchProducts(txtSearch.value)">
+</mat-card>
+
+<section>
+  @for (product of products(); track product.id) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ product.name }}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image [src]="product.imageUrl" alt="" />
+    <mat-card-actions>
+      <a matButton [routerLink]='["/products", product.id]'>Ver detalle</a>
+      <a matButton [routerLink]='["/products/edit", product.id]'>Editar</a>
+      <button matButton (click)="deleteProduct(product.id)">Eliminar</button>
+    </mat-card-actions>
+  </mat-card>
+  }
+</section>
+
+<mat-paginator
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    (page)="changePage($event)"
+    aria-label="Seleccionar página">
+</mat-paginator>

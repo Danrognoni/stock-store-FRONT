@@ -4,6 +4,7 @@ import { InventoryItemDet } from "../inventoryItem/inventory-item-det";
 
 export interface ProductDet {
   id:string;
+  name:string;
   imageUrl:string;
   price:number;
   inventoryItems:InventoryItemDet[];
