@@ -4,6 +4,7 @@ import {MatCardModule} from '@angular/material/card';
 import { PageEvent } from '@angular/material/paginator';
 import { ProductService } from '../../services/product';
 import { ProductDet } from '../../models/product/product-det';
+import { CategoryDet } from '../../models/category/category-det';
 
 /**
  * @title Card overview
@@ -23,6 +24,10 @@ export class ProductList implements OnInit{
   productService = inject(ProductService);
   products = signal<ProductDet[]>([]);
   private searchTimer: any;
+
+    categoryService = inject(CategoryService);
+    category = signal<CategoryDet[]>([]);
+
 
   ngOnInit(): void {
     this.getProducts();
@@ -87,6 +92,50 @@ export class ProductList implements OnInit{
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
     this.getProducts();
+  }
+
+
+
+  getCategories() {
+    return this.categoryService.getCategories(this.pageIndex(), this.pageSize()).subscribe({
+      next: (data) => {
+        this.category.set(data);
+        this.totalElements.set(data.page.totalElements);
+      },
+      error: (e) => {
+        console.error(e);
+
+      }
+    })
+  }
+
+  onSearch(input: string) {
+    if (this.searchTimer) {
+      clearTimeout(this.searchTimer);
+    }
+    this.searchTimer = setTimeout(() => {
+      if (input.trim() === '') {
+        this.getCategories();
+      } else {
+        this.pageIndex.set(0);
+        this.searchCategory(input);
+      }
+    }, 300)
+  }
+
+  searchCategory(input: string) {
+    this.categoryService.searchCategory(input).subscribe({
+      next: (data) => {
+        this.category.set(data.content);
+        if (data.page) {
+          this.totalElements.set(data.page.totalElements);
+        }
+        else {
+          this.totalElements.set(data.content.length);
+        }
+      },
+      error: (error) => console.log(error),
+    });
   }
 
 }
