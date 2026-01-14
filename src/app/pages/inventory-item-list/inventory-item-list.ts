@@ -1,17 +1,18 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { inventoryItemService } from '../../services/inventory-item';
 import { InventoryItemDet } from '../../models/inventoryItem/inventory-item-det';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inventory-item-list',
-  imports: [MatCardModule, MatButtonModule],
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, CommonModule],
   templateUrl: './inventory-item-list.html',
   styleUrl: './inventory-item-list.css',
 })
-export class InventoryItemList {
+export class InventoryItemList implements OnInit{
 
    totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
@@ -90,7 +91,7 @@ export class InventoryItemList {
   loadInventory(date: string, id: string) {
     this.inventoryItemService.getInventoryItemsByProduct(date, id).subscribe({
       next: (data) => {
-        this.inventoryItems = data;
+        this.inventoryItems.set(data);
         console.log('Items cargados:', data);
       },
       error: (err) => {
