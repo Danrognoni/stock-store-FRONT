@@ -10,7 +10,7 @@ import { ProductDet } from '../../../models/product/product-det';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [MatCardModule, MatListModule, MatIconModule, MatButtonModule, RouterLink, DatePipe],
+  imports: [MatCardModule, MatListModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
 })

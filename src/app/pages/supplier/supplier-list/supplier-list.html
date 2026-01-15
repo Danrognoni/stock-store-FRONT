@@ -1,0 +1,40 @@
+<mat-card class="search-container">
+  <input
+    type="text"
+    #txtSearch
+    placeholder="Buscar proveedores por nombre..."
+    (input)="onSearch(txtSearch.value)">
+</mat-card>
+
+<section class="supplier-grid">
+  @for (s of supplier(); track s.id) {
+    <mat-card class="supplier-card">
+      <mat-card-header>
+        <mat-card-title>{{ s.name }}</mat-card-title>
+        <mat-card-subtitle>{{ s.email }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>Teléfono:</strong> {{ s.phoneNumber }}</p>
+        <p><strong>Productos asociados:</strong> {{ s.products.length }}</p>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <a mat-button [routerLink]="['/suppliers', s.id]">Ver detalle</a>
+        <a mat-button [routerLink]="['/suppliers/edit', s.id]">Editar</a>
+        <button mat-button color="warn" (click)="deleteSupplier(s.id)">Eliminar</button>
+      </mat-card-actions>
+    </mat-card>
+  } @empty {
+    <p>No se encontraron proveedores.</p>
+  }
+</section>
+
+<mat-paginator
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="changePage($event)"
+    aria-label="Seleccionar página">
+</mat-paginator>
