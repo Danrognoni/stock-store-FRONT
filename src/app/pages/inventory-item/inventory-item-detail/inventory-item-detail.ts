@@ -38,6 +38,6 @@ export class InventoryItemDetail {
   }
 
   getBack(){
-    this.router.navigate(['/inventoryItem/inventoryItemList'])
+    this.router.navigate(['/inventory'])
   }
 }

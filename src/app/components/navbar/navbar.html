@@ -1,10 +1,18 @@
-<nav class="flex flex-row my-8 p-8 items-center justify-between rounded-2xl">
-  <a matButton routerLink=""><h1 class="text-3x1!">Stock Store</h1></a>
-  <ul class="flex list-none flex-row p-0 m-0 gap-4">
-    @for (item of items(); track $index) {
-    <li>
-      <a matButton [routerLink]="item.route">{{ item.label }}</a>
-    </li>
+<mat-toolbar color="primary">
+  <button mat-button routerLink="/" style="font-size: 1.2rem; margin-right: 16px;">
+    <mat-icon>store</mat-icon>
+    Stock Store
+  </button>
+
+  <nav>
+    @for (item of navItems(); track item.label) {
+      <a mat-button
+         [routerLink]="item.link"
+         routerLinkActive="active-link"
+         [routerLinkActiveOptions]="{exact: item.link === '/home'}">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </a>
     }
-  </ul>
-</nav>
+  </nav>
+</mat-toolbar>

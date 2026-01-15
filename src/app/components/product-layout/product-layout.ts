@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { Navbar } from '../navbar/navbar';
 import { RouterOutlet } from '@angular/router';
-import { NavItem } from '../../models/nav-item';
 
 @Component({
   selector: 'app-product-layout',
-  imports: [Navbar, RouterOutlet],
-  templateUrl: './product-layout.html',
-  styleUrl: './product-layout.css',
+  standalone: true,
+  imports: [RouterOutlet],
+  template: `
+    <div class="module-container" style="padding: 20px;">
+      <router-outlet></router-outlet>
+    </div>
+  `
 })
-export class ProductLayout {
-  menu:NavItem[] = [
-    {label: "Ver Productos", route : "/products"},
-    {label: "Crear Producto", route : "/products/create"}
-  ]
-}
+export class ProductLayout {}

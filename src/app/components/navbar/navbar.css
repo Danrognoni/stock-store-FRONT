@@ -1,6 +1,17 @@
-nav{
-    background-color: #810081;
+.spacer {
+  flex: 1 1 auto;
 }
-a[matButton] {
-    font-size: 1.3rem;
+
+/* Estilo para el link activo */
+.active-link {
+  background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+  border-bottom: 2px solid white; /* Línea inferior */
+}
+
+a[mat-button] {
+  margin: 0 4px;
+}
+
+mat-toolbar {
+  margin-bottom: 20px; /* Separación del contenido principal */
 }

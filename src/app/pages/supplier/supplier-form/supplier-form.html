@@ -1,0 +1,35 @@
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <h2>{{ isEditMode() ? 'Editar' : 'Nuevo' }} Proveedor</h2>
+
+  <form [formGroup]="formGroup" (submit)="onSubmit()" class="flex flex-col gap-4">
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" placeholder="Ej. Tech Solutions S.A.">
+      @if (formGroup.get('name')?.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="contacto@ejemplo.com">
+      @if (formGroup.get('email')?.hasError('email')) {
+        <mat-error>Email inválido</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phoneNumber" placeholder="+54 11 1234 5678">
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="formGroup.invalid">
+        Guardar
+      </button>
+      <button mat-button type="button" routerLink="/suppliers">Cancelar</button>
+    </div>
+
+  </form>
+</div>

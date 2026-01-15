@@ -1,0 +1,38 @@
+@if (supplier(); as s) {
+  <div class="container" style="padding: 20px; max-width: 800px; margin: 0 auto;">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>local_shipping</mat-icon></div>
+        <mat-card-title>{{ s.name }}</mat-card-title>
+        <mat-card-subtitle>{{ s.email }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>ID:</strong> {{ s.id }}</p>
+        <p><strong>Teléfono:</strong> {{ s.phoneNumber }}</p>
+
+        <mat-divider></mat-divider>
+
+        <h3>Productos Suministrados</h3>
+        <mat-list role="list">
+          @for (prod of s.products; track prod.id) {
+            <mat-list-item role="listitem">
+              <mat-icon matListItemIcon>inventory</mat-icon>
+              <div matListItemTitle>{{ prod.name }}</div>
+              </mat-list-item>
+          } @empty {
+            <p>No hay productos asociados.</p>
+          }
+        </mat-list>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button routerLink="/suppliers">Volver</button>
+        <a mat-flat-button color="primary" [routerLink]="['/suppliers/order', s.id]">
+          <mat-icon>add_shopping_cart</mat-icon>
+          Nueva Orden
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+}
