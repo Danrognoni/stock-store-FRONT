@@ -1,23 +1,31 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { inventoryItemService } from '../../services/inventory-item';
-import { InventoryItemDet } from '../../models/inventoryItem/inventory-item-det';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDividerModule } from '@angular/material/divider';
+import { RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common'; // Usually needed for dates
+
+// Verify these file paths exist.
+// If your service class is named 'InventoryItemService' (Capital I), rename the import alias or the usage.
+import { inventoryItemService } from '../../../services/inventory-item';
+import { InventoryItemDet } from '../../../models/inventoryItem/inventory-item-det';
 
 @Component({
   selector: 'app-inventory-item-list',
-  imports: [MatCardModule, MatButtonModule],
   templateUrl: './inventory-item-list.html',
-  styleUrl: './inventory-item-list.css',
+  styleUrl: './inventory-item-list.css', // Create this file or remove this line
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink, DatePipe],
 })
-export class InventoryItemList {
-
-   totalElements = signal<number>(0);
+export class InventoryItemList implements OnInit {
+  totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
-  pageSize = signal<number>(18);
+  pageSize = signal<number>(10);
 
-  inventoryItemService = inject(inventoryItemService);
+
+  private inventoryItemService = inject(inventoryItemService);
+
   inventoryItems = signal<InventoryItemDet[]>([]);
   private searchTimer: any;
 
@@ -25,19 +33,19 @@ export class InventoryItemList {
     this.getInventoryItems();
   }
 
-  getInventoryItems(){
+  getInventoryItems() {
     this.inventoryItemService.getInventoryItems(this.pageIndex(), this.pageSize()).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.inventoryItems.set(data.content);
         this.totalElements.set(data.page.totalElements);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.log(error);
       },
     });
   }
 
- onSearch(input: string) {
+  onSearch(input: string) {
     if (this.searchTimer) {
       clearTimeout(this.searchTimer);
     }
@@ -51,31 +59,30 @@ export class InventoryItemList {
     }, 300);
   }
 
-
-    searchInventoryItems(input: string) {
+  searchInventoryItems(input: string) {
     this.inventoryItemService.searchInventoryItem(input).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.inventoryItems.set(data.content);
         if(data.page){
           this.totalElements.set(data.page.totalElements);
-        }
-        else{
+        } else {
           this.totalElements.set(data.content.length);
         }
       },
-      error: (error) => console.log(error),
+      error: (error: any) => console.log(error),
     });
   }
 
-    deleteInventoryItem(id: string) {
-    if (confirm('Eliminar este inventoryItem?')) {
+  deleteInventoryItem(id: string) {
+    if (confirm('¿Eliminar este item?')) {
       this.inventoryItemService.deleteInventoryItem(id).subscribe({
         next: () => {
-          alert('Inventory-item eliminado con exito');
-          this.inventoryItems.update((inventoryItems) => inventoryItems.filter((p) => p.id !== id));
+          alert('Item eliminado con éxito');
+          this.inventoryItems.update((items) => items.filter((i) => i.id !== id));
         },
-        error: (error) => {
-          alert('Error al eliminar el inventory-item');
+        error: (error: any) => {
+          alert('Error al eliminar el item');
+          console.error(error);
         },
       });
     }
@@ -86,19 +93,4 @@ export class InventoryItemList {
     this.pageSize.set(event.pageSize);
     this.getInventoryItems();
   }
-
-  loadInventory(date: string, id: string) {
-    this.inventoryItemService.getInventoryItemsByProduct(date, id).subscribe({
-      next: (data) => {
-        this.inventoryItems = data;
-        console.log('Items cargados:', data);
-      },
-      error: (err) => {
-        console.error('Error al cargar inventario:', err);
-      }
-    });
-  }
-
 }
-
-

