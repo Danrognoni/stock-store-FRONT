@@ -24,6 +24,10 @@ import { InventoryItemList } from './pages/inventory-item/inventory-item-list/in
 import { InventoryItemForm } from './pages/inventory-item/inventory-item-form/inventory-item-form';
 import { InventoryItemDetail } from './pages/inventory-item/inventory-item-detail/inventory-item-detail';
 
+// Componentes de "Categoria"
+import { CategoryListComponent } from './pages/category/category-list-component/category-list-component';
+import { CategoryFormComponent } from './pages/category/category-form-component/category-form-component';
+
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeLayout },
@@ -65,6 +69,18 @@ export const routes: Routes = [
       { path: 'createInventoryItem', component: InventoryItemForm },
       { path: 'editInventoryItem/:id', component: InventoryItemForm },
       { path: 'inventoryItemDetail/:id', component: InventoryItemDetail }
+    ]
+  },
+
+  // Seccion Categoria
+  {
+    path: 'categories',
+    component: CategoryLayout,
+    children: [
+      { path: '', redirectTo: 'categoryListComponent', pathMatch: 'full' },
+      { path: 'categoryListComponent', component: CategoryListComponent },
+      { path: 'createCategory', component: CategoryFormComponent },
+      { path: 'editCategory/:id', component: CategoryFormComponent }
     ]
   },
 
