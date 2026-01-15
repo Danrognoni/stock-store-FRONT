@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>{{ isEditMode() ? 'Editar' : 'Nueva' }} Categoría</h2>
+
+  <form [formGroup]="formGroup" (submit)="onSubmit()" style="display: flex; flex-direction: column; gap: 1rem;">
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Nombre de la Categoría</mat-label>
+      <input matInput formControlName="name" placeholder="Ej. Electrónica">
+      @if (formGroup.get('name')?.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="formGroup.invalid">
+        Guardar
+      </button>
+      <button mat-button type="button" routerLink="/categories">Cancelar</button>
+    </div>
+
+  </form>
+</div>
