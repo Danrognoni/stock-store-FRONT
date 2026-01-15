@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from '../navbar/navbar'; // [!code change] Update import name
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-layout',
-  standalone: true,
-  imports: [NavbarComponent, RouterOutlet], // [!code change] Update component name
   templateUrl: './home-layout.html',
-  styleUrl: './home-layout.html' // (Verify this extension, usually .css or .scss)
+  styleUrls: ['./home-layout.css'],
+  imports: [RouterLink], // Importante para que funcionen los enlaces
+  standalone: true
 })
-export class HomeLayout {}
+export class HomeLayout {
+}

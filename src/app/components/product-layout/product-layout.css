@@ -1,0 +1,53 @@
+/* Contenedor del menú de navegación */
+.sub-nav {
+  background-color: #f8f9fa; /* Un gris muy suave de fondo */
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Título de la sección (ej: Productos) */
+.sub-nav h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+  margin-right: 20px;
+}
+
+/* Lista de enlaces */
+.sub-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+/* Estilo de los enlaces */
+.sub-nav ul li a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Hover (cuando pasas el mouse) */
+.sub-nav ul li a:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+/* Active (cuando estás en esa ruta) */
+.sub-nav ul li a.active {
+  background-color: #0d6efd; /* Azul estilo Bootstrap */
+  color: white;
+}
+
+/* Espaciado para el contenido que carga el router-outlet */
+.content-wrapper {
+    padding: 20px;
+}

@@ -16,7 +16,7 @@ import { InventoryItemDet } from '../../../models/inventoryItem/inventory-item-d
   templateUrl: './inventory-item-list.html',
   styleUrl: './inventory-item-list.css', // Create this file or remove this line
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink, DatePipe],
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule],
 })
 export class InventoryItemList implements OnInit {
   totalElements = signal<number>(0);

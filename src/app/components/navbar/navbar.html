@@ -1,18 +1,16 @@
-<mat-toolbar color="primary">
-  <button mat-button routerLink="/" style="font-size: 1.2rem; margin-right: 16px;">
-    <mat-icon>store</mat-icon>
-    Stock Store
-  </button>
+<mat-toolbar color="primary" class="navbar-header">
+  <span>Gestock</span>
 
-  <nav>
+  <span class="spacer"></span>
+
+  <div class="nav-links">
     @for (item of navItems(); track item.label) {
-      <a mat-button
-         [routerLink]="item.link"
-         routerLinkActive="active-link"
-         [routerLinkActiveOptions]="{exact: item.link === '/home'}">
+      <button mat-button
+              [routerLink]="item.link"
+              routerLinkActive="active-link">
         <mat-icon>{{ item.icon }}</mat-icon>
         {{ item.label }}
-      </a>
+      </button>
     }
-  </nav>
+  </div>
 </mat-toolbar>

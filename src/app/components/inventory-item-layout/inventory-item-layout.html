@@ -1,2 +1,15 @@
-<app-navbar [items]="menu"></app-navbar>
-<router-outlet />
+<nav class="sub-nav">
+  <h1>Inventario</h1>
+  <ul>
+    <li>
+        <a routerLink="inventoryList" routerLinkActive="active">Ver inventario</a>
+    </li>
+    <li>
+        <a routerLink="createInventoryItem" routerLinkActive="active">Crear item</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="content-wrapper">
+    <router-outlet></router-outlet>
+</div>

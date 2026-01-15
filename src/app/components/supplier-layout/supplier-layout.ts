@@ -5,10 +5,8 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-supplier-layout',
   standalone: true,
   imports: [RouterOutlet],
-  template: `
-    <div class="module-container" style="padding: 20px;">
-      <router-outlet></router-outlet>
-    </div>
-  `
+  templateUrl: './supplier-layout.html'
 })
-export class SupplierLayout {}
+export class SupplierLayout {
+
+}

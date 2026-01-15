@@ -1,2 +1,15 @@
-<app-navbar [items]="menu"></app-navbar>
-<router-outlet />
+<nav class="sub-nav">
+  <h1>Productos</h1>
+  <ul>
+    <li>
+        <a routerLink="productList" routerLinkActive="active">Ver productos</a>
+    </li>
+    <li>
+        <a routerLink="createProduct" routerLinkActive="active">Crear producto</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="content-wrapper">
+    <router-outlet></router-outlet>
+</div>
