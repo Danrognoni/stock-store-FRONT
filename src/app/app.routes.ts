@@ -51,7 +51,6 @@ export const routes: Routes = [
       { path: 'createSupplier', component: SupplierForm },
       { path: 'editSupplier/:id', component: SupplierForm },
       { path: 'supplierDetail/:id', component: SupplierDetail },
-      // Mantuve este componente específico con el mismo estilo de nombrado
       { path: 'supplierOrder/:id', component: SupplierOrderComponent }
     ]
   },
@@ -69,7 +68,7 @@ export const routes: Routes = [
     ]
   },
 
-  // Secciones Individuales (Estilo "Nav" o directo)
+  // Secciones Individuales
   {
     path: 'categories',
     component: CategoryLayout
