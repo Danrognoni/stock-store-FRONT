@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { supplierService } from '../../../services/supplier';
-import { SupplierDet } from '../../../models/supplier/supplier-det';
+
 
 @Component({
   selector: 'app-supplier-order',

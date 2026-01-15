@@ -11,7 +11,7 @@ import { supplierService } from '../../../services/supplier';
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink],
   templateUrl: './supplier-form.html',
-  styleUrl: './supplier-form.css' // Asegúrate de crear este archivo o borrar la línea
+  styleUrl: './supplier-form.css'
 })
 export class SupplierForm implements OnInit {
   private fb = inject(FormBuilder);
@@ -28,7 +28,7 @@ export class SupplierForm implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', Validators.required],
-      productsId: [[]] // Inicializado como array vacío
+      productsId: [[]]
     });
   }
 
