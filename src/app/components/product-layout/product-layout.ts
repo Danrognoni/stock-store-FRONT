@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router'; // Importar Link y Active
-import { NavbarComponent } from '../navbar/navbar';
 import { MatButtonModule } from '@angular/material/button'; // Para los botones del submenú
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NavItem } from '../../models/nav-item';
+
 
 @Component({
   selector: 'app-product-layout',
