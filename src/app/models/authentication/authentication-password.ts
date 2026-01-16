@@ -1,5 +1,5 @@
 export interface AuthenticationPassword {
     email:string;
-    password:string;
-    token:string;
+    password?:string;
+    token?:string;
 }
