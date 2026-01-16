@@ -24,12 +24,12 @@ export class CartService {
   }
 
 
-  addToCart(userId: number, productId: number, quantity: number): Observable<any> {
+  addToCart(productId: number, quantity: number): Observable<any> {
     const body = { productId, quantity };
-    return this.http.post(`${this.apiUrl}/${userId}/add`, body).pipe(
-      tap(() => this.refreshCartCount(userId))
+    return this.http.post(`${this.apiUrl}/carts`, body, { withCredentials: true }).pipe(
+      tap(() => this.refreshCartCount())
     );
-  }
+}
 
 
   removeFromCart(userId: number, cartItemId: number): Observable<any> {

@@ -1,4 +1,4 @@
 export interface CartItemRequest {
   productId: string;
-  amount:number;
+  quantity:number;
 }
