@@ -24,17 +24,17 @@ export class AuthenticationService {
   }
 
   forgotPassword(data:AuthenticationPassword){
-    const url = `${this.apiUrl}/logged/forgot`;
+    const url = `${this.apiUrl}/forgot`;
     return this.http.post<any>(url, data);
   }
 
   validateCode(data:AuthenticationPassword, code:string){
-    const url = `${this.apiUrl}/logged/verify/${code}`;
+    const url = `${this.apiUrl}/verify/${code}`;
     return this.http.post<any>(url, data);
   }
 
   changeForgottenPassword(data:AuthenticationPassword){
-    const url = `${this.apiUrl}/logged/forgot/change`;
+    const url = `${this.apiUrl}/forgot/change`;
     return this.http.patch<any>(url, data);
   }
   
