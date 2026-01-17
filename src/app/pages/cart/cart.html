@@ -1,1 +1,67 @@
-<p>cart works!</p>
+<div class="container" style="padding: 20px; max-width: 900px; margin: 0 auto;">
+
+  <h2 class="mb-4">Tu Carrito de Compras</h2>
+
+  <div *ngIf="loading()" class="text-center p-5">
+    <p>Cargando productos...</p>
+  </div>
+
+  <div *ngIf="!loading() && cartItems().length === 0" class="text-center p-5">
+    <mat-icon style="font-size: 60px; height: 60px; width: 60px; color: grey;">shopping_cart_off</mat-icon>
+    <h3 class="mt-3">Tu carrito está vacío</h3>
+    <p class="text-muted">¡Agrega algunos productos para empezar!</p>
+    <button mat-raised-button color="primary" routerLink="/store" class="mt-3">
+      Ir a la Tienda
+    </button>
+  </div>
+
+  <div *ngIf="!loading() && cartItems().length > 0">
+
+    <div class="cart-items-list mb-4">
+      <mat-card *ngFor="let item of cartItems()" class="mb-3 p-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+          <div class="d-flex align-items-center gap-3">
+            <div style="width: 60px; height: 60px; background-color: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <mat-icon>image</mat-icon>
+            </div>
+
+            <div>
+              <h3 class="m-0 mat-h3">{{ item.product.name }}</h3>
+              <p class="m-0 text-muted">Precio unitario: {{ item.product.price | currency }}</p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-4">
+            <div class="text-center">
+              <span class="d-block text-muted small">Cantidad</span>
+              <strong>{{ item.quantity }}</strong>
+            </div>
+
+            <div class="text-end" style="min-width: 100px;">
+              <span class="d-block text-muted small">Subtotal</span>
+              <strong class="text-primary">{{ item.product.price * item.quantity | currency }}</strong>
+            </div>
+
+            <button mat-icon-button color="warn" (click)="removeItem(item.id)" matTooltip="Eliminar del carrito">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+
+        </div>
+      </mat-card>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="d-flex justify-content-end align-items-center mt-4 gap-4">
+      <div class="text-end">
+        <h2 class="m-0">Total: {{ total() | currency }}</h2>
+      </div>
+      <button mat-flat-button color="primary" (click)="checkout()" style="padding: 20px 30px;">
+        FINALIZAR COMPRA
+      </button>
+    </div>
+
+  </div>
+</div>
