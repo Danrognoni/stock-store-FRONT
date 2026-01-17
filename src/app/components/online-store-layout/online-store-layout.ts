@@ -52,8 +52,7 @@ export class OnlineStoreLayout implements OnInit {
   }
 
   addToCart(product: ProductDet) {
-    const productId = Number(product.id);
-
+    const productId = String(product.id);
     this.cartService.addToCart(productId, 1).subscribe({
       next: () => {
         this.snackBar.open(`${product.name} agregado al carrito`, 'Cerrar', {

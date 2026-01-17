@@ -41,7 +41,7 @@ export class Cart implements OnInit {
 
   loadCart(userId: number) {
     this.loading.set(true);
-    this.cartService.getCart(userId).subscribe({
+    this.cartService.getCart().subscribe({
       next: (cartData: any) => {
         const items = cartData.items || [];
         this.cartItems.set(items);
@@ -59,7 +59,7 @@ export class Cart implements OnInit {
     const user = this.authService.currentUser();
     if (!user || !user.id) return;
 
-    this.cartService.removeFromCart(user.id, cartItemId).subscribe({
+    this.cartService.removeFromCart(user.id).subscribe({
       next: () => {
         this.loadCart(user.id);
       },
