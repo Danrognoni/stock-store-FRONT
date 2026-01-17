@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { tap } from 'rxjs';
+import { tap } from 'rxjs'; // Importamos tap
 import { UserRequest } from '../models/user/user-request';
 import { AuthenticationRequest } from '../models/authentication/authentication-request';
 import { AuthenticationPassword } from '../models/authentication/authentication-password';
@@ -10,6 +10,7 @@ import { UserUpdate } from '../models/user/user-update';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthenticationService {
   private readonly apiUrl = "http://localhost:8080/api/auth";
   private http = inject(HttpClient);
@@ -36,7 +37,7 @@ export class AuthenticationService {
     );
   }
 
-  logout(){
+  logout() {
     const url = `${this.apiUrl}/logout`;
     return this.http.delete<any>(url).pipe(
       tap(() => {
@@ -66,14 +67,13 @@ export class AuthenticationService {
     return this.http.patch<any>(url, data);
   }
 
-  updateUser(data:UserUpdate){
+  updateUser(data: UserUpdate) {
     const url = `${this.apiUrl}/logged/user`;
     return this.http.patch<any>(url, data).pipe(
       tap(updatedUser => {
         const currentUser = this.currentUser();
         const newUser = { ...currentUser, ...updatedUser };
         this.currentUser.set(newUser);
-        localStorage.setItem('app_session_user', JSON.stringify(newUser));
       })
     );
   }
