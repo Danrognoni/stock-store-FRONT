@@ -1,51 +1,52 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
+import { CartList } from '../models/cart/cart-list';
+import { CartItemRequest } from '../models/cartItem/cart-item-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  private readonly apiUrl = 'http://localhost:8080/api/carts';
+  private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/cart';
+  cartCount = signal<number>(0);
 
-
-  private cartCountSubject = new BehaviorSubject<number>(0);
-  cartCount$ = this.cartCountSubject.asObservable();
-
-  constructor(private http: HttpClient) {
-
+  constructor() {
     this.refreshCartCount();
   }
 
-
-  getCart(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${userId}`);
+  getCart() {
+    return this.http.get<CartList>(this.apiUrl);
   }
 
-
-  addToCart(productId: number, quantity: number): Observable<any> {
-    const body = { productId, quantity };
-    return this.http.post(`${this.apiUrl}/carts`, body, { withCredentials: true }).pipe(
+  addToCart(productId: string, quantity: number) {
+    const body: CartItemRequest = { productId, quantity };
+    return this.http.post<any>(this.apiUrl, body).pipe(
       tap(() => this.refreshCartCount())
     );
-}
+  }
 
-
-  removeFromCart(userId: number, cartItemId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${userId}/remove/${cartItemId}`).pipe(
-      tap(() => this.refreshCartCount(userId))
+  removeFromCart(cartItemId: number) {
+    return this.http.delete<void>(`${this.apiUrl}/items/${cartItemId}`).pipe(
+      tap(() => this.refreshCartCount())
     );
   }
 
-  private refreshCartCount(userId?: number) {
-    if(!userId) return;
-    this.getCart(userId).subscribe({
-      next: (cart: any) => {
+  clearCart() {
+    return this.http.delete<void>(this.apiUrl).pipe(
+      tap(() => this.cartCount.set(0))
+    );
+  }
+
+  private refreshCartCount() {
+    this.getCart().subscribe({
+      next: (cart) => {
         const count = cart.items ? cart.items.length : 0;
-        this.cartCountSubject.next(count);
+        this.cartCount.set(count);
       },
-      error: () => this.cartCountSubject.next(0)
+      error: () => this.cartCount.set(0)
     });
   }
 }
