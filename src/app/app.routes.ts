@@ -5,6 +5,14 @@ import { HomeLayout } from './components/home-layout/home-layout';
 import { CategoryLayout } from './components/category-layout/category-layout';
 import { OnlineStoreLayout } from './components/online-store-layout/online-store-layout';
 
+// Componentes de Autenticación y Usuario
+import { Login } from './pages/user/login/login';
+import { Register } from './pages/user/register/register';
+import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
+import { UserDetail } from './pages/user/user-detail/user-detail';
+import { UserUpdate } from './pages/user/user-update/user-update';
+import { UserList } from './pages/user/user-list/user-list';
+
 // Componentes de "Productos"
 import { ProductLayout } from './components/product-layout/product-layout';
 import { ProductListComponent } from './pages/product/product-list-component/product-list-component';
@@ -28,9 +36,17 @@ import { InventoryItemDetail } from './pages/inventory-item/inventory-item-detai
 import { CategoryListComponent } from './pages/category/category-list-component/category-list-component';
 import { CategoryFormComponent } from './pages/category/category-form-component/category-form-component';
 
+// Componente "Carrito"
+import { Cart } from './pages/cart/cart';
+
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeLayout },
+
+  // Sección Autenticación
+  { path: 'login', component: Login },
+  { path: 'register', component: Register },
+  { path: 'forgot-password', component: ForgotPassword },
 
   // Sección Productos
   {
@@ -72,7 +88,7 @@ export const routes: Routes = [
     ]
   },
 
-  // Seccion Categoria
+  // Sección Categoría
   {
     path: 'categories',
     component: CategoryLayout,
@@ -86,13 +102,15 @@ export const routes: Routes = [
 
   // Secciones Individuales
   {
-    path: 'categories',
-    component: CategoryLayout
-  },
-  {
     path: 'store',
     component: OnlineStoreLayout
   },
-
-  { path: '**', redirectTo: 'home' }
+  {
+    path: 'cart',
+    component: Cart
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
+  }
 ];
