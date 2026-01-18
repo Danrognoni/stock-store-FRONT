@@ -1,33 +1,21 @@
 import { Routes } from '@angular/router';
 
-// Componentes Generales y de Navegación
-import { HomeLayout } from './components/home-layout/home-layout';
-import { CategoryLayout } from './components/category-layout/category-layout';
-import { OnlineStoreLayout } from './components/online-store-layout/online-store-layout';
-
-// Componentes de Autenticación y Usuario
 import { Login } from './pages/user/login/login';
 import { Register } from './pages/user/register/register';
 import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
-import { UserDetail } from './pages/user/user-detail/user-detail';
-import { UserUpdate } from './pages/user/user-update/user-update';
-import { UserList } from './pages/user/user-list/user-list';
 
 // Componentes de "Productos"
-import { ProductLayout } from './components/product-layout/product-layout';
 import { ProductListComponent } from './pages/product/product-list-component/product-list-component';
 import { ProductForm } from './pages/product/product-form/product-form';
 import { ProductDetail } from './pages/product/product-detail/product-detail';
 
 // Componentes de "Proveedores"
-import { SupplierLayout } from './components/supplier-layout/supplier-layout';
 import { SupplierList } from './pages/supplier/supplier-list/supplier-list';
 import { SupplierForm } from './pages/supplier/supplier-form/supplier-form';
 import { SupplierDetail } from './pages/supplier/supplier-detail/supplier-detail';
 import { SupplierOrderComponent } from './pages/supplier/supplier-order/supplier-order';
 
 // Componentes de "Inventario"
-import { InventoryItemLayout } from './components/inventory-item-layout/inventory-item-layout';
 import { InventoryItemList } from './pages/inventory-item/inventory-item-list/inventory-item-list';
 import { InventoryItemForm } from './pages/inventory-item/inventory-item-form/inventory-item-form';
 import { InventoryItemDetail } from './pages/inventory-item/inventory-item-detail/inventory-item-detail';
@@ -38,6 +26,11 @@ import { CategoryFormComponent } from './pages/category/category-form-component/
 
 // Componente "Carrito"
 import { Cart } from './pages/cart/cart';
+import { HomeLayout } from './components/navbar/home-layout/home-layout';
+import { ProductLayout } from './components/navbar/stock-manager/product-layout/product-layout';
+import { SupplierLayout } from './components/navbar/stock-manager/supplier-layout/supplier-layout';
+import { InventoryItemLayout } from './components/navbar/stock-manager/inventory-item-layout/inventory-item-layout';
+import { OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -89,7 +82,7 @@ export const routes: Routes = [
   },
 
   // Sección Categoría
-  {
+  /*{
     path: 'categories',
     component: CategoryLayout,
     children: [
@@ -98,12 +91,12 @@ export const routes: Routes = [
       { path: 'createCategory', component: CategoryFormComponent },
       { path: 'editCategory/:id', component: CategoryFormComponent }
     ]
-  },
+  }*/
 
   // Secciones Individuales
   {
     path: 'store',
-    component: OnlineStoreLayout
+    component: OnlineStoreLayout,
   },
   {
     path: 'cart',
