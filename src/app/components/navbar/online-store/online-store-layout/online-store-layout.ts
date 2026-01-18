@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from "../../navbar-component/navbar-component";
-import { RouterOutlet } from "../../../../../../node_modules/@angular/router/types/_router_module-chunk";
 import { NavItem } from '../../../../models/nav-item';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-online-store-layout',

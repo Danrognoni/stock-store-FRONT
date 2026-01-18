@@ -31,6 +31,7 @@ import { ProductLayout } from './components/navbar/stock-manager/product-layout/
 import { SupplierLayout } from './components/navbar/stock-manager/supplier-layout/supplier-layout';
 import { InventoryItemLayout } from './components/navbar/stock-manager/inventory-item-layout/inventory-item-layout';
 import { OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
+import { LocalStoreLayout } from './components/navbar/local-store/local-store-layout/local-store-layout';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -81,17 +82,15 @@ export const routes: Routes = [
     ]
   },
 
-  // Sección Categoría
-  /*{
-    path: 'categories',
-    component: CategoryLayout,
-    children: [
-      { path: '', redirectTo: 'categoryListComponent', pathMatch: 'full' },
-      { path: 'categoryListComponent', component: CategoryListComponent },
-      { path: 'createCategory', component: CategoryFormComponent },
-      { path: 'editCategory/:id', component: CategoryFormComponent }
-    ]
-  }*/
+  {
+    path:'local-store',
+    component: LocalStoreLayout
+  },
+  {
+    path:'online-store',
+    component: OnlineStoreLayout
+  },
+ 
 
   // Secciones Individuales
   {

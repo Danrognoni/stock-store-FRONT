@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from "../navbar-component/navbar-component";
-import { RouterOutlet } from "../../../../../node_modules/@angular/router/types/_router_module-chunk";
 import { NavItem } from '../../../models/nav-item';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-home-layout',
@@ -11,7 +11,10 @@ import { NavItem } from '../../../models/nav-item';
 })
 export class HomeLayout {
   menu:NavItem[] = [
-        {label: "Iniciar venta", route:"/inventory-items"},
-        {label: "Ver ventas", route: "/inventory-items/create"}
+        {label: "Productos", route:"/products"},
+        {label: "Inventario", route: "/inventory"},
+        {label: "Proveedores", route:"/suppliers"},
+        {label: "Tienda Online", route: "/online-store"},
+        {label: "Tienda Local", route:"/local-store"}
     ]
 }
