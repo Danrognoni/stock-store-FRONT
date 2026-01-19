@@ -31,6 +31,8 @@ import { LocalStoreLayout } from './components/navbar/local-store/local-store-la
 import { AuthenticationLayout } from './components/navbar/authentication/authentication-layout/authentication-layout';
 import { LoginComponent } from './pages/login/login-component/login-component';
 import { RegisterComponent } from './pages/register/register-component/register-component';
+import { AuthGuard } from './guard/auth-guard/auth-guard';
+import { roleGuard } from './guard/role-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -46,12 +48,16 @@ export const routes: Routes = [
   },
   {
     path:"home",
-    component: HomeLayout
+    component: HomeLayout,
+    canActivate : [AuthGuard]
+
   },
   // Sección Productos
   {
     path: 'products',
     component: ProductLayout,
+    canActivate : [AuthGuard, roleGuard],
+    data : {roles : ['ADMINISTRADOR, CLIENTE']},
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: ProductListComponent },
@@ -65,6 +71,8 @@ export const routes: Routes = [
   {
     path: 'suppliers',
     component: SupplierLayout,
+    canActivate : [AuthGuard, roleGuard],
+    data :  {roles : ['ADMINISTRADOR']},
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: SupplierList },
@@ -79,6 +87,8 @@ export const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryItemLayout,
+    canActivate : [AuthGuard, roleGuard],
+    data :  {roles : ['ADMINISTRADOR']},
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: InventoryItemList },
@@ -88,12 +98,16 @@ export const routes: Routes = [
     ]
   },
 
-  /*{
+  {
     path:'local-store',
     component: LocalStoreLayout
   },
-  {
-    path:'online-store',
-    component: OnlineStoreLayout
-  },*/
+    {path: 'online-store',
+    component: OnlineStoreLayout,
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENTE'] },
+    children: [
+      { path: '', component: ProductListComponent }
+    ]
+  }
 ];
