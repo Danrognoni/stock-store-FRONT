@@ -1,12 +1,12 @@
 <div class="container" style="padding: 20px; max-width: 900px; margin: 0 auto;">
-
   <h2 class="mb-4">Tu Carrito de Compras</h2>
 
-  <div *ngIf="loading()" class="text-center p-5">
+  @if (loading()) {
     <p>Cargando productos...</p>
-  </div>
+  }
 
-  <div *ngIf="!loading() && cartItems().length === 0" class="text-center p-5">
+  @if (!loading() && cartItems().length === 0) {
+    <div class="text-center p-5">
     <mat-icon style="font-size: 60px; height: 60px; width: 60px; color: grey;">shopping_cart_off</mat-icon>
     <h3 class="mt-3">Tu carrito está vacío</h3>
     <p class="text-muted">¡Agrega algunos productos para empezar!</p>
@@ -14,9 +14,8 @@
       Ir a la Tienda
     </button>
   </div>
-
-  <div *ngIf="!loading() && cartItems().length > 0">
-
+  }
+  @else if (!loading() && cartItems().length > 0) {
     <div class="cart-items-list mb-4">
       <mat-card *ngFor="let item of cartItems()" class="mb-3 p-3">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
@@ -62,6 +61,5 @@
         FINALIZAR COMPRA
       </button>
     </div>
-
-  </div>
+  }
 </div>
