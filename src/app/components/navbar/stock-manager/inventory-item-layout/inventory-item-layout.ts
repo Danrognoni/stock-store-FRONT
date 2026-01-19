@@ -11,7 +11,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class InventoryItemLayout {
   menu:NavItem[] = [
-      {label: "Ver inventario", route:"/inventory-items"},
-      {label: "Crear ítem de inventario", route: "/inventory-items/create"}
+      {label: "Ver inventario", route:"list"},
+      {label: "Crear ítem de inventario", route: "create"}
   ]
 }

@@ -11,7 +11,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class OnlineStoreLayout {
   menu:NavItem[] = [
-      {label: "Ver productos", route:"/inventory-items"},
-      {label: "Mis compras", route: "/inventory-items/create"}
+      {label: "Ver productos", route:"/store"},
+      {label: "Mis compras", route: "/my-orders"}
   ]
 }

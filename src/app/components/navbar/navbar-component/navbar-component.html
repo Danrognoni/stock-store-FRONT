@@ -1,10 +1,35 @@
 <nav class="flex flex-row my-8 p-8 items-center justify-between rounded-2xl">
-  <a matButton routerLink=""><h1 class="text-3x1!">STOCK STORE</h1></a>
+  <a matButton routerLink="/home"><h1 class="text-3x1!">STOCK STORE</h1></a>
   <ul class="flex list-none flex-row p-0 m-0 gap-4">
     @for (item of items(); track $index) {
-    <li>
-      <a matButton [routerLink]="item.route">{{ item.label }}</a>
-    </li>
+      <li>
+        <a matButton [routerLink]="item.route">{{ item.label }}</a>
+      </li>
     }
+    <li>
+      <button mat-button [matMenuTriggerFor]="menuFavoritos">
+        Favoritos
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+
+      <mat-menu #menuFavoritos="matMenu" class="mi-lista-deseos">
+        <div (click)="$event.stopPropagation()" class="contenido-menu">
+          @if (true) {
+            <div class="mensaje-vacio">
+              Agregá acá los productos que te gustaron.
+            </div>
+          }
+          
+          <!-- @for (favorite of favorites(); track favorite.id) {-->
+            <div>
+              {{ 0 }}
+            </div>
+          <!--}-->
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item routerLink="/products">Ver todos los favoritos</button>
+        </div>
+      </mat-menu>
+    </li>
   </ul>
 </nav>

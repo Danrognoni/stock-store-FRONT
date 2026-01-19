@@ -32,26 +32,34 @@ import { SupplierLayout } from './components/navbar/stock-manager/supplier-layou
 import { InventoryItemLayout } from './components/navbar/stock-manager/inventory-item-layout/inventory-item-layout';
 import { OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
 import { LocalStoreLayout } from './components/navbar/local-store/local-store-layout/local-store-layout';
+import { AuthenticationLayout } from './components/navbar/authentication/authentication-layout/authentication-layout';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeLayout },
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
 
   // Sección Autenticación
-  { path: 'login', component: Login },
-  { path: 'register', component: Register },
-  { path: 'forgot-password', component: ForgotPassword },
-
+  {
+    path: "auth",
+    component: AuthenticationLayout,
+    children: [
+      {path: "login", component: Login},
+      {path: "register", component: Register}
+    ]
+  },
+  {
+    path:"home",
+    component: HomeLayout
+  },
   // Sección Productos
   {
     path: 'products',
     component: ProductLayout,
     children: [
-      { path: '', redirectTo: 'productList', pathMatch: 'full' },
-      { path: 'productList', component: ProductListComponent },
-      { path: 'createProduct', component: ProductForm },
-      { path: 'editProduct/:id', component: ProductForm },
-      { path: 'productDetail/:id', component: ProductDetail }
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: ProductListComponent },
+      { path: 'create', component: ProductForm },
+      { path: 'edit/:id', component: ProductForm },
+      { path: 'detail/:id', component: ProductDetail }
     ]
   },
 
@@ -60,12 +68,12 @@ export const routes: Routes = [
     path: 'suppliers',
     component: SupplierLayout,
     children: [
-      { path: '', redirectTo: 'supplierList', pathMatch: 'full' },
-      { path: 'supplierList', component: SupplierList },
-      { path: 'createSupplier', component: SupplierForm },
-      { path: 'editSupplier/:id', component: SupplierForm },
-      { path: 'supplierDetail/:id', component: SupplierDetail },
-      { path: 'supplierOrder/:id', component: SupplierOrderComponent }
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: SupplierList },
+      { path: 'create', component: SupplierForm },
+      { path: 'edit/:id', component: SupplierForm },
+      { path: 'detail/:id', component: SupplierDetail },
+      { path: 'order/:id', component: SupplierOrderComponent }
     ]
   },
 
@@ -74,35 +82,20 @@ export const routes: Routes = [
     path: 'inventory',
     component: InventoryItemLayout,
     children: [
-      { path: '', redirectTo: 'inventoryList', pathMatch: 'full' },
-      { path: 'inventoryList', component: InventoryItemList },
-      { path: 'createInventoryItem', component: InventoryItemForm },
-      { path: 'editInventoryItem/:id', component: InventoryItemForm },
-      { path: 'inventoryItemDetail/:id', component: InventoryItemDetail }
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: InventoryItemList },
+      { path: 'create', component: InventoryItemForm },
+      { path: 'edit/:id', component: InventoryItemForm },
+      { path: 'detail/:id', component: InventoryItemDetail }
     ]
   },
 
-  {
+  /*{
     path:'local-store',
     component: LocalStoreLayout
   },
   {
     path:'online-store',
     component: OnlineStoreLayout
-  },
- 
-
-  // Secciones Individuales
-  {
-    path: 'store',
-    component: OnlineStoreLayout,
-  },
-  {
-    path: 'cart',
-    component: Cart
-  },
-  {
-    path: '**',
-    redirectTo: 'home'
-  }
+  },*/
 ];
