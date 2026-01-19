@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { Login } from './pages/user/login/login';
-import { Register } from './pages/user/register/register';
-import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
-
 // Componentes de "Productos"
 import { ProductListComponent } from './pages/product/product-list-component/product-list-component';
 import { ProductForm } from './pages/product/product-form/product-form';
@@ -33,6 +29,8 @@ import { InventoryItemLayout } from './components/navbar/stock-manager/inventory
 import { OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
 import { LocalStoreLayout } from './components/navbar/local-store/local-store-layout/local-store-layout';
 import { AuthenticationLayout } from './components/navbar/authentication/authentication-layout/authentication-layout';
+import { LoginComponent } from './pages/login/login-component/login-component';
+import { RegisterComponent } from './pages/register/register-component/register-component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -42,8 +40,8 @@ export const routes: Routes = [
     path: "auth",
     component: AuthenticationLayout,
     children: [
-      {path: "login", component: Login},
-      {path: "register", component: Register}
+      {path: "login", component: LoginComponent},
+      {path: "register", component: RegisterComponent}
     ]
   },
   {

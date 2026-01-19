@@ -14,25 +14,22 @@ import { UserUpdate } from '../models/user/user-update';
 export class AuthenticationService {
   private readonly apiUrl = "http://localhost:8080/api/auth";
   private http = inject(HttpClient);
+  currentUser = signal<any>(null);
 
-  currentUser = signal<any>(this.getUserFromStorage());
-
-  private getUserFromStorage() {
-    const userStr = localStorage.getItem('app_session_user');
-    return userStr ? JSON.parse(userStr) : null;
-  }
-
-  register(data:UserRequest){
+  register(data: UserRequest) {
     const url = `${this.apiUrl}/register`;
-    return this.http.post<any>(url, data);
+    return this.http.post<any>(url, data).pipe(
+      tap((userResponse) => {
+        this.currentUser.set(userResponse);
+      })
+    );
   }
 
-  authenticate(data:AuthenticationRequest){
+  authenticate(data: AuthenticationRequest) {
     const url = `${this.apiUrl}/login`;
     return this.http.post<any>(url, data).pipe(
-      tap(response => {
-        this.currentUser.set(response);
-        localStorage.setItem('app_session_user', JSON.stringify(response));
+      tap((userResponse) => {
+        this.currentUser.set(userResponse);
       })
     );
   }
@@ -42,7 +39,6 @@ export class AuthenticationService {
     return this.http.delete<any>(url).pipe(
       tap(() => {
         this.currentUser.set(null);
-        localStorage.removeItem('app_session_user');
       })
     );
   }
@@ -70,9 +66,9 @@ export class AuthenticationService {
   updateUser(data: UserUpdate) {
     const url = `${this.apiUrl}/logged/user`;
     return this.http.patch<any>(url, data).pipe(
-      tap(updatedUser => {
+      tap(() => {
         const currentUser = this.currentUser();
-        const newUser = { ...currentUser, ...updatedUser };
+        const newUser = { ...currentUser, ...data };
         this.currentUser.set(newUser);
       })
     );

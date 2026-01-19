@@ -9,7 +9,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    // Registramos el interceptor aquí
     provideHttpClient(withInterceptors([authenticationInterceptor])),
     provideZonelessChangeDetection()
   ]
