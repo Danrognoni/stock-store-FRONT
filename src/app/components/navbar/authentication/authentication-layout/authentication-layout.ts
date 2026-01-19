@@ -11,7 +11,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AuthenticationLayout {
   menu:NavItem[] = [
-      {label: "Iniciar sesión", route:"login"},
-      {label: "Registrarse", route: "register"}
+      /*{label: "Iniciar sesión", route:"login"},
+      {label: "Registrarse", route: "register"}*/
   ]
 }

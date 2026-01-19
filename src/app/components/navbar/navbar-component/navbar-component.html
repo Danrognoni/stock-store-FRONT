@@ -1,35 +1,51 @@
-<nav class="flex flex-row my-8 p-8 items-center justify-between rounded-2xl">
-  <a matButton routerLink="/home"><h1 class="text-3x1!">STOCK STORE</h1></a>
-  <ul class="flex list-none flex-row p-0 m-0 gap-4">
-    @for (item of items(); track $index) {
-      <li>
-        <a matButton [routerLink]="item.route">{{ item.label }}</a>
-      </li>
-    }
-    <li>
-      <button mat-button [matMenuTriggerFor]="menuFavoritos">
-        Favoritos
-        <mat-icon>favorite_border</mat-icon>
+<mat-toolbar color="primary" class="navbar">
+  <span routerLink="/" style="cursor: pointer; font-weight: bold; margin-right: 20px;">
+    Stock Store
+  </span>
+
+  @for (item of items(); track item) {
+    <button mat-button [routerLink]="item.route" routerLinkActive="active-link">
+      {{ item.label }}
+    </button>
+  }
+
+  <span class="spacer"></span>
+
+  @if (authService.currentUser(); as user) {
+    
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>person</mat-icon>
+      Hola, {{ user.name }} 
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item routerLink="/user-detail">
+        <mat-icon>account_circle</mat-icon>
+        <span>Mi Perfil</span>
       </button>
 
-      <mat-menu #menuFavoritos="matMenu" class="mi-lista-deseos">
-        <div (click)="$event.stopPropagation()" class="contenido-menu">
-          @if (true) {
-            <div class="mensaje-vacio">
-              Agregá acá los productos que te gustaron.
-            </div>
-          }
-          
-          <!-- @for (favorite of favorites(); track favorite.id) {-->
-            <div>
-              {{ 0 }}
-            </div>
-          <!--}-->
-          <mat-divider></mat-divider>
+      @if (user.role === 'ADMIN') {
+        <button mat-menu-item routerLink="/admin">
+          <mat-icon>settings</mat-icon>
+          <span>Administración</span>
+        </button>
+      }
 
-          <button mat-menu-item routerLink="/products">Ver todos los favoritos</button>
-        </div>
-      </mat-menu>
-    </li>
-  </ul>
-</nav>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </mat-menu>
+
+  } @else {
+    
+    <button mat-button routerLink="/auth/login">Iniciar Sesión</button>
+    <button mat-raised-button color="accent" routerLink="/auth/register" style="margin-left: 10px;">
+      Registrarse
+    </button>
+  }
+
+</mat-toolbar>
+
+<router-outlet></router-outlet>
