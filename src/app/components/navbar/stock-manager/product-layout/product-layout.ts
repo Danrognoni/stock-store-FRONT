@@ -12,6 +12,8 @@ import { RouterOutlet } from '@angular/router';
 export class ProductLayout {
   menu:NavItem[] = [
       {label: "Ver productos", route:"list"},
-      {label: "Crear productos", route: "create"}
+      {label: "Crear productos", route: "create"},
+      {label: "Crear categoría", route: "category/create"},
+      {label: "Ver categoría", route:"category/list"}
   ]
 }
