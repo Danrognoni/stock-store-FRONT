@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './product-list-component.css',
   imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink],
 })
-export class ProductListComponent{
+export class ProductListComponent implements OnInit{
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
   pageSize = signal<number>(18);

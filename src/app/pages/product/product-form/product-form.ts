@@ -5,21 +5,25 @@ import {FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule} fr
 import { MatButtonModule } from '@angular/material/button';
 import { ProductService } from '../../../services/product';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
+import { CategoryService } from '../../../services/category';
 
 
 @Component({
   selector: 'app-product-form',
   styleUrl: './product-form.css',
   templateUrl: './product-form.html',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatSelectModule],
 })
 export class ProductForm implements OnInit{
   private fb = inject(FormBuilder);
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   formGroup: FormGroup;
   productId = signal<string>("");
+  categories = signal<any[]>([]);
 
   constructor() {
     this.formGroup = this.fb.group({
@@ -27,11 +31,12 @@ export class ProductForm implements OnInit{
       imageUrl: ['', Validators.required],
       price: ['', Validators.required],
       barcode: [''],
-      categoriesId: ['', Validators.required],
+      categoriesId: [[], Validators.required],
     });
   }
 
   ngOnInit(): void {
+   this.getCategories();
    const id = this.route.snapshot.paramMap.get("id");
    if(id){
     this.productId.set(id);
@@ -45,6 +50,17 @@ export class ProductForm implements OnInit{
       }
     });
    }
+  }
+
+  getCategories() {
+    this.categoryService.getCategories(0, 5000).subscribe({
+      next: (data: any) => {
+        this.categories.set(data.content);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
   }
 
   get name() {

@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" (submit)="onSubmit()" class="flex flex-col">
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col">
     <mat-form-field>
         <mat-label>
             Nombre
@@ -30,7 +30,11 @@
         <mat-label>
             Categorías
         </mat-label>
-        <input type="text" matInput formControlName="categoriesId">
+        <mat-select formControlName="categoriesId" multiple>
+            @for (c of categories(); track c.id) {
+                <mat-option [value]="c.id">{{c.name}}</mat-option>
+            }
+        </mat-select>
     </mat-form-field>
     <button type="submit" [disabled]="formGroup.invalid" matButton="filled">Guardar</button>
 </form>
