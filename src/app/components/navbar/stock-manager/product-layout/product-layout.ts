@@ -14,6 +14,6 @@ export class ProductLayout {
       {label: "Ver productos", route:"list"},
       {label: "Crear productos", route: "create"},
       {label: "Crear categoría", route: "category/create"},
-      {label: "Ver categoría", route:"category/list"}
+      {label: "Ver categorías", route:"category/list"}
   ]
 }

@@ -1,25 +1,23 @@
-<mat-card class="search-container">
+<mat-card class="search-container my-6 p-6">
   <div>
     <input
       type="text"
       #txtSearch
       placeholder="Buscar categoría por nombre..."
       (input)="onSearch(txtSearch.value)"
+      class="p-3 w-full"
     >
-    <a mat-raised-button color="primary" routerLink="/categories/createCategory">
-      Nueva Categoría
-    </a>
   </div>
 </mat-card>
 
 <section class="category-grid">
   @for (c of categories(); track c.id) {
-    <mat-card class="category-card">
+    <mat-card class="category-card my-6 mr-6 p-6">
       <mat-card-header>
         <mat-card-title>{{ c.name }}</mat-card-title>
       </mat-card-header>
 
-      <mat-card-actions align="end">
+      <mat-card-actions>
         <a mat-button [routerLink]="['/categories/editCategory', c.id]">Editar</a>
         <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
       </mat-card-actions>

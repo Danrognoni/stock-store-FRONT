@@ -6,7 +6,7 @@ import { CategoryRequest } from '../models/category/category-request';
   providedIn: 'root',
 })
 export class CategoryService {
-  readonly apiurl = "localhost:8080/api/categories"
+  readonly apiurl = "http://localhost:8080/api/categories"
   http = inject(HttpClient)
 
   getCategories(page : number, size:number){

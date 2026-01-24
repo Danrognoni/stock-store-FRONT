@@ -49,21 +49,23 @@ export const routes: Routes = [
   {
     path:"home",
     component: HomeLayout,
-    canActivate : [AuthGuard]
+    //canActivate : [AuthGuard]
 
   },
   // Sección Productos
   {
     path: 'products',
     component: ProductLayout,
-    canActivate : [AuthGuard, roleGuard],
-    data : {roles : ['ADMINISTRADOR, CLIENTE']},
+    //canActivate : [AuthGuard, roleGuard],
+    //data : {roles : ['ADMINISTRADOR, CLIENTE']},
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: ProductListComponent },
       { path: 'create', component: ProductForm },
       { path: 'edit/:id', component: ProductForm },
-      { path: 'detail/:id', component: ProductDetail }
+      { path: 'detail/:id', component: ProductDetail },
+      { path: 'category/create', component: CategoryFormComponent},
+      { path: 'category/list', component: CategoryListComponent}
     ]
   },
 
@@ -71,8 +73,8 @@ export const routes: Routes = [
   {
     path: 'suppliers',
     component: SupplierLayout,
-    canActivate : [AuthGuard, roleGuard],
-    data :  {roles : ['ADMINISTRADOR']},
+    //canActivate : [AuthGuard, roleGuard],
+    //data :  {roles : ['ADMINISTRADOR']},
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: SupplierList },
@@ -87,8 +89,8 @@ export const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryItemLayout,
-    canActivate : [AuthGuard, roleGuard],
-    data :  {roles : ['ADMINISTRADOR']},
+    //canActivate : [AuthGuard, roleGuard],
+    //data :  {roles : ['ADMINISTRADOR']},
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: InventoryItemList },
@@ -104,8 +106,8 @@ export const routes: Routes = [
   },
     {path: 'online-store',
     component: OnlineStoreLayout,
-    canActivate: [roleGuard],
-    data: { roles: ['CLIENTE'] },
+    //canActivate: [roleGuard],
+    //data: { roles: ['CLIENTE'] },
     children: [
       { path: '', component: ProductListComponent }
     ]

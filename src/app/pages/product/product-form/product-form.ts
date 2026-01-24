@@ -24,7 +24,10 @@ export class ProductForm implements OnInit{
   constructor() {
     this.formGroup = this.fb.group({
       name: ['', Validators.required],
-      imageUrl: ['']
+      imageUrl: ['', Validators.required],
+      price: ['', Validators.required],
+      barcode: [''],
+      categoriesId: ['', Validators.required],
     });
   }
 

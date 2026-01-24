@@ -14,5 +14,23 @@
         </mat-label>
         <input type="text" matInput formControlName="imageUrl">
     </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Precio
+        </mat-label>
+        <input type="text" matInput formControlName="price">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Código de barras
+        </mat-label>
+        <input type="text" matInput formControlName="barcode">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Categorías
+        </mat-label>
+        <input type="text" matInput formControlName="categoriesId">
+    </mat-form-field>
     <button type="submit" [disabled]="formGroup.invalid" matButton="filled">Guardar</button>
 </form>
