@@ -1,14 +1,17 @@
-<mat-card class="search-container">
+<mat-card class="search-container my-6 p-6">
   <input
     type="text"
     #txtSearch
     placeholder="Buscar proveedores por nombre..."
-    (input)="onSearch(txtSearch.value)">
+    (input)="onSearch(txtSearch.value)"
+    class="p-3 w-full"
+    >
+
 </mat-card>
 
 <section class="supplier-grid">
   @for (s of supplier(); track s.id) {
-    <mat-card class="supplier-card">
+    <mat-card class="supplier-card my-6 mr-6 p-6">
       <mat-card-header>
         <mat-card-title>{{ s.name }}</mat-card-title>
         <mat-card-subtitle>{{ s.email }}</mat-card-subtitle>
@@ -16,11 +19,11 @@
 
       <mat-card-content>
         <p><strong>Teléfono:</strong> {{ s.phoneNumber }}</p>
-        <p><strong>Productos asociados:</strong> {{ s.products.length }}</p>
+        <p><strong>Productos asociados:</strong> {{ s.products?.length || 0 }}</p>
       </mat-card-content>
 
       <mat-card-actions>
-        <a mat-button [routerLink]="['/suppliers', s.id]">Ver detalle</a>
+        <a mat-button [routerLink]="['/suppliers/detail', s.id]">Ver detalle</a>
         <a mat-button [routerLink]="['/suppliers/edit', s.id]">Editar</a>
         <button mat-button color="warn" (click)="deleteSupplier(s.id)">Eliminar</button>
       </mat-card-actions>
