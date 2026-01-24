@@ -1,7 +1,7 @@
-<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+<div class="container">
   <h2>{{ isEditMode() ? 'Editar' : 'Nuevo' }} Proveedor</h2>
 
-  <form [formGroup]="formGroup" (submit)="onSubmit()" class="flex flex-col gap-4">
+  <form [formGroup]="formGroup" (submit)="onSubmit()" style="display: flex; flex-direction: column; gap: 1rem;">
 
     <mat-form-field appearance="fill" class="w-full">
       <mat-label>Nombre</mat-label>
@@ -22,6 +22,17 @@
     <mat-form-field appearance="fill" class="w-full">
       <mat-label>Teléfono</mat-label>
       <input matInput formControlName="phoneNumber" placeholder="+54 11 1234 5678">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>
+          Productos:
+      </mat-label>
+      <mat-select formControlName="productIds" multiple>
+            @for (p of products(); track p.id) {
+                <mat-option [value]="p.id">{{p.name}}</mat-option>
+          }
+      </mat-select>
     </mat-form-field>
 
     <div class="actions">
