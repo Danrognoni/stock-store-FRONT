@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class supplierService {
-  readonly apiUrl = "localhost:8080/api/suppliers";
+  readonly apiUrl = "http://localhost:8080/api/suppliers";
   http = inject(HttpClient);
 
   getSuppliers(page : number, size : number){

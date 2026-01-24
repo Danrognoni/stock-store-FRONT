@@ -6,7 +6,7 @@ import { InventoryItemRequest } from '../models/inventoryItem/inventory-item-req
   providedIn: 'root',
 })
 export class inventoryItemService {
-  readonly apiUrl = "localhost:8080/api/inventory-items";
+  readonly apiUrl = "http://localhost:8080/api/inventory-items";
   http = inject(HttpClient);
 
   getInventoryItems(page : number, size : number){

@@ -6,7 +6,7 @@ import { ProductRequest } from '../models/product/product-request';
   providedIn: 'root',
 })
 export class ProductService {
-  readonly apiUrl = "localhost:8080/api/products";
+  readonly apiUrl = "http://localhost:8080/api/products";
   http = inject(HttpClient);
 
   getProducts(page : number, size : number){
