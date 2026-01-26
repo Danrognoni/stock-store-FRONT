@@ -1,55 +1,67 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule} from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductService } from '../../../services/product';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryService } from '../../../services/category';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatDivider } from "@angular/material/divider";
 
 @Component({
   selector: 'app-product-form',
+  standalone: true,
   styleUrl: './product-form.css',
   templateUrl: './product-form.html',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatSelectModule],
+  imports: [
+    FormsModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatButtonModule, 
+    ReactiveFormsModule, 
+    MatSelectModule, 
+    MatCardModule, 
+    MatDivider,
+    RouterLink
+  ],
 })
-export class ProductForm implements OnInit{
+export class ProductForm implements OnInit {
   private fb = inject(FormBuilder);
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
   formGroup: FormGroup;
   productId = signal<string>("");
   categories = signal<any[]>([]);
 
   constructor() {
     this.formGroup = this.fb.group({
-      name: ['', Validators.required],
-      imageUrl: ['', Validators.required],
-      price: ['', Validators.required],
-      barcode: [''],
-      categoriesId: [[], Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      imageUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      price: ['', [Validators.required, Validators.min(0.01)]],
+      barcode: ['', [Validators.pattern('^[0-9]*$')]],
+      categoriesId: [[], [Validators.required]],
     });
   }
 
   ngOnInit(): void {
-   this.getCategories();
-   const id = this.route.snapshot.paramMap.get("id");
-   if(id){
-    this.productId.set(id);
-    this.productService.getProduct(id).subscribe({
-      next:(data)=>{
-        this.formGroup.patchValue(data);
-      },
-      error:(error)=>{
-        console.log(error);
-
-      }
-    });
-   }
+    this.getCategories();
+    const id = this.route.snapshot.paramMap.get("id");
+    if (id) {
+      this.productId.set(id);
+      this.productService.getProduct(id).subscribe({
+        next: (data) => {
+          this.formGroup.patchValue(data);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
   }
 
   getCategories() {
@@ -58,49 +70,45 @@ export class ProductForm implements OnInit{
         this.categories.set(data.content);
       },
       error: (error: any) => {
-        console.log(error);
+        console.error(error);
       },
     });
   }
 
-  get name() {
-    return this.formGroup.get('name');
-  }
-
-  get imageUrl() {
-    return this.formGroup.get('imageUrl');
-  }
+  get name() { return this.formGroup.get('name'); }
+  get imageUrl() { return this.formGroup.get('imageUrl'); }
+  get price() { return this.formGroup.get('price'); }
+  get barcode() { return this.formGroup.get('barcode'); }
+  get categoriesId() { return this.formGroup.get('categoriesId'); }
 
   onSubmit() {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.invalid) {
       return;
     }
-    if(this.productId().trim() !== ""){
-      this.productService.patchProduct(this.productId(), this.formGroup.value).subscribe({
-        next:()=>{
+
+    const payload = this.formGroup.value;
+
+    if (this.productId().trim() !== "") {
+      this.productService.patchProduct(this.productId(), payload).subscribe({
+        next: () => {
           alert("Producto editado correctamente");
           this.router.navigate(["/products"]);
         },
-        error:(error)=>{
-          console.log(error);
+        error: (error) => {
+          console.error(error);
         }
-      })
+      });
+    } else {
+      this.productService.postProduct(payload).subscribe({
+        next: () => {
+          alert('Producto creado con éxito');
+          this.router.navigate(['/products']);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
     }
-    else{
-      this.postProduct();
-    }
-  }
-
-  postProduct() {
-    this.productService.postProduct(this.formGroup.value).subscribe({
-      next: () => {
-        alert('Producto creado con exito');
-        this.router.navigate(['/products']);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
   }
 }
