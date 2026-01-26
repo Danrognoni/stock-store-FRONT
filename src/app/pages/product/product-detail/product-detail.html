@@ -11,8 +11,20 @@
         <img mat-card-image [src]="p.imageUrl" [alt]="p.name">
       }
 
+      <mat-card-content>
+        <mat-list>
+
+          
+          <mat-list-item>
+            <mat-icon matListItemIcon>attach_money</mat-icon>
+            <div matListItemTitle>Precio</div>
+            <div matListItemLine>{{ p.price }}</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+
       <mat-card-actions>
-        <button mat-button routerLink="/products">Volver a la lista</button>
+        <button mat-button (click)="getBack()">Volver a la lista</button>
       </mat-card-actions>
     </mat-card>
   </div>
