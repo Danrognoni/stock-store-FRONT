@@ -1,26 +1,50 @@
-<mat-card>
-  <input type="text" #txtSearch placeholder="Buscar productos" (input)="searchProducts(txtSearch.value)">
-</mat-card>
+<div class="container">
+  <!-- Barra de búsqueda centrada y estilizada -->
+  <div class="search-wrapper">
+    <mat-card class="search-card">
+      <input 
+        type="text" 
+        #txtSearch 
+        class="search-input" 
+        placeholder="Buscar productos..." 
+        (input)="onSearch(txtSearch.value)">
+    </mat-card>
+  </div>
 
-<section>
-  @for (product of products(); track product.id) {
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ product.name }}</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image [src]="product.imageUrl" alt="" />
-    <mat-card-actions>
-    <a mat-button [routerLink]='["/products/detail", product.id]'>Ver detalle</a>      <a matButton [routerLink]='["/products/edit", product.id]'>Editar</a>
-      <button matButton (click)="deleteProduct(product.id)">Eliminar</button>
-    </mat-card-actions>
-  </mat-card>
-  }
-</section>
+  <!-- Grilla de productos -->
+  <section class="product-grid">
+    @for (product of products(); track product.id) {
+      <mat-card class="product-card">
+        <img mat-card-image [src]="product.imageUrl || 'assets/placeholder.png'" [alt]="product.name" class="card-image" />
+        
+        <mat-card-header>
+          <mat-card-title>{{ product.name }}</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <!-- Aquí podrías agregar una descripción corta o el precio si lo tienes en el modelo -->
+        </mat-card-content>
 
-<mat-paginator
-    [length]="totalElements()"
-    [pageSize]="pageSize()"
-    [pageIndex]="pageIndex()"
-    (page)="changePage($event)"
-    aria-label="Seleccionar página">
-</mat-paginator>
+        <mat-divider></mat-divider>
+        
+        <mat-card-actions >
+          <a mat-button color="primary" [routerLink]='["/products/detail", product.id]'>Ver</a>
+          <a mat-button color="accent" [routerLink]='["/products/edit", product.id]'>Editar</a>
+          <button mat-button color="warn" (click)="deleteProduct(product.id)">Eliminar</button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </section>
+
+  <!-- Paginador -->
+  <mat-paginator
+      class="paginator"
+      [length]="totalElements()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="[5, 10, 18, 25]"
+      [pageIndex]="pageIndex()"
+      (page)="changePage($event)"
+      aria-label="Seleccionar página">
+  </mat-paginator>
+</div>
+

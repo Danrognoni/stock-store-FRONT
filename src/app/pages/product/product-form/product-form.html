@@ -1,40 +1,63 @@
-<form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col">
-    <mat-form-field>
-        <mat-label>
-            Nombre
-        </mat-label>
-        <input type="text" matInput formControlName="name">
-        @if (name?.invalid && name?.touched) {
-            <p class="form-error">El nombre es obligatorio</p>
-        }
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            URL de la imagen
-        </mat-label>
-        <input type="text" matInput formControlName="imageUrl">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Precio
-        </mat-label>
-        <input type="text" matInput formControlName="price">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Código de barras
-        </mat-label>
-        <input type="text" matInput formControlName="barcode">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Categorías
-        </mat-label>
-        <mat-select formControlName="categoriesId" multiple>
-            @for (c of categories(); track c.id) {
-                <mat-option [value]="c.id">{{c.name}}</mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-    <button type="submit" [disabled]="formGroup.invalid" matButton="filled">Guardar</button>
-</form>
+<div class="form-container">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-card-title>Información del Producto</mat-card-title>
+        </mat-card-header>
+
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <mat-card-content class="form-content">
+                <!-- Nombre -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nombre</mat-label>
+                    <input type="text" matInput formControlName="name" placeholder="Ej. Camiseta Deportiva">
+                    @if (name?.invalid && name?.touched) {
+                        <mat-error>El nombre es obligatorio</mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- URL Imagen -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>URL de la imagen</mat-label>
+                    <input type="text" matInput formControlName="imageUrl" placeholder="https://...">
+                </mat-form-field>
+
+                <!-- Fila de 2 columnas para Precio y Código -->
+                <div class="form-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Precio</mat-label>
+                        <input type="number" matInput formControlName="price" placeholder="0.00">
+                        <span matTextPrefix>$&nbsp;</span>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Código de barras</mat-label>
+                        <input type="text" matInput formControlName="barcode" placeholder="123456...">
+                    </mat-form-field>
+                </div>
+
+                <!-- Categorías -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Categorías</mat-label>
+                    <mat-select formControlName="categoriesId" multiple>
+                        @for (c of categories(); track c.id) {
+                            <mat-option [value]="c.id">{{c.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+
+            <mat-divider></mat-divider>
+
+            <mat-card-actions >
+                <button mat-button type="button" routerLink="/products">Cancelar</button>
+                <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid">
+                    Guardar
+                </button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>
+
+
+
+
