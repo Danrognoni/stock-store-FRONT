@@ -1,22 +1,54 @@
-<div class="container">
-  <h2>{{ isEditMode() ? 'Editar' : 'Nueva' }} Categoría</h2>
-
-  <form [formGroup]="formGroup" (submit)="onSubmit()" style="display: flex; flex-direction: column; gap: 1rem;">
-
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Nombre de la Categoría</mat-label>
-      <input matInput formControlName="name" placeholder="Ej. Electrónica">
-      @if (formGroup.get('name')?.hasError('required')) {
-        <mat-error>El nombre es obligatorio</mat-error>
-      }
-    </mat-form-field>
-
-    <div class="actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="formGroup.invalid">
-        Guardar
-      </button>
-      <button mat-button type="button" routerLink="/categories">Cancelar</button>
+<div class="container p-4 mx-auto max-w-2xl relative">
+  
+  @if (notification()) {
+    <div 
+      class="toast" 
+      [class.success]="notification()?.type === 'success'"
+      [class.error]="notification()?.type === 'error'"
+      animate.enter="slide-in"
+      animate.leave="slide-out">
+      
+      <span class="icon">
+        @if(notification()?.type === 'success') { ✓ } @else { ⚠ }
+      </span>
+      {{ notification()?.message }}
     </div>
+  }
 
-  </form>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        {{ isEditMode() ? 'Editar Categoría' : 'Nueva Categoría' }}
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-divider></mat-divider>
+    
+    <mat-card-content class="pt-4">
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Nombre de la Categoría</mat-label>
+          <input matInput formControlName="name" placeholder="Ej: Bebidas">
+          @if (name?.invalid && name?.touched) {
+            <mat-error>
+              @if (name?.hasError('required')) { El nombre es requerido }
+              @if (name?.hasError('minlength')) { Mínimo 3 caracteres }
+              @if (name?.hasError('pattern')) { Solo letras y números }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <div class="flex justify-end gap-2 mt-4">
+          <button mat-button type="button" routerLink="/products/category/list">
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="formGroup.invalid">
+            {{ isEditMode() ? 'Actualizar' : 'Guardar' }}
+          </button>
+        </div>
+        
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

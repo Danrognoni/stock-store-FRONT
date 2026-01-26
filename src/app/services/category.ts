@@ -29,7 +29,7 @@ export class CategoryService {
   }
 
   patchCategory(id:string, data : Partial<CategoryRequest>){
-    const url = `${this.apiurl}/${id}`
+    const url = `${this.apiurl}/id/${id}`; 
     return this.http.patch<any>(url, data);
   }
 

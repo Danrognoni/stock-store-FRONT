@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,19 +6,26 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CategoryService } from '../../../services/category';
 import { RouterLink } from '@angular/router';
 
+interface Toast {
+  message: string;
+  type: 'success' | 'error';
+}
+
 @Component({
   selector: 'app-category-list-component',
   imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatIconModule, RouterLink],
   templateUrl: './category-list-component.html',
   styleUrl: './category-list-component.css',
 })
-export class CategoryListComponent {
+export class CategoryListComponent implements OnInit {
   private categoryService = inject(CategoryService);
 
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
   pageSize = signal<number>(10);
-
+  
+  notification = signal<Toast | null>(null);
+  
   readonly categories = signal<any[]>([]);
   private searchTimer: any;
 
@@ -32,7 +39,10 @@ export class CategoryListComponent {
         this.categories.set(data.content);
         this.totalElements.set(data.page.totalElements);
       },
-      error: (e) => console.error(e)
+      error: (e) => {
+        console.error(e);
+        this.showToast('Error cargando categorías', 'error');
+      }
     });
   }
 
@@ -56,20 +66,23 @@ export class CategoryListComponent {
         this.categories.set(content);
         this.totalElements.set(content.length);
       },
-      error: (e) => console.error(e)
+      error: (e) => {
+        console.error(e);
+        this.showToast('No se encontraron resultados', 'error');
+      }
     });
   }
 
   deleteCategory(id: string): void {
-    if (confirm('¿Eliminar esta categoría?')) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
       this.categoryService.deleteCategory(id).subscribe({
         next: () => {
-          alert('Categoría eliminada con éxito');
+          this.showToast('Categoría eliminada correctamente', 'success');
           this.getCategories();
         },
         error: (e) => {
           console.error(e);
-          alert('Error al eliminar');
+          this.showToast('Error al eliminar la categoría', 'error');
         }
       });
     }
@@ -79,5 +92,12 @@ export class CategoryListComponent {
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
     this.getCategories();
+  }
+
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }

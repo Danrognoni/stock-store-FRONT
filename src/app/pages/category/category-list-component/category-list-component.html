@@ -35,3 +35,23 @@
     (page)="changePage($event)"
     aria-label="Seleccionar página">
 </mat-paginator>
+
+<div class="container p-4 mx-auto relative"> @if (notification()) {
+    <div 
+      class="toast" 
+      [class.success]="notification()?.type === 'success'"
+      [class.error]="notification()?.type === 'error'"
+      animate.enter="slide-in"
+      animate.leave="slide-out">
+      
+      <span class="icon">
+        @if(notification()?.type === 'success') { ✓ } @else { ⚠ }
+      </span>
+      {{ notification()?.message }}
+    </div>
+  }
+
+  <mat-card appearance="outlined">
+    </mat-card>
+
+</div>
