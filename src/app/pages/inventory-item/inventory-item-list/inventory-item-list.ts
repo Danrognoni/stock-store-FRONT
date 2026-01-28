@@ -16,13 +16,12 @@ import { InventoryItemDet } from '../../../models/inventoryItem/inventory-item-d
   templateUrl: './inventory-item-list.html',
   styleUrl: './inventory-item-list.css', // Create this file or remove this line
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule],
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink],
 })
 export class InventoryItemList implements OnInit {
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
   pageSize = signal<number>(10);
-
 
   private inventoryItemService = inject(inventoryItemService);
 
