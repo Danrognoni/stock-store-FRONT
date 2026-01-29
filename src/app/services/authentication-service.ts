@@ -108,4 +108,13 @@ export class AuthenticationService {
     const url = `${this.apiUrl}/admin/ban/${id}`;
     return this.http.post<any>(url, "");
   }
+
+  getProfile() {
+    const url = `${this.apiUrl}/profile`;
+    return this.http.get<any>(url).pipe(
+      tap((userResponse) => {
+        this.currentUser.set(userResponse);
+      })
+    );
+  }
 }

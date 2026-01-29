@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Agregamos feedback visual
 
 import { AuthenticationService } from '../../../services/authentication-service';
 import { UserRequest } from '../../../models/user/user-request';
@@ -18,15 +19,17 @@ import { UserRequest } from '../../../models/user/user-request';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSnackBarModule
   ],
   templateUrl: './register-component.html',
-  styleUrl: './register-component.css', // Reusa el CSS del login o crea uno igual
+  styleUrl: './register-component.css',
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthenticationService);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
   registerForm: FormGroup = this.fb.group({
     name: ['', [Validators.required]],
@@ -36,13 +39,25 @@ export class RegisterComponent {
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
-  onSubmit() {
+ onSubmit() {
     if (this.registerForm.valid) {
       const data: UserRequest = this.registerForm.value;
       this.authService.register(data).subscribe({
-        next: () => this.router.navigate(['/']),
-        error: () => alert('Error en el registro')
+        next: () => {
+          // 1. Mostrar mensaje de éxito
+          this.snackBar.open('¡Cuenta creada con éxito!', 'Cerrar', { duration: 3000 });
+          
+          // 2. CORREGIR LA REDIRECCIÓN: Ir a 'home' o 'online-store'
+          this.router.navigate(['/home']); 
+        },
+        error: (err) => {
+          console.error(err); // Ver el error real en consola
+          this.snackBar.open('Error al crear cuenta. Intenta con otro email.', 'Cerrar', { duration: 5000 });
+        }
       });
+    } else {
+      // Si el formulario es inválido y el botón no estaba deshabilitado
+      this.registerForm.markAllAsTouched();
     }
   }
 }

@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 // Componentes de "Productos"
 import { ProductListComponent } from './pages/product/product-list-component/product-list-component';
 import { ProductForm } from './pages/product/product-form/product-form';
-import { ProductDetail  } from './pages/product/product-detail/product-detail';
+import { ProductDetail } from './pages/product/product-detail/product-detail';
 
 // Componentes de "Proveedores"
 import { SupplierList } from './pages/supplier/supplier-list/supplier-list';
@@ -26,7 +26,7 @@ import { HomeLayout } from './components/navbar/home-layout/home-layout';
 import { ProductLayout } from './components/navbar/stock-manager/product-layout/product-layout';
 import { SupplierLayout } from './components/navbar/stock-manager/supplier-layout/supplier-layout';
 import { InventoryItemLayout } from './components/navbar/stock-manager/inventory-item-layout/inventory-item-layout';
-import { OnlineStoreLayoutComponent as OnlineStoreLayout} from './components/navbar/online-store/online-store-layout/online-store-layout';
+import { OnlineStoreLayoutComponent as OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
 import { LocalStoreLayout } from './components/navbar/local-store/local-store-layout/local-store-layout';
 import { AuthenticationLayout } from './components/navbar/authentication/authentication-layout/authentication-layout';
 import { LoginComponent } from './pages/login/login-component/login-component';
@@ -43,12 +43,12 @@ export const routes: Routes = [
     path: "auth",
     component: AuthenticationLayout,
     children: [
-      {path: "login", component: LoginComponent},
-      {path: "register", component: RegisterComponent}
+      { path: "login", component: LoginComponent },
+      { path: "register", component: RegisterComponent }
     ]
   },
   {
-    path:"home",
+    path: "home",
     component: HomeLayout,
     //canActivate : [AuthGuard]
 
@@ -57,16 +57,16 @@ export const routes: Routes = [
   {
     path: 'products',
     component: ProductLayout,
-    //canActivate : [AuthGuard, roleGuard],
-    //data : {roles : ['ADMINISTRADOR, CLIENTE']},
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['ADMIN'] }, // Backend Role.ADMIN
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: ProductListComponent },
       { path: 'create', component: ProductForm },
       { path: 'edit/:id', component: ProductForm },
       { path: 'detail/:id', component: ProductDetail },
-      { path: 'category/create', component: CategoryFormComponent},
-      { path: 'category/list', component: CategoryListComponent}
+      { path: 'category/create', component: CategoryFormComponent },
+      { path: 'category/list', component: CategoryListComponent }
     ]
   },
 
@@ -74,8 +74,8 @@ export const routes: Routes = [
   {
     path: 'suppliers',
     component: SupplierLayout,
-    //canActivate : [AuthGuard, roleGuard],
-    //data :  {roles : ['ADMINISTRADOR']},
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['ADMIN'] },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: SupplierList },
@@ -90,8 +90,8 @@ export const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryItemLayout,
-    //canActivate : [AuthGuard, roleGuard],
-    //data :  {roles : ['ADMINISTRADOR']},
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['ADMIN'] },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: InventoryItemList },
@@ -102,27 +102,32 @@ export const routes: Routes = [
   },
 
   {
-    path:'local-store',
-    component: LocalStoreLayout
+    path: 'local-store',
+    component: LocalStoreLayout,
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['EMPLOYEE'] }
   },
-   // RUTA PADRE DE LA TIENDA
+
+
   {
-        path: 'store',
-        component: OnlineStoreLayout, 
-        children: [
-            {
-                path: '', 
-                component: StoreCatalogComponent 
-            },
-            {
-                path: 'product/:id', 
-                component: ProductDetail
-            },
-            {
-                path: 'cart',
-                component: Cart 
-            }
-        ]
-    },
+    path: 'online-store',
+    component: OnlineStoreLayout,
+    canActivate: [AuthGuard, roleGuard], 
+    data: { roles: ['USER'] }, 
+    children: [
+      {
+        path: '',
+        component: StoreCatalogComponent
+      },
+      {
+        path: 'product/:id',
+        component: ProductDetail
+      },
+      {
+        path: 'cart',
+        component: Cart
+      }
+    ]
+  },
 
 ];
