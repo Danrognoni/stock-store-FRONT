@@ -12,7 +12,6 @@ import { AuthenticationRequest } from '../../../models/authentication/authentica
 @Component({
   selector: 'app-login',
   standalone: true,
-  // Importamos los módulos de Material aquí:
   imports: [
     ReactiveFormsModule, 
     RouterLink,

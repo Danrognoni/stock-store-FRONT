@@ -44,19 +44,19 @@ export class RegisterComponent {
       const data: UserRequest = this.registerForm.value;
       this.authService.register(data).subscribe({
         next: () => {
-          // 1. Mostrar mensaje de éxito
+
           this.snackBar.open('¡Cuenta creada con éxito!', 'Cerrar', { duration: 3000 });
           
-          // 2. CORREGIR LA REDIRECCIÓN: Ir a 'home' o 'online-store'
+ 
           this.router.navigate(['/home']); 
         },
         error: (err) => {
-          console.error(err); // Ver el error real en consola
+          console.error(err); 
           this.snackBar.open('Error al crear cuenta. Intenta con otro email.', 'Cerrar', { duration: 5000 });
         }
       });
     } else {
-      // Si el formulario es inválido y el botón no estaba deshabilitado
+
       this.registerForm.markAllAsTouched();
     }
   }
