@@ -11,10 +11,10 @@ import { RouterOutlet } from '@angular/router';
 })
 export class HomeLayout {
   menu:NavItem[] = [
-        {label: "Productos", route:"/products"},
-        {label: "Inventario", route: "/inventory"},
-        {label: "Proveedores", route:"/suppliers"},
-        {label: "Tienda Online", route: "/online-store"},
-        {label: "Tienda Local", route:"/local-store"}
+        {label: "Productos", route:"/products", roles: ['ADMIN', 'EMPLOYEE']},
+        {label: "Inventario", route: "/inventory", roles: ['ADMIN', 'EMPLOYEE']},
+        {label: "Proveedores", route:"/suppliers", roles: ['ADMIN', 'EMPLOYEE']},
+        {label: "Tienda Online", route: "/online-store", roles: ['ADMIN', 'USER']},
+        {label: "Tienda Local", route:"/local-store", roles: ['ADMIN', 'EMPLOYEE']}
     ]
 }

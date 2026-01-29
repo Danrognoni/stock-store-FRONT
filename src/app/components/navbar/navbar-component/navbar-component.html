@@ -7,9 +7,11 @@
 </span>
 
   @for (item of items(); track item) {
-    <button mat-button [routerLink]="item.route" routerLinkActive="active-link">
-      {{ item.label }}
-    </button>
+    @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
+      <button mat-button [routerLink]="item.route" routerLinkActive="active-link">
+        {{ item.label }}
+      </button>
+    }
   }
 
   <span class="spacer"></span>

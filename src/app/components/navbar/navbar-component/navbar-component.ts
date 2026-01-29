@@ -20,8 +20,15 @@ export class NavbarComponent {
   private router = inject(Router);
 
   logout() {
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
-  }
+  this.authService.logout().subscribe({
+    next: () => {
+      this.router.navigate(['/auth/login']);
+    },
+    error: (err) => {
+      console.warn("Error en logout servidor, cerrando localmente", err);
+      this.authService.currentUser.set(null);
+      this.router.navigate(['/auth/login']);
+    }
+  });
+}
 }
