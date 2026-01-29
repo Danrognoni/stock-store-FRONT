@@ -26,13 +26,14 @@ import { HomeLayout } from './components/navbar/home-layout/home-layout';
 import { ProductLayout } from './components/navbar/stock-manager/product-layout/product-layout';
 import { SupplierLayout } from './components/navbar/stock-manager/supplier-layout/supplier-layout';
 import { InventoryItemLayout } from './components/navbar/stock-manager/inventory-item-layout/inventory-item-layout';
-import { OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
+import { OnlineStoreLayoutComponent as OnlineStoreLayout} from './components/navbar/online-store/online-store-layout/online-store-layout';
 import { LocalStoreLayout } from './components/navbar/local-store/local-store-layout/local-store-layout';
 import { AuthenticationLayout } from './components/navbar/authentication/authentication-layout/authentication-layout';
 import { LoginComponent } from './pages/login/login-component/login-component';
 import { RegisterComponent } from './pages/register/register-component/register-component';
 import { AuthGuard } from './guard/auth-guard/auth-guard';
 import { roleGuard } from './guard/role-guard';
+import { StoreCatalogComponent } from './pages/online-store/catalog/catalog';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -104,12 +105,24 @@ export const routes: Routes = [
     path:'local-store',
     component: LocalStoreLayout
   },
-    {path: 'online-store',
-    component: OnlineStoreLayout,
-    //canActivate: [roleGuard],
-    //data: { roles: ['CLIENTE'] },
-    children: [
-      { path: '', component: ProductListComponent }
-    ]
-  }
+   // RUTA PADRE DE LA TIENDA
+  {
+        path: 'store',
+        component: OnlineStoreLayout, 
+        children: [
+            {
+                path: '', 
+                component: StoreCatalogComponent 
+            },
+            {
+                path: 'product/:id', 
+                component: ProductDetail
+            },
+            {
+                path: 'cart',
+                component: Cart 
+            }
+        ]
+    },
+
 ];

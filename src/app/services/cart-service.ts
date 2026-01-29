@@ -21,11 +21,13 @@ export class CartService {
     return this.http.get<CartList>(this.apiUrl);
   }
 
-  addToCart(productId: string, quantity: number) {
-    const body: CartItemRequest = { productId, quantity };
-    return this.http.post<any>(this.apiUrl, body).pipe(
-      tap(() => this.refreshCartCount())
-    );
+
+addItemToCart(productId: string, quantity: number) {
+    const payload = {
+      productId: productId,
+      quantity: quantity
+    };
+    return this.http.post<any>(`${this.apiUrl}/add`, payload);
   }
 
   removeFromCart(cartItemId: number) {

@@ -1,4 +1,5 @@
-<app-navbar-component class="w-full block" [items]="menu"></app-navbar-component>
-<div class="p-6">
-    <router-outlet />
+<app-navbar-component [items]="storeNavItems"></app-navbar-component> 
+
+<div class="store-container">
+    <router-outlet></router-outlet> 
 </div>
