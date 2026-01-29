@@ -1,7 +1,10 @@
 <mat-toolbar color="primary" class="navbar">
-  <span routerLink="/" style="cursor: pointer; font-weight: bold; margin-right: 20px;">
-    Stock Store
-  </span>
+
+<span [routerLink]="authService.currentUser() ? '/home' : []"
+      [style.cursor]="authService.currentUser() ? 'pointer' : 'default'"
+      style="font-weight: bold; margin-right: 20px;">
+      Stock Store
+</span>
 
   @for (item of items(); track item) {
     <button mat-button [routerLink]="item.route" routerLinkActive="active-link">
@@ -12,10 +15,10 @@
   <span class="spacer"></span>
 
   @if (authService.currentUser(); as user) {
-    
+
     <button mat-button [matMenuTriggerFor]="userMenu">
       <mat-icon>person</mat-icon>
-      Hola, {{ user.name }} 
+      Hola, {{ user.name }}
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
 
@@ -39,7 +42,7 @@
     </mat-menu>
 
   } @else {
-    
+
     <button mat-button routerLink="/auth/login">Iniciar Sesión</button>
     <button mat-raised-button color="accent" routerLink="/auth/register" style="margin-left: 10px;">
       Registrarse

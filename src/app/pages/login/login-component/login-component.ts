@@ -13,7 +13,7 @@ import { AuthenticationRequest } from '../../../models/authentication/authentica
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     RouterLink,
     MatCardModule,
     MatInputModule,
@@ -37,7 +37,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const credentials: AuthenticationRequest = this.loginForm.value;
       this.authService.authenticate(credentials).subscribe({
-        next: () => this.router.navigate(['/']),
+        next: () => this.router.navigate(['/home']),
         error: () => alert('Credenciales incorrectas')
       });
     }

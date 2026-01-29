@@ -18,13 +18,13 @@ import { ProductDet } from '../../../models/product/product-det';
   styleUrl: './product-form.css',
   templateUrl: './product-form.html',
   imports: [
-    FormsModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatButtonModule, 
-    ReactiveFormsModule, 
-    MatSelectModule, 
-    MatCardModule, 
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatCardModule,
     MatDivider,
     RouterLink
   ],
@@ -73,7 +73,17 @@ onSubmit() {
   this.formGroup.markAllAsTouched();
   if (this.formGroup.invalid) return;
 
-  const payload: ProductRequest = this.formGroup.value;
+  const formValue = this.formGroup.value;
+
+  const payload: ProductRequest = {
+    name: formValue.name,
+    imageUrl: formValue.imageUrl,
+    price: formValue.price,
+    categoriesId: formValue.categoriesId,
+    barcode: formValue.barcode && formValue.barcode.trim() !== '' ? formValue.barcode : null
+  };
+
+  console.log('Enviando:', payload);
 
   if (this.productId().trim() !== "") {
     this.productService.patchProduct(this.productId(), payload).subscribe({
@@ -81,7 +91,10 @@ onSubmit() {
         alert("Producto editado correctamente");
         this.router.navigate(["/products/list"]);
       },
-      error: (error) => console.error(error)
+      error: (error) => {
+        console.error(error);
+        alert("Error al editar: " + (error.error?.message || "Ver consola"));
+      }
     });
   } else {
     this.productService.postProduct(payload).subscribe({
@@ -90,8 +103,12 @@ onSubmit() {
         this.router.navigate(['/products/list']);
       },
       error: (error) => {
-        console.error("Error al crear producto:", error);
-        alert("Error al crear el producto. Revisa los datos.");
+        console.error(error);
+        if (error.error?.message?.includes("Duplicate entry")) {
+          alert("Error: Ya existe un producto con ese Código de Barras o Nombre.");
+        } else {
+          alert("Error al crear el producto. Revisa los datos.");
+        }
       },
     });
   }
