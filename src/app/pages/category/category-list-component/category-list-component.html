@@ -18,7 +18,7 @@
       </mat-card-header>
 
       <mat-card-actions>
-        <a mat-button [routerLink]="['/categories/editCategory', c.id]">Editar</a>
+        <a mat-button [routerLink]='["/products/category/edit", c.id]'>Editar</a>
         <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
       </mat-card-actions>
     </mat-card>
@@ -37,13 +37,13 @@
 </mat-paginator>
 
 <div class="container p-4 mx-auto relative"> @if (notification()) {
-    <div 
-      class="toast" 
+    <div
+      class="toast"
       [class.success]="notification()?.type === 'success'"
       [class.error]="notification()?.type === 'error'"
       animate.enter="slide-in"
       animate.leave="slide-out">
-      
+
       <span class="icon">
         @if(notification()?.type === 'success') { ✓ } @else { ⚠ }
       </span>

@@ -8,20 +8,21 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../services/category';
 
-interface Toast {
+export interface Toast {
   message: string;
   type: 'success' | 'error';
 }
 
 @Component({
   selector: 'app-category-form-component',
+  standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    MatInputModule, 
-    MatButtonModule, 
-    MatFormFieldModule, 
-    MatCardModule, 
-    MatDividerModule, 
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatDividerModule,
     RouterLink
   ],
   templateUrl: './category-form-component.html',
@@ -34,10 +35,11 @@ export class CategoryFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   formGroup: FormGroup;
+
   isEditMode = signal<boolean>(false);
-  categoryId: string | null = null;
-  
   notification = signal<Toast | null>(null);
+
+  categoryId: string | null = null;
 
   constructor() {
     this.formGroup = this.fb.group({

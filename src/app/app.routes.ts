@@ -14,7 +14,6 @@ import { SupplierOrderComponent } from './pages/supplier/supplier-order/supplier
 // Componentes de "Inventario"
 import { InventoryItemList } from './pages/inventory-item/inventory-item-list/inventory-item-list';
 import { InventoryItemForm } from './pages/inventory-item/inventory-item-form/inventory-item-form';
-import { InventoryItemDetail } from './pages/inventory-item/inventory-item-detail/inventory-item-detail';
 
 // Componentes de "Categoria"
 import { CategoryListComponent } from './pages/category/category-list-component/category-list-component';
@@ -66,7 +65,8 @@ export const routes: Routes = [
       { path: 'edit/:id', component: ProductForm },
       { path: 'detail/:id', component: ProductDetail },
       { path: 'category/create', component: CategoryFormComponent },
-      { path: 'category/list', component: CategoryListComponent }
+      { path: 'category/list', component: CategoryListComponent },
+      {path: 'category/edit/:id', component: CategoryFormComponent}
     ]
   },
 
@@ -97,7 +97,6 @@ export const routes: Routes = [
       { path: 'list', component: InventoryItemList },
       { path: 'create', component: InventoryItemForm },
       { path: 'edit/:id', component: InventoryItemForm },
-      { path: 'detail/:id', component: InventoryItemDetail }
     ]
   },
 
@@ -112,8 +111,8 @@ export const routes: Routes = [
   {
     path: 'online-store',
     component: OnlineStoreLayout,
-    canActivate: [AuthGuard, roleGuard], 
-    data: { roles: ['USER'] }, 
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['USER'] },
     children: [
       {
         path: '',

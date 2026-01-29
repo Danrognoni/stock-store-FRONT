@@ -1,37 +1,32 @@
 <div class="container">
-  <!-- Barra de búsqueda -->
   <div class="search-wrapper">
     <mat-card class="search-card">
-      <input 
-        type="text" 
-        #txtSearch 
-        class="search-input" 
-        placeholder="Buscar en inventario..." 
+      <input
+        type="text"
+        #txtSearch
+        class="search-input"
+        placeholder="Buscar en inventario..."
         (input)="onSearch(txtSearch.value)">
     </mat-card>
   </div>
 
-  <!-- Grilla de items de inventario -->
   <section class="inventory-grid">
     @for (item of inventoryItems(); track item.id) {
       <mat-card class="inventory-card">
-        <!-- Se intenta mostrar la imagen del producto asociado o un placeholder -->
         <img mat-card-image [src]="item.product?.imageUrl || 'assets/placeholder.png'" [alt]="item.product?.name" class="card-image" />
-        
+
         <mat-card-header>
           <mat-card-title>{{ item.product?.name }}</mat-card-title>
           <mat-card-subtitle>Precio: ${{ item.product?.price }}</mat-card-subtitle>
         </mat-card-header>
-        
+
         <mat-card-content>
           <p><strong>Stock:</strong> {{ item.stock }}</p>
-          <!-- Agrega más campos aquí si es necesario, ej: Ubicación -->
         </mat-card-content>
 
         <mat-divider></mat-divider>
-        
+
         <mat-card-actions>
-          <a mat-button color="primary" [routerLink]='["/inventory/detail", item.id]'>Ver</a>
           <a mat-button color="accent" [routerLink]='["/inventory/edit", item.id]'>Editar</a>
           <button mat-button color="warn" (click)="deleteInventoryItem(item.id)">Eliminar</button>
         </mat-card-actions>
@@ -39,7 +34,6 @@
     }
   </section>
 
-  <!-- Paginador -->
   <mat-paginator
       class="paginator"
       [length]="totalElements()"
