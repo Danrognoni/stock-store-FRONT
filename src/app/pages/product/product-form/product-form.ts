@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CategoryService } from '../../../services/category';
 import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from "@angular/material/divider";
+import { ProductRequest } from '../../../models/product/product-request';
+import { ProductDet } from '../../../models/product/product-det';
 
 @Component({
   selector: 'app-product-form',
@@ -49,20 +51,51 @@ export class ProductForm implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCategories();
-    const id = this.route.snapshot.paramMap.get("id");
-    if (id) {
-      this.productId.set(id);
-      this.productService.getProduct(id).subscribe({
-        next: (data) => {
-          this.formGroup.patchValue(data);
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-    }
+  this.getCategories();
+  const id = this.route.snapshot.paramMap.get("id");
+  if (id) {
+    this.productId.set(id);
+    this.productService.getProduct(id).subscribe({
+      next: (data: ProductDet) => {
+        this.formGroup.patchValue({
+          name: data.name,
+          imageUrl: data.imageUrl,
+          price: data.price,
+          categoriesId: data.categories.map(cat => cat.id)
+        });
+      },
+      error: (error) => console.error(error)
+    });
   }
+}
+
+onSubmit() {
+  this.formGroup.markAllAsTouched();
+  if (this.formGroup.invalid) return;
+
+  const payload: ProductRequest = this.formGroup.value;
+
+  if (this.productId().trim() !== "") {
+    this.productService.patchProduct(this.productId(), payload).subscribe({
+      next: () => {
+        alert("Producto editado correctamente");
+        this.router.navigate(["/products/list"]);
+      },
+      error: (error) => console.error(error)
+    });
+  } else {
+    this.productService.postProduct(payload).subscribe({
+      next: () => {
+        alert('Producto creado con éxito');
+        this.router.navigate(['/products/list']);
+      },
+      error: (error) => {
+        console.error("Error al crear producto:", error);
+        alert("Error al crear el producto. Revisa los datos.");
+      },
+    });
+  }
+}
 
   getCategories() {
     this.categoryService.getCategories(0, 5000).subscribe({
@@ -81,34 +114,4 @@ export class ProductForm implements OnInit {
   get barcode() { return this.formGroup.get('barcode'); }
   get categoriesId() { return this.formGroup.get('categoriesId'); }
 
-  onSubmit() {
-    this.formGroup.markAllAsTouched();
-    if (this.formGroup.invalid) {
-      return;
-    }
-
-    const payload = this.formGroup.value;
-
-    if (this.productId().trim() !== "") {
-      this.productService.patchProduct(this.productId(), payload).subscribe({
-        next: () => {
-          alert("Producto editado correctamente");
-          this.router.navigate(["/products"]);
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-    } else {
-      this.productService.postProduct(payload).subscribe({
-        next: () => {
-          alert('Producto creado con éxito');
-          this.router.navigate(['/products']);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-    }
-  }
 }

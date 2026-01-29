@@ -8,7 +8,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../services/category';
 
-// Interfaz simple para nuestra notificación
 interface Toast {
   message: string;
   type: 'success' | 'error';

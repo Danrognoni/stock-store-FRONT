@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 // Componentes de "Productos"
 import { ProductListComponent } from './pages/product/product-list-component/product-list-component';
 import { ProductForm } from './pages/product/product-form/product-form';
-import { ProductDetail } from './pages/product/product-detail/product-detail';
+import { ProductDetail  } from './pages/product/product-detail/product-detail';
 
 // Componentes de "Proveedores"
 import { SupplierList } from './pages/supplier/supplier-list/supplier-list';

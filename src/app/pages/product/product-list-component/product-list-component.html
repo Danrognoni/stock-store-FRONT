@@ -1,5 +1,4 @@
 <div class="container">
-  <!-- Barra de búsqueda centrada y estilizada -->
   <div class="search-wrapper">
     <mat-card class="search-card">
       <input 
@@ -11,7 +10,6 @@
     </mat-card>
   </div>
 
-  <!-- Grilla de productos -->
   <section class="product-grid">
     @for (product of products(); track product.id) {
       <mat-card class="product-card">
@@ -22,7 +20,6 @@
         </mat-card-header>
         
         <mat-card-content>
-          <!-- Aquí podrías agregar una descripción corta o el precio si lo tienes en el modelo -->
         </mat-card-content>
 
         <mat-divider></mat-divider>
@@ -36,7 +33,6 @@
     }
   </section>
 
-  <!-- Paginador -->
   <mat-paginator
       class="paginator"
       [length]="totalElements()"

@@ -9,7 +9,7 @@ import { ProductDet } from '../../../models/product/product-det';
 
 @Component({
   selector: 'app-product-detail',
-  standalone: true, // Asegúrate de que sea standalone si usas imports directos
+  standalone: true, 
   imports: [MatCardModule, MatListModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
