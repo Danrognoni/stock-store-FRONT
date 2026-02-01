@@ -33,6 +33,7 @@ import { RegisterComponent } from './pages/register/register-component/register-
 import { AuthGuard } from './guard/auth-guard/auth-guard';
 import { roleGuard } from './guard/role-guard';
 import { StoreCatalogComponent } from './pages/online-store/catalog/catalog';
+import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -43,7 +44,8 @@ export const routes: Routes = [
     component: AuthenticationLayout,
     children: [
       { path: "login", component: LoginComponent },
-      { path: "register", component: RegisterComponent }
+      { path: "register", component: RegisterComponent },
+      { path: "forgot-password", component: ForgotPassword }
     ]
   },
   {

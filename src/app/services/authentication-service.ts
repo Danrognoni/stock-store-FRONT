@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { tap } from 'rxjs'; // Importamos tap
+import { tap } from 'rxjs';
 import { UserRequest } from '../models/user/user-request';
 import { AuthenticationRequest } from '../models/authentication/authentication-request';
 import { AuthenticationPassword } from '../models/authentication/authentication-password';
@@ -10,7 +10,6 @@ import { UserUpdate } from '../models/user/user-update';
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthenticationService {
   private readonly apiUrl = "http://localhost:8080/api/auth";
   private http = inject(HttpClient);
@@ -43,22 +42,25 @@ export class AuthenticationService {
     );
   }
 
-  forgotPassword(data:AuthenticationPassword){
+  // CORREGIDO: responseType: 'text' para evitar error de parsing JSON
+  forgotPassword(data: AuthenticationPassword) {
     const url = `${this.apiUrl}/forgot`;
-    return this.http.post<any>(url, data);
+    return this.http.post(url, data, { responseType: 'text' }); 
   }
 
-  validateCode(data:AuthenticationPassword, code:string){
+  // CORREGIDO: responseType: 'text'
+  validateCode(data: AuthenticationPassword, code: string) {
     const url = `${this.apiUrl}/verify/${code}`;
-    return this.http.post<any>(url, data);
+    return this.http.post(url, data, { responseType: 'text' });
   }
 
-  changeForgottenPassword(data:AuthenticationPassword){
+  // CORREGIDO: responseType: 'text'
+  changeForgottenPassword(data: AuthenticationPassword) {
     const url = `${this.apiUrl}/forgot/change`;
-    return this.http.patch<any>(url, data);
+    return this.http.patch(url, data, { responseType: 'text' });
   }
 
-  changePassword(data:UserUpdatePass){
+  changePassword(data: UserUpdatePass) {
     const url = `${this.apiUrl}/logged/password`;
     return this.http.patch<any>(url, data);
   }
@@ -74,37 +76,37 @@ export class AuthenticationService {
     );
   }
 
-  listUsers(){
+  listUsers() {
     const url = `${this.apiUrl}/admin`;
     return this.http.get<any>(url);
   }
 
-  listBannedUsers(){
+  listBannedUsers() {
     const url = `${this.apiUrl}/admin/banned`;
     return this.http.get<any>(url);
   }
 
-  listEmployees(){
+  listEmployees() {
     const url = `${this.apiUrl}/admin/employees`;
     return this.http.get<any>(url);
   }
 
-  getUsersByEmail(email:string){
+  getUsersByEmail(email: string) {
     const url = `${this.apiUrl}/admin/user/${email}`;
     return this.http.get<any>(url);
   }
 
-  promoteToEmployee(id:string){
+  promoteToEmployee(id: string) {
     const url = `${this.apiUrl}/admin/promote/employee/${id}`;
     return this.http.post<any>(url, "");
   }
 
-  promoteToAdmin(id:string){
+  promoteToAdmin(id: string) {
     const url = `${this.apiUrl}/admin/promote/admin/${id}`;
     return this.http.post<any>(url, "");
   }
 
-  toggleBan(id:string){
+  toggleBan(id: string) {
     const url = `${this.apiUrl}/admin/ban/${id}`;
     return this.http.post<any>(url, "");
   }
