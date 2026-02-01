@@ -12,8 +12,8 @@ import { NavItem } from '../../../../models/nav-item';
 })
 export class OnlineStoreLayoutComponent {
   storeNavItems: NavItem[] = [
-    { label: 'Catálogo', route: '/store' },
-    { label: 'Carrito', route: '/store/cart' },
+    { label: 'Catálogo', route: '/online-store' },
+    { label: 'Carrito', route: '/online-store/cart' },
 
   ];
 }

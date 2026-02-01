@@ -1,0 +1,243 @@
+/* Variables para fácil edición */
+:host {
+  --primary-color: #3f51b5; /* Tu color primario de Angular Material */
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-dark: #2c3e50;
+  --text-muted: #7f8c8d;
+  --border-radius: 16px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+/* Header */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2rem;
+}
+
+.cart-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.item-count {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-icon-bg {
+  width: 100px;
+  height: 100px;
+  background-color: #eef2ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.empty-icon-bg mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  color: var(--primary-color);
+}
+
+/* Layout Grid */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px; /* Columna izq flexible, derecha fija */
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Product Card */
+.product-card {
+  display: flex;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  background-color: #f1f3f5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.5rem;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-image mat-icon {
+  color: #adb5bd;
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+}
+
+.product-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-row h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.delete-btn mat-icon {
+  color: #e74c3c;
+  font-size: 20px;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.quantity-control {
+  background: #f8f9fa;
+  padding: 0.25rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #e9ecef;
+}
+
+.quantity-control .label {
+  color: var(--text-muted);
+  margin-right: 5px;
+}
+
+.quantity-control .value {
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
+.subtotal {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+/* Summary Column */
+.cart-summary-column {
+  position: sticky;
+  top: 20px; /* Para que te siga al hacer scroll */
+}
+
+.summary-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.summary-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.summary-row.total {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.free {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 1.5rem !important;
+  font-size: 1.1rem !important;
+  border-radius: 12px !important;
+}
+
+.secure-text {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.secure-text mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cart-layout {
+    grid-template-columns: 1fr; /* Colapsar a una columna */
+  }
+  
+  .cart-summary-column {
+    position: static;
+  }
+}
