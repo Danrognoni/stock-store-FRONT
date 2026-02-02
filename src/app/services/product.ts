@@ -33,6 +33,13 @@ export class ProductService {
     return this.http.patch<any>(url, data);
   }
 
+  getProductsWithStock(page : number, size : number){
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    const url = `${this.apiUrl}/available`;
+
+    return this.http.get<any>(url, {params});
+  }
+
   deleteProduct(id : string){
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete(url);

@@ -59,7 +59,7 @@ export const routes: Routes = [
     path: 'products',
     component: ProductLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['ADMIN'] }, // Backend Role.ADMIN
+    data: { roles: ['EMPLOYEE', 'ADMIN'] }, // Backend Role.ADMIN
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: ProductListComponent },
@@ -77,7 +77,7 @@ export const routes: Routes = [
     path: 'suppliers',
     component: SupplierLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['ADMIN'] },
+    data: { roles: ['EMPLOYEE', 'ADMIN'] },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: SupplierList },
@@ -93,7 +93,7 @@ export const routes: Routes = [
     path: 'inventory',
     component: InventoryItemLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['ADMIN'] },
+    data: { roles: ['EMPLOYEE', 'ADMIN'] },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: InventoryItemList },
@@ -106,7 +106,7 @@ export const routes: Routes = [
     path: 'local-store',
     component: LocalStoreLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['EMPLOYEE'] }
+    data: { roles: ['EMPLOYEE', 'ADMIN'] }
   },
 
 
@@ -114,7 +114,7 @@ export const routes: Routes = [
     path: 'online-store',
     component: OnlineStoreLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['USER'] },
+    data: { roles: ['USER', 'EMPLOYEE', 'ADMIN'] },
     children: [
       {
         path: '',
