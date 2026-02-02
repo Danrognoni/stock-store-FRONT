@@ -76,7 +76,23 @@ export class Cart implements OnInit {
   }
 
   checkout() {
-    const user = this.authService.currentUser();
-    console.log("Procesando compra para:", user?.email);
+    if (!this.authService.currentUser()) {
+      alert('Debes iniciar sesión para comprar');
+      return;
+    }
+
+    this.loading.set(true);
+
+    this.cartService.preparePayment().subscribe({
+      next: (url: string) => {
+        console.log('Redirigiendo a MercadoPago:', url);
+        window.location.href = url;
+      },
+      error: (err) => {
+        console.error('Error al iniciar pago:', err);
+        alert('Error al conectar con MercadoPago. Revisa la consola.');
+        this.loading.set(false);
+      }
+    });
   }
 }

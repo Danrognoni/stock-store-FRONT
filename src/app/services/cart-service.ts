@@ -72,16 +72,30 @@ export class CartService {
     );
   }
 
-  private refreshCartCount() {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
+  refreshCartCount() {
     this.getCart().subscribe({
       next: (cart) => {
-        const count = cart.items ? cart.items.length : 0;
-        this.cartCount.set(count);
+        const items = cart?.items || [];
+
+        const totalQuantity = items.reduce((acc: number, item: any) => {
+            return acc + (item.quantity || 0);
+        }, 0);
+
+        this.cartCount.set(totalQuantity);
       },
-      error: () => this.cartCount.set(0)
+      error: (err) => {
+        console.warn('Usuario no autenticado o error de carrito', err.status);
+        this.cartCount.set(0);
+      }
+    });
+  }
+
+  preparePayment() {
+    const url = `http://localhost:8080/api/mp/cart`;
+
+    return this.http.post(url, {}, {
+      headers: this.getHeaders(),
+      responseType: 'text'
     });
   }
 }
