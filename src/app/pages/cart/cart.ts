@@ -57,11 +57,12 @@ export class Cart implements OnInit {
 
   removeItem(cartItemId: number) {
     const user = this.authService.currentUser();
-    if (!user || !user.id) return;
 
-    this.cartService.removeFromCart(user.id).subscribe({
+    this.cartService.removeFromCart(cartItemId).subscribe({
       next: () => {
-        this.loadCart(user.id);
+        if (user && user.id) {
+            this.loadCart(user.id);
+        }
       },
       error: (err) => console.error('Error eliminando item:', err)
     });

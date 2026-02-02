@@ -1,5 +1,5 @@
 <div class="cart-container">
-  
+
   <header class="cart-header">
     <h1>Tu Carrito</h1>
     <span class="item-count">{{ cartItems().length }} artículos</span>
@@ -7,7 +7,7 @@
 
   @if (loading()) {
     <div class="loading-state">
-     
+
       <p>Cargando tu selección...</p>
     </div>
   }
@@ -19,19 +19,19 @@
       </div>
       <h3>Tu carrito está vacío</h3>
       <p>Parece que aún no has descubierto nuestros productos.</p>
-      <button mat-flat-button color="primary" routerLink="/store">
+      <button mat-flat-button color="primary" [routerLink]='["/online-store"]'>
         Explorar la Tienda
       </button>
     </div>
-  } 
-  
+  }
+
   @else if (!loading() && cartItems().length > 0) {
     <div class="cart-layout">
-      
+
       <div class="cart-items-column">
         @for (item of cartItems(); track item.id) {
           <div class="product-card">
-            
+
             <div class="product-image">
               @if(item.product.imageUrl) {
                  <img [src]="item.product.imageUrl" [alt]="item.product.name">
@@ -47,7 +47,7 @@
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
-              
+
               <p class="category text-muted">Precio unitario: {{ item.product.price | currency }}</p>
 
               <div class="actions-row">
@@ -68,12 +68,12 @@
       <div class="cart-summary-column">
         <div class="summary-card">
           <h2>Resumen de Compra</h2>
-          
+
           <div class="summary-row">
             <span>Subtotal</span>
             <span>{{ total() | currency }}</span>
           </div>
-          
+
           <div class="summary-row">
             <span>Envío</span>
             <span class="free">Gratis</span>
@@ -90,7 +90,7 @@
             FINALIZAR COMPRA
             <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </button>
-          
+
           <p class="secure-text">
             <mat-icon>lock</mat-icon> Compra protegida con MercadoPago
           </p>
