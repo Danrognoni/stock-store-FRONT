@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="navbar">
 
-<span [routerLink]="authService.currentUser() ? '/home' : []"
+<span [routerLink]="!authService.currentUser() ? [] : (authService.currentUser()?.role === 'USER' ? '/online-store' : '/home')"
       [style.cursor]="authService.currentUser() ? 'pointer' : 'default'"
       style="font-weight: bold; margin-right: 20px;">
       Stock Store

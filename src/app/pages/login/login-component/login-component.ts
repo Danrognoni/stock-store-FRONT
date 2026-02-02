@@ -36,8 +36,15 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const credentials: AuthenticationRequest = this.loginForm.value;
+
       this.authService.authenticate(credentials).subscribe({
-        next: () => this.router.navigate(['/home']),
+        next: (userData: any) => {
+          if (userData.role === 'USER') {
+            this.router.navigate(['/online-store']);
+          } else {
+            this.router.navigate(['/home']);
+          }
+        },
         error: () => alert('Credenciales incorrectas')
       });
     }
