@@ -1,4 +1,3 @@
 export interface SupplierOrder {
-  productName:string;
-  quantity:number;
+productId: number;  quantity:number;
 }

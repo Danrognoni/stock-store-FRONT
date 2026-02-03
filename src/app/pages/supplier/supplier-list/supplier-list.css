@@ -1,0 +1,37 @@
+/* Ajuste para que los iconos pequeños se alineen bien con el texto */
+.material-icons-outlined {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animación de entrada suave para la página */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Personalización del Search Field para que sea más compacto */
+::ng-deep .search-field-dense .mat-mdc-form-field-flex {
+  background-color: white !important;
+}
+
+/* Hover effects adicionales para las tarjetas */
+.supplier-card {
+  /* Asegura que el footer se quede abajo */
+  display: flex;
+  flex-direction: column; 
+}
+
+/* Ajustes para modo oscuro si tu app lo soporta automáticamente mediante clase 'dark' en body/html,
+   si no, estos estilos simplemente se ignorarán */
+:host-context(.dark) ::ng-deep .search-field-dense .mat-mdc-form-field-flex {
+  background-color: #1e293b !important; /* slate-800 */
+}

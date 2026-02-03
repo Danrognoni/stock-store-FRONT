@@ -5,13 +5,14 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-supplier-layout',
+  standalone: true,
   imports: [NavbarComponent, RouterOutlet],
   templateUrl: './supplier-layout.html',
   styleUrl: './supplier-layout.css',
 })
 export class SupplierLayout {
-  menu:NavItem[] = [
-      {label: "Ver proveedores", route:"list"},
-      {label: "Crear proveedor", route: "create"}
-  ]
+  readonly menu: NavItem[] = [
+    { label: "Ver proveedores", route: "list" },
+    { label: "Crear proveedor", route: "create" }
+  ];
 }

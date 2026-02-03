@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { supplierService } from '../../../services/supplier';
 import { SupplierDet } from '../../../models/supplier/supplier-det';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SupplierList } from '../supplier-list/supplier-list';
 
 @Component({
   selector: 'app-supplier-detail',
@@ -18,6 +20,7 @@ import { SupplierDet } from '../../../models/supplier/supplier-det';
 export class SupplierDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private supplierService = inject(supplierService);
+    readonly supplierDelete = signal<SupplierDet[]>([]);
 
   supplier = signal<SupplierDet | null>(null);
 
@@ -29,5 +32,35 @@ export class SupplierDetail implements OnInit {
         error: (error) => console.error(error)
       });
     }
+  }
+
+    deleteSupplier(id: string): void {
+
+    if (confirm('¿Estás seguro de que deseas eliminar este proveedor?')) {
+      this.supplierService.deleteSupplier(id).subscribe({
+        next: () => {
+          this.showToast('Proveedor eliminado correctamente', 'success');
+          this.supplierDelete.update((list) => list.filter((s) => s.id !== id));
+        },
+        error: (e) => {
+          console.error(e);
+          this.showToast('Error al eliminar el proveedor', 'error');
+        }
+      });
+    }
+  }
+
+   
+
+    private snackBar = inject(MatSnackBar); 
+
+
+  private showToast(message: string, type: 'success' | 'error' = 'success') {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: type === 'error' ? ['bg-red-500', 'text-white'] : ['bg-green-600', 'text-white']
+    });
   }
 }

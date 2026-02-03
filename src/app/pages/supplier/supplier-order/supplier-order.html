@@ -1,48 +1,140 @@
-<div class="container" style="padding: 20px; max-width: 800px; margin: 0 auto;">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Nueva Orden de Compra</mat-card-title>
-      <mat-card-subtitle>Para: {{ supplierName() }}</mat-card-subtitle>
-    </mat-card-header>
+<div class="container mx-auto p-4 md:p-8 animate-fade-in flex justify-center">
+  
+  <div class="w-full max-w-4xl">
+    
+    <div class="mb-6">
+      <a routerLink="/suppliers" class="inline-flex items-center text-slate-500 hover:text-indigo-600 transition-colors text-sm font-medium group">
+        <mat-icon class="text-base mr-1 icon-fix transition-transform group-hover:-translate-x-1">arrow_back</mat-icon>
+        Volver
+      </a>
+    </div>
 
-    <mat-card-content>
-      <form [formGroup]="orderForm" (submit)="onSubmit()">
-
-        <div formArrayName="items">
-          @for (item of items.controls; track $index) {
-            <div [formGroupName]="$index" class="item-row" style="display: flex; gap: 10px; align-items: baseline; margin-bottom: 10px;">
-
-              <mat-form-field appearance="outline" style="flex: 2;">
-                <mat-label>Producto</mat-label>
-                <input matInput formControlName="productName" placeholder="Nombre del producto">
-                @if (item.get('productName')?.hasError('required')) {
-                  <mat-error>Requerido</mat-error>
-                }
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" style="flex: 1;">
-                <mat-label>Cantidad</mat-label>
-                <input matInput type="number" formControlName="quantity" min="1">
-              </mat-form-field>
-
-              <button mat-icon-button color="warn" type="button" (click)="removeItem($index)" [disabled]="items.length === 1">
-                <mat-icon>delete</mat-icon>
-              </button>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+      
+      <div class="bg-indigo-600 px-8 py-6 relative overflow-hidden">
+        <div class="absolute right-0 top-0 h-full w-32 bg-indigo-500/30 -skew-x-12 transform translate-x-10"></div>
+        
+        <div class="relative z-10 flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+              <mat-icon>shopping_cart_checkout</mat-icon>
+              Nueva Orden de Compra
+            </h2>
+            <div class="mt-2 flex items-center gap-2 text-indigo-100 text-sm">
+              <span class="opacity-75">Proveedor:</span>
+              <span class="bg-white/20 px-2 py-0.5 rounded text-white font-medium tracking-wide">
+                {{ supplierName() }}
+              </span>
             </div>
-          }
+          </div>
         </div>
+      </div>
 
-        <button mat-stroked-button color="primary" type="button" (click)="addItem()">
-          <mat-icon>add</mat-icon> Agregar Producto
-        </button>
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="p-6 md:p-8">
 
-        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-          <button mat-button type="button" routerLink="/suppliers">Cancelar</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="orderForm.invalid">
-            Enviar Orden
-          </button>
-        </div>
+        @if (supplierProducts().length === 0) {
+          <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/50 rounded-xl p-6 text-center">
+            <mat-icon class="text-amber-500 text-4xl mb-2">warning_amber</mat-icon>
+            <h3 class="text-lg font-medium text-amber-800 dark:text-amber-200">No hay productos disponibles</h3>
+            <p class="text-amber-600 dark:text-amber-400 text-sm mt-1">
+              Este proveedor no tiene productos asociados. Debes asignar productos antes de crear una orden.
+            </p>
+            <div class="mt-4">
+               <a mat-stroked-button color="warn" routerLink="/suppliers">Volver al listado</a>
+            </div>
+          </div>
+        } @else {
+          <div formArrayName="items" class="space-y-4">
+            
+            <div class="hidden sm:grid grid-cols-12 gap-4 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              <div class="col-span-1 text-center">#</div>
+              <div class="col-span-7">Producto</div>
+              <div class="col-span-3">Cantidad</div>
+              <div class="col-span-1"></div>
+            </div>
+
+            @for (item of items.controls; track $index) {
+              <div [formGroupName]="$index" class="relative grid grid-cols-1 sm:grid-cols-12 gap-4 items-center bg-slate-50 dark:bg-slate-700/30 p-4 rounded-xl border border-slate-100 dark:border-slate-700 transition-all hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-sm group">
+                
+                <div class="hidden sm:flex col-span-1 justify-center">
+                  <span class="h-6 w-6 rounded-full bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-200 text-xs font-bold flex items-center justify-center">
+                    {{ $index + 1 }}
+                  </span>
+                </div>
+
+                <div class="col-span-1 sm:col-span-7">
+                  <mat-form-field appearance="outline" class="w-full bg-white dark:bg-slate-800 rounded-lg no-bottom-padding" subscriptSizing="dynamic">
+                    <mat-label>Seleccionar Producto</mat-label>
+                    <mat-select formControlName="productId" placeholder="Busca en el catálogo...">
+                      <mat-option>
+                      </mat-option>
+                      @for (prod of supplierProducts(); track prod.id) {
+                        <mat-option [value]="prod.id" class="!text-sm">
+                          <span class="font-medium">{{ prod.name }}</span>
+                        </mat-option>
+                      }
+                    </mat-select>
+                    @if (item.get('productId')?.hasError('required')) {
+                      <mat-error>Requerido</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="col-span-1 sm:col-span-3">
+                  <mat-form-field appearance="outline" class="w-full bg-white dark:bg-slate-800 rounded-lg no-bottom-padding" subscriptSizing="dynamic">
+                    <mat-label>Cantidad</mat-label>
+                    <input matInput type="number" formControlName="quantity" min="1" placeholder="1">
+                  </mat-form-field>
+                </div>
+
+                <div class="col-span-1 sm:col-span-1 flex justify-end sm:justify-center">
+                  <button mat-icon-button color="warn" type="button" (click)="removeItem($index)" 
+                          [disabled]="items.length === 1"
+                          class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 shadow-sm hover:bg-red-50 hover:border-red-200 transition-colors"
+                          matTooltip="Eliminar línea">
+                    <mat-icon class="text-red-400">delete</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+            }
+          </div>
+
+          <div class="mt-6">
+            <button mat-stroked-button color="primary" type="button" (click)="addItem()" class="w-full border-dashed !border-2 !py-6 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20">
+              <mat-icon>add_circle_outline</mat-icon>
+              Agregar otro producto a la orden
+            </button>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 flex flex-col-reverse sm:flex-row justify-end gap-4">
+            <button mat-button type="button" routerLink="/suppliers" class="!text-slate-500 hover:!text-slate-800">
+              Cancelar
+            </button>
+            
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              [disabled]="orderForm.invalid || isLoading()"
+              class="w-full sm:w-auto min-w-[180px] !py-6 !rounded-lg text-lg shadow-lg shadow-indigo-500/20"
+            >
+              @if (isLoading()) {
+                <span class="flex items-center gap-2">
+              
+                  Enviando...
+                </span>
+              } @else {
+                <span class="flex items-center gap-2">
+                  <mat-icon>send</mat-icon>
+                  Confirmar Orden
+                </span>
+              }
+            </button>
+          </div>
+        }
+
       </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,31 @@
+/* Soporte para navegadores que no soportan backdrop-filter nativo */
+.support-backdrop-blur {
+  @supports not (backdrop-filter: blur(12px)) {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Transición suave al cambiar temas */
+.layout-wrapper {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Ajuste opcional para la barra de desplazamiento global de este layout */
+:host ::ng-deep ::-webkit-scrollbar {
+  width: 10px;
+}
+
+:host ::ng-deep ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:host ::ng-deep ::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+:host ::ng-deep ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.8);
+}
