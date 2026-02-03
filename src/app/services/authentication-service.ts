@@ -12,8 +12,10 @@ import { UserUpdate } from '../models/user/user-update';
 })
 export class AuthenticationService {
   private readonly apiUrl = "http://localhost:8080/api/auth";
+  private readonly userUrl = 'http://localhost:8080/api/users';
   private http = inject(HttpClient);
   currentUser = signal<any>(null);
+
 
   register(data: UserRequest) {
     const url = `${this.apiUrl}/register`;
@@ -42,19 +44,16 @@ export class AuthenticationService {
     );
   }
 
-  // CORREGIDO: responseType: 'text' para evitar error de parsing JSON
   forgotPassword(data: AuthenticationPassword) {
     const url = `${this.apiUrl}/forgot`;
-    return this.http.post(url, data, { responseType: 'text' }); 
+    return this.http.post(url, data, { responseType: 'text' });
   }
 
-  // CORREGIDO: responseType: 'text'
   validateCode(data: AuthenticationPassword, code: string) {
     const url = `${this.apiUrl}/verify/${code}`;
     return this.http.post(url, data, { responseType: 'text' });
   }
 
-  // CORREGIDO: responseType: 'text'
   changeForgottenPassword(data: AuthenticationPassword) {
     const url = `${this.apiUrl}/forgot/change`;
     return this.http.patch(url, data, { responseType: 'text' });
@@ -116,6 +115,16 @@ export class AuthenticationService {
     return this.http.get<any>(url).pipe(
       tap((userResponse) => {
         this.currentUser.set(userResponse);
+      })
+    );
+  }
+
+  updateProfile(data: any) {
+    return this.http.patch(`${this.userUrl}/me`, data, {
+      responseType: 'text'
+    }).pipe(
+      tap(() => {
+        this.getProfile().subscribe();
       })
     );
   }

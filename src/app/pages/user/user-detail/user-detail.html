@@ -1,1 +1,49 @@
-<p>user-detail works!</p>
+<div class="container" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Mi Perfil</mat-card-title>
+      <mat-card-subtitle>Administra tu información personal</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content style="padding-top: 20px;">
+      <form [formGroup]="profileForm" (ngSubmit)="onSave()" style="display: flex; flex-direction: column; gap: 10px;">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" placeholder="Tu nombre">
+          <mat-error>El nombre es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="lastname" placeholder="Tu apellido">
+          <mat-error>El apellido es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phoneNumber" placeholder="Tu número de celular">
+          <mat-error>El teléfono es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+          <mat-hint>El email no se puede cambiar directamente</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <input matInput formControlName="role">
+        </mat-form-field>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+          <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || profileForm.pristine">
+            Guardar Cambios
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -37,6 +37,15 @@ export class NavbarComponent implements OnInit{
       this.authService.currentUser.set(null);
       this.router.navigate(['/auth/login']);
     }
-  });
-}
+    });
+  }
+
+getProfileRoute(): string {
+  const user = this.authService.currentUser();
+  if (user?.role === 'USER') {
+    return '/online-store/profile';
+    } else {
+      return '/home/profile';
+    }
+  }
 }

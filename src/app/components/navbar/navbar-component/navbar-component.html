@@ -18,9 +18,8 @@
 
   @if (authService.currentUser()?.role === 'USER') {
     <button mat-mini-fab
-            color="primary"
             routerLink="/online-store/cart"
-            class="cart-fab"
+            class="custom-cart-btn"
             aria-label="Ir al carrito">
 
       <mat-icon [matBadge]="cartService.cartCount()"
@@ -40,7 +39,7 @@
     </button>
 
     <mat-menu #userMenu="matMenu">
-      <button mat-menu-item routerLink="/user-detail">
+      <button mat-menu-item [routerLink]="getProfileRoute()">
         <mat-icon>account_circle</mat-icon>
         <span>Mi Perfil</span>
       </button>

@@ -34,6 +34,7 @@ import { AuthGuard } from './guard/auth-guard/auth-guard';
 import { roleGuard } from './guard/role-guard';
 import { StoreCatalogComponent } from './pages/online-store/catalog/catalog';
 import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
+import { UserDetail } from './pages/user/user-detail/user-detail';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -51,8 +52,13 @@ export const routes: Routes = [
   {
     path: "home",
     component: HomeLayout,
-    //canActivate : [AuthGuard]
-
+    children: [
+       {
+         path: 'profile',
+         component: UserDetail,
+         data: { roles: ['ADMIN', 'EMPLOYEE'] }
+       }
+    ]
   },
   // Sección Productos
   {
@@ -127,8 +133,12 @@ export const routes: Routes = [
       {
         path: 'cart',
         component: Cart
+      },
+      {
+        path: 'profile',
+        component: UserDetail,
+        data: { roles: ['USER', 'EMPLOYEE', 'ADMIN'] }
       }
     ]
-  },
-
+  }
 ];
