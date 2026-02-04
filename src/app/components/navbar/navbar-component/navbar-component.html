@@ -58,26 +58,30 @@
   </button>
 
   <mat-menu #userMenu="matMenu">
+    
     <button mat-menu-item [routerLink]="getProfileRoute()">
       <mat-icon>face</mat-icon>
       <span>Mi Perfil</span>
     </button>
 
-    <button mat-menu-item routerLink="/online-store/wishlist">
-      <mat-icon color="warn">favorite</mat-icon>
-      <span>Mis Favoritos</span>
-    </button>
+    @if (user.role === 'USER') {
+      <button mat-menu-item routerLink="/online-store/wishlist">
+        <mat-icon color="warn">favorite</mat-icon>
+        <span>Mis Favoritos</span>
+      </button>
 
-    <button mat-menu-item routerLink="/online-store/orders">
-      <mat-icon>receipt_long</mat-icon>
-      <span>Mis Pedidos</span>
-    </button>
+      <button mat-menu-item routerLink="/online-store/orders">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Mis Pedidos</span>
+      </button>
+    }
 
     @if (user.role === 'ADMIN') {
-    <mat-divider></mat-divider> <button mat-menu-item routerLink="/admin">
-      <mat-icon>settings</mat-icon>
-      <span>Administración</span>
-    </button>
+      <mat-divider></mat-divider> 
+      <button mat-menu-item routerLink="/admin">
+        <mat-icon>settings</mat-icon>
+        <span>Administración</span>
+      </button>
     }
 
     <mat-divider></mat-divider>

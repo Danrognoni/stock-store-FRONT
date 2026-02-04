@@ -142,7 +142,8 @@ export const routes: Routes = [
         data: { roles: ['USER', 'EMPLOYEE', 'ADMIN'] }
       },
       { path: 'wishlist', component: WishlistComponent },
-      { path: 'order', component: OrderListComponent }
+      { path: 'order', component: OrderListComponent },
+       { path: 'category/list', component: CategoryListComponent }
     ]
   }
 ];
