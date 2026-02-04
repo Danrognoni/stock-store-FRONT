@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ProductService } from '../../../services/product';
 import { CartService } from '../../../services/cart-service';
 import { NavbarComponent } from '../../../components/navbar/navbar-component/navbar-component';
+import { WishlistService } from '../../../services/wishlist';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -19,9 +21,9 @@ import { NavbarComponent } from '../../../components/navbar/navbar-component/nav
 export class StoreCatalogComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
-
-
+  private wishlistService = inject(WishlistService); 
   products = signal<any[]>([]);
+  private snackBar = inject(MatSnackBar); 
 
   ngOnInit() {
     this.loadProducts();
@@ -47,4 +49,16 @@ export class StoreCatalogComponent implements OnInit {
       }
     });
   }
+
+  addToWishlist(product: any) {
+    this.wishlistService.addToWishlist(product.id).subscribe({
+      next: () => {
+        this.snackBar.open(`¡${product.name} agregado a favoritos!`, 'Genial', { duration: 2000 });
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackBar.open('No se pudo agregar a favoritos', 'Error', { duration: 2000 });
+      }
+    });
+}
 }
