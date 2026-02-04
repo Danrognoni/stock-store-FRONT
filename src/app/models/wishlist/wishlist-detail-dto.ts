@@ -1,6 +1,6 @@
-export interface WishlistDetailDTO {
+import { ProductList } from "../product/product-list";
 
-    id: string;
-  username: string;
- items: any[];
+export interface WishlistDetailDTO {
+  id: string;
+  products: ProductList[];
 }

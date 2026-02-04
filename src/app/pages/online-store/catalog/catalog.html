@@ -16,8 +16,13 @@
         </p>
       </mat-card-content>
 
-      <mat-card-actions >
+      <mat-card-actions>
+        <button mat-icon-button color="warn" (click)="addToWishlist(product)" matTooltip="Agregar a favoritos">
+            <mat-icon>favorite_border</mat-icon>
+        </button>
+
         <button mat-button [routerLink]="['/store/product', product.id]">Ver Detalle</button>
+        
         <button mat-flat-button color="primary" (click)="addToCart(product)">
           <mat-icon>shopping_cart</mat-icon> Agregar
         </button>
