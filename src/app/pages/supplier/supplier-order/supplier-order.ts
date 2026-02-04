@@ -98,7 +98,6 @@ export class SupplierOrderComponent implements OnInit {
       return;
     }
 
-    // 1. Obtenemos el ID del proveedor tal cual viene de la ruta
     const idSupplier = this.supplierId(); 
     
     if (!idSupplier) {
@@ -108,8 +107,7 @@ export class SupplierOrderComponent implements OnInit {
 
     this.isLoading.set(true);
 
-    // 2. Convertimos los productos a NÚMEROS explícitamente.
-    // El backend (Java) espera un Long/Integer, si enviamos string falla la validación HV000030.
+
     const orderItems: SupplierOrder[] = this.items.value.map((item: any) => ({
       productId: Number(item.productId), 
       quantity: Number(item.quantity)
@@ -117,9 +115,7 @@ export class SupplierOrderComponent implements OnInit {
 
     console.log('Enviando orden:', orderItems); 
 
-    // 3. Enviamos la orden
-    // Nota: Aunque idSupplier sea string ("3"), la URL se construye bien.
-    // Pasamos "any" en el segundo parametro si tu servicio pide number, o lo convertimos.
+
     const supplierIdParam = Number(idSupplier) || idSupplier; 
 
     this.supplierService.sendOrderToSupplier(orderItems, supplierIdParam as any).subscribe({
@@ -129,7 +125,6 @@ export class SupplierOrderComponent implements OnInit {
       },
       error: (e) => {
         console.error('Error detallado:', e);
-        // Si sigue fallando, veremos el mensaje real del backend
         const msg = e.error?.message || 'Error al procesar la orden';
         this.showToast(msg, 'error');
         this.isLoading.set(false);
