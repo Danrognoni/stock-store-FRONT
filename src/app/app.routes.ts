@@ -36,6 +36,7 @@ import { StoreCatalogComponent } from './pages/online-store/catalog/catalog';
 import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
 import { UserDetail } from './pages/user/user-detail/user-detail';
 import { WishlistComponent } from './pages/online-store/wishlist/wishlist';
+import { OrderListComponent } from './pages/online-store/order-list/order-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -141,6 +142,7 @@ export const routes: Routes = [
         data: { roles: ['USER', 'EMPLOYEE', 'ADMIN'] }
       },
       { path: 'wishlist', component: WishlistComponent },
+      { path: 'order', component: OrderListComponent }
     ]
   }
 ];

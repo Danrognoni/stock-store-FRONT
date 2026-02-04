@@ -1,0 +1,43 @@
+<div class="container">
+  <h2><mat-icon>history</mat-icon> Mis Pedidos</h2>
+
+  @if (orders().length === 0) {
+    <p>No has realizado compras todavía.</p>
+  }
+
+  <mat-accordion>
+    @for (order of orders(); track order.id) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <div class="order-header">
+            <div class="order-info">
+              <span><strong>Pedido #{{ order.trackingNumber || order.id }}</strong></span>
+              <span style="font-size: 0.8rem; color: gray">{{ order.date | date:'short' }}</span>
+            </div>
+            
+            <mat-chip [style.background-color]="order.status === 'PAID' ? '#e8f5e9' : '#fff3e0'">
+              {{ order.status }}
+            </mat-chip>
+
+            <span class="total-price">{{ order.total | currency }}</span>
+          </div>
+        </mat-expansion-panel-header>
+
+        <div style="margin-top: 10px;">
+          <h4>Productos:</h4>
+          <ul>
+            @for (item of order.items; track item.id) {
+              <li>
+                {{ item.productName }} x {{ item.quantity }} - 
+                <strong>{{ item.subTotal | currency }}</strong>
+              </li>
+            }
+          </ul>
+          
+          <p><strong>Dirección de envío:</strong> {{ order.address?.street }} {{ order.address?.number }}</p>
+        </div>
+
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</div>

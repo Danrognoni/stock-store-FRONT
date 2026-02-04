@@ -1,78 +1,73 @@
 <mat-toolbar color="primary" class="navbar">
 
-  <span [routerLink]="!authService.currentUser() ? [] : (authService.currentUser()?.role === 'USER' ? '/online-store' : '/home')"
-        [style.cursor]="authService.currentUser() ? 'pointer' : 'default'"
-        class="brand-logo">
-      <mat-icon style="margin-right: 8px;">store</mat-icon> Stock Store
+  <span
+    [routerLink]="!authService.currentUser() ? [] : (authService.currentUser()?.role === 'USER' ? '/online-store' : '/home')"
+    [style.cursor]="authService.currentUser() ? 'pointer' : 'default'" class="brand-logo">
+    <mat-icon style="margin-right: 8px;">store</mat-icon> Stock Store
   </span>
 
   @for (item of items(); track item) {
-    @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
-      <button mat-button 
-              [routerLink]="item.route" 
-              routerLinkActive="active-link"
-              class="nav-link">
-        {{ item.label }}
-      </button>
-    }
+  @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
+  <button mat-button [routerLink]="item.route" routerLinkActive="active-link" class="nav-link">
+    {{ item.label }}
+  </button>
+  }
   }
 
   <span class="spacer"></span>
 
   @if (authService.currentUser()?.role === 'USER') {
-    <div class="cart-wrapper">
-      <button mat-mini-fab
-              routerLink="/online-store/cart"
-              class="custom-cart-btn"
-              aria-label="Ir al carrito"
-              matTooltip="Ver mi carrito"> <mat-icon [matBadge]="cartService.cartCount()"
-                  matBadgeColor="warn"
-                  [matBadgeHidden]="cartService.cartCount() === 0"> shopping_cart
-        </mat-icon>
-      </button>
-    </div>
+  <div class="cart-wrapper">
+    <button mat-mini-fab routerLink="/online-store/cart" class="custom-cart-btn" aria-label="Ir al carrito"
+      matTooltip="Ver mi carrito"> <mat-icon [matBadge]="cartService.cartCount()" matBadgeColor="warn"
+        [matBadgeHidden]="cartService.cartCount() === 0"> shopping_cart
+      </mat-icon>
+    </button>
+  </div>
   }
 
   @if (authService.currentUser(); as user) {
 
-    <button mat-button [matMenuTriggerFor]="userMenu" class="nav-link user-trigger">
-      <mat-icon>account_circle</mat-icon> <span>Hola, {{ user.name }}</span>
-      <mat-icon>arrow_drop_down</mat-icon>
+  <button mat-button [matMenuTriggerFor]="userMenu" class="nav-link user-trigger">
+    <mat-icon>account_circle</mat-icon> <span>Hola, {{ user.name }}</span>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item [routerLink]="getProfileRoute()">
+      <mat-icon>face</mat-icon>
+      <span>Mi Perfil</span>
     </button>
 
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item [routerLink]="getProfileRoute()">
-        <mat-icon>face</mat-icon>
-        <span>Mi Perfil</span>
-      </button>
+    <button mat-menu-item routerLink="/online-store/wishlist">
+      <mat-icon color="warn">favorite</mat-icon>
+      <span>Mis Favoritos</span>
+    </button>
 
-      <button mat-menu-item routerLink="/online-store/wishlist">
-        <mat-icon color="warn">favorite</mat-icon>
-        <span>Mis Favoritos</span>
-      </button>
+    <button mat-menu-item routerLink="/online-store/order">
+      <mat-icon>receipt_long</mat-icon>
+      <span>Mis Pedidos</span>
+    </button>
 
-      @if (user.role === 'ADMIN') {
-        <mat-divider></mat-divider> <button mat-menu-item routerLink="/admin">
-          <mat-icon>settings</mat-icon>
-          <span>Administración</span>
-        </button>
-      }
+    @if (user.role === 'ADMIN') {
+    <mat-divider></mat-divider> <button mat-menu-item routerLink="/admin">
+      <mat-icon>settings</mat-icon>
+      <span>Administración</span>
+    </button>
+    }
 
-      <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
 
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon> <span>Cerrar Sesión</span>
-      </button>
-    </mat-menu>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon> <span>Cerrar Sesión</span>
+    </button>
+  </mat-menu>
 
   } @else {
-    <button mat-button routerLink="/auth/login" class="nav-link">Iniciar Sesión</button>
-    <button mat-raised-button 
-            color="accent" 
-            routerLink="/auth/register" 
-            class="action-btn">
-      Registrarse
-    </button>
+  <button mat-button routerLink="/auth/login" class="nav-link">Iniciar Sesión</button>
+  <button mat-raised-button color="accent" routerLink="/auth/register" class="action-btn">
+    Registrarse
+  </button>
   }
 
 </mat-toolbar>
