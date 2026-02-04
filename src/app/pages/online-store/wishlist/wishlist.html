@@ -1,0 +1,61 @@
+<div class="wishlist-container">
+  
+  <div class="header-section">
+    <h2>
+      <mat-icon color="warn">favorite</mat-icon> 
+      Mi Lista de Deseos
+    </h2>
+    <span class="item-count" *ngIf="!isLoading()">
+        {{ products().length }} productos
+    </span>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+        <p>Cargando tus favoritos...</p>
+    </div>
+  } @else if (products().length === 0) {
+    
+    <div class="empty-state">
+      <mat-icon class="empty-icon">favorite_border</mat-icon>
+      <h3>Tu lista está vacía</h3>
+      <p>¡Guarda lo que te gusta para no perderlo de vista!</p>
+      <button mat-flat-button color="primary" routerLink="/online-store">
+        Explorar Catálogo
+      </button>
+    </div>
+
+  } @else {
+    
+    <div class="wishlist-grid">
+      @for (product of products(); track product.id) {
+        <mat-card class="product-card">
+          
+          <div class="image-container" [routerLink]="['/store/product', product.id]">
+            <img [src]="product.imageUrl" [alt]="product.name">
+            <div class="overlay">Ver detalles</div>
+          </div>
+          
+          <mat-card-header>
+            <mat-card-title>{{ product.name }}</mat-card-title>
+            <mat-card-subtitle class="price">$ {{ product.price | number:'1.2-2' }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+             </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-icon-button color="warn" (click)="removeFromWishlist(product.id)" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+            
+            <button mat-stroked-button color="primary" (click)="moveToCart(product)">
+              <mat-icon>shopping_cart</mat-icon> Mover
+            </button>
+          </mat-card-actions>
+          
+        </mat-card>
+      }
+    </div>
+  }
+</div>
