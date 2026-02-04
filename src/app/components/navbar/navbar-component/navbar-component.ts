@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NavItem } from '../../../models/nav-item';
@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../../services/authentication-service'
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CartService } from '../../../services/cart-service';
+import { CategoryService } from '../../../services/category';
 
 @Component({
   selector: 'app-navbar-component',
@@ -21,12 +22,26 @@ export class NavbarComponent implements OnInit{
   public authService = inject(AuthenticationService);
   public cartService = inject(CartService);
   private router = inject(Router);
+  private categoryService = inject(CategoryService);
+  categories = signal<any[]>([]);
 
-  ngOnInit(): void {
+ngOnInit(): void {
     if (this.authService.currentUser()) {
       this.cartService.refreshCartCount();
+      
+      if (this.authService.currentUser()?.role === 'USER') {
+        this.loadCategories();
+      }
     }
   }
+  
+  loadCategories() {
+    this.categoryService.getCategories(0, 50).subscribe({
+      next: (data: any) => this.categories.set(data.content),
+      error: (err) => console.error('Error menu categorías', err)
+    });
+  }
+
   logout() {
   this.authService.logout().subscribe({
     next: () => {

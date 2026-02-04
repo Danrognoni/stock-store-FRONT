@@ -7,11 +7,35 @@
   </span>
 
   @for (item of items(); track item) {
-  @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
-  <button mat-button [routerLink]="item.route" routerLinkActive="active-link" class="nav-link">
-    {{ item.label }}
-  </button>
+    @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
+      <button mat-button [routerLink]="item.route" routerLinkActive="active-link" class="nav-link">
+        {{ item.label }}
+      </button>
+    }
   }
+
+  @if (authService.currentUser()?.role === 'USER') {
+    <button mat-button [matMenuTriggerFor]="categoriesMenu" class="nav-link">
+      Categorías
+      <mat-icon iconPositionEnd>keyboard_arrow_down</mat-icon>
+    </button>
+
+    <mat-menu #categoriesMenu="matMenu">
+      <button mat-menu-item [routerLink]="['/online-store/catalog']" [queryParams]="{ categoryId: null }">
+        <mat-icon>grid_view</mat-icon>
+        <span>Ver Todas</span>
+      </button>
+      
+      <mat-divider></mat-divider>
+
+      @for (cat of categories(); track cat.id) {
+        <button mat-menu-item 
+                [routerLink]="['/online-store/catalog']" 
+                [queryParams]="{ categoryId: cat.id }">
+          <span>{{ cat.name }}</span>
+        </button>
+      }
+    </mat-menu>
   }
 
   <span class="spacer"></span>
@@ -44,7 +68,7 @@
       <span>Mis Favoritos</span>
     </button>
 
-    <button mat-menu-item routerLink="/online-store/order">
+    <button mat-menu-item routerLink="/online-store/orders">
       <mat-icon>receipt_long</mat-icon>
       <span>Mis Pedidos</span>
     </button>

@@ -24,6 +24,7 @@ export class StoreCatalogComponent implements OnInit {
   private wishlistService = inject(WishlistService); 
   products = signal<any[]>([]);
   private snackBar = inject(MatSnackBar); 
+  
 
   ngOnInit() {
     this.loadProducts();
