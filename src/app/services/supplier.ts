@@ -46,9 +46,9 @@ export class supplierService {
     return this.http.get<any>(url);
   }
 
-  sendOrderToSupplier(items: SupplierOrder[], supplierId: number): Observable <void> {
-    const url = `${this.apiUrl}/${supplierId}/send-order`;
-    return this.http.post<void>(url, items);
-  }
+sendOrderToSupplier(items: SupplierOrder[], supplierId: string): Observable<void> {
+  const url = `${this.apiUrl}/${supplierId}/send-order`;
+  return this.http.post<void>(url, items);
+}
 
 }
