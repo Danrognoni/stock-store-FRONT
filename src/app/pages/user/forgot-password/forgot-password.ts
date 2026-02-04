@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
-// Angular Material Imports
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -34,18 +33,15 @@ export class ForgotPassword {
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
-  // Control de pasos: 0 = Email, 1 = Código, 2 = Nueva Contraseña
   step = signal<number>(0);
   emailSent = signal<string>('');
   verificationToken = signal<string>('');
   isLoading = signal<boolean>(false);
 
-  // Paso 1: Formulario de Email
   emailForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]]
   });
 
-  // Paso 2: Formulario de Código
   codeForm: FormGroup = this.fb.group({
     code: ['', [Validators.required, Validators.minLength(4)]]
   });
