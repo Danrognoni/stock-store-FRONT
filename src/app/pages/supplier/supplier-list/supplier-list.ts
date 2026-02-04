@@ -45,7 +45,7 @@ export class SupplierList {
   getSuppliers(){
     this.supplierService.getSuppliers(this.pageIndex(), this.pageSize()).subscribe({
       next : (data)=>{
-        console.log('DATA RECIBIDA:', data.content);
+        console.log( data.content);
         this.supplier.set(data.content);
         this.totalElements.set(data.page.totalElements);
       },
