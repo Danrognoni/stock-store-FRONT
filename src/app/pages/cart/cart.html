@@ -7,7 +7,6 @@
 
   @if (loading()) {
     <div class="loading-state">
-
       <p>Cargando tu selección...</p>
     </div>
   }
@@ -51,11 +50,21 @@
               <p class="category text-muted">Precio unitario: {{ item.product.price | currency }}</p>
 
               <div class="actions-row">
+                
                 <div class="quantity-control">
-                  <span class="label">Cant:</span>
-                  <span class="value">{{ item.quantity }}</span>
-                </div>
+                  <button mat-icon-button 
+                          (click)="updateQuantity(item, -1)"
+                          [disabled]="item.quantity <= 1">
+                    <mat-icon>remove</mat-icon>
+                  </button>
 
+                  <span class="value">{{ item.quantity }}</span>
+
+                  <button mat-icon-button 
+                          (click)="updateQuantity(item, 1)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
                 <div class="subtotal">
                   {{ item.product.price * item.quantity | currency }}
                 </div>

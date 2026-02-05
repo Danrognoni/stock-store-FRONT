@@ -98,4 +98,11 @@ export class CartService {
       responseType: 'text'
     });
   }
+
+
+modifyCartItemQuantity(cartItemId: number, quantity: number) {
+  const url = `${this.apiUrl}/items/${cartItemId}/${quantity}`;
+  
+  return this.http.patch(url, {});
+}
 }

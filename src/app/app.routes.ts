@@ -143,7 +143,8 @@ export const routes: Routes = [
       },
       { path: 'wishlist', component: WishlistComponent },
       { path: 'order', component: OrderListComponent },
-       { path: 'category/list', component: CategoryListComponent }
+       { path: 'category/list', component: CategoryListComponent },
+       
     ]
   }
 ];
