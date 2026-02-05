@@ -39,7 +39,7 @@ import { WishlistComponent } from './pages/online-store/wishlist/wishlist';
 import { OrderListComponent } from './pages/online-store/order-list/order-list';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
   // Sección Autenticación
   {
