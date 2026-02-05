@@ -1,31 +1,64 @@
-@if (product(); as p) {
-  <div class="container">
-    <mat-card>
+<div class="container" style="padding: 20px; display: flex; justify-content: center;">
+
+  @if (loading()) {
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 50px;">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p style="margin-top: 10px; color: #666;">Cargando producto...</p>
+    </div>
+  }
+
+  @else if (product(); as p) {
+    <mat-card style="max-width: 600px; width: 100%;">
       <mat-card-header>
         <mat-icon mat-card-avatar>inventory_2</mat-icon>
         <mat-card-title>{{ p.name }}</mat-card-title>
-        <mat-card-subtitle>ID: {{ p.id }}</mat-card-subtitle>
+        <mat-card-subtitle>Código: {{ p.id }}</mat-card-subtitle>
       </mat-card-header>
 
       @if (p.imageUrl) {
-        <img mat-card-image [src]="p.imageUrl" [alt]="p.name">
+        <img mat-card-image [src]="p.imageUrl" [alt]="p.name" style="object-fit: contain; max-height: 400px;">
       }
 
       <mat-card-content>
         <mat-list>
-
-          
           <mat-list-item>
             <mat-icon matListItemIcon>attach_money</mat-icon>
             <div matListItemTitle>Precio</div>
-            <div matListItemLine>{{ p.price }}</div>
+            <div matListItemLine>$ {{ p.price }}</div>
           </mat-list-item>
+          
+          @if(p.categories) {
+            <mat-list-item>
+                <mat-icon matListItemIcon>category</mat-icon>
+                <div matListItemTitle>Categorías</div>
+                <div matListItemLine>
+                    @for(cat of p.categories; track cat.id) {
+                        <span style="background: #eee; padding: 2px 6px; border-radius: 4px; margin-right: 5px; font-size: 0.8em;">
+                           
+                        </span>
+                    }
+                </div>
+            </mat-list-item>
+          }
+
         </mat-list>
       </mat-card-content>
 
-      <mat-card-actions>
-        <button mat-button (click)="getBack()">Volver a la lista</button>
+      <mat-card-actions align="end">
+        <button mat-button (click)="getBack()">
+            <mat-icon>arrow_back</mat-icon> Volver al catálogo
+        </button>
       </mat-card-actions>
     </mat-card>
-  </div>
-}
+  }
+
+  @else {
+    <div style="text-align: center; margin-top: 50px;">
+        <mat-icon style="font-size: 50px; height: 50px; color: #f44336;">error_outline</mat-icon>
+        <h2>Producto no encontrado</h2>
+        <p>No pudimos cargar la información solicitada.</p>
+        <button mat-flat-button color="primary" (click)="getBack()">Volver al catálogo</button>
+    </div>
+  }
+  
+</div>
