@@ -26,20 +26,18 @@
             <div matListItemTitle>Precio</div>
             <div matListItemLine>$ {{ p.price }}</div>
           </mat-list-item>
-          
-          @if(p.categories) {
-            <mat-list-item>
-                <mat-icon matListItemIcon>category</mat-icon>
-                <div matListItemTitle>Categorías</div>
-                <div matListItemLine>
-                    @for(cat of p.categories; track cat.id) {
-                        <span style="background: #eee; padding: 2px 6px; border-radius: 4px; margin-right: 5px; font-size: 0.8em;">
-                           
-                        </span>
-                    }
-                </div>
-            </mat-list-item>
+         @if(p.categories) {
+  <mat-list-item>
+      <mat-icon matListItemIcon>category</mat-icon>
+      <div matListItemTitle>Categorías</div>
+      <div matListItemLine>
+          @for(cat of p.categories; track cat.id) {
+              <span style="background: #eee; padding: 2px 6px; border-radius: 4px; margin-right: 5px; font-size: 0.8em;">
+                  {{ cat.name }}  </span>
           }
+      </div>
+  </mat-list-item>
+}
 
         </mat-list>
       </mat-card-content>
