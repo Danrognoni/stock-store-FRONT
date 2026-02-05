@@ -1,0 +1,97 @@
+.catalog-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9f9f9; 
+}
+
+
+.product-card {
+  width: 100%;
+  max-width: 300px; 
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px; 
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+mat-card-header {
+  margin-top: 10px;
+}
+
+mat-card-title {
+  font-size: 1.1rem !important;
+  font-weight: 600;
+}
+
+mat-card-subtitle {
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.category-pill {
+  background-color: #e0e0e0;
+  color: #555;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+
+.like-button {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  border-top: 1px solid #f0f0f0;
+  padding: 12px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.like-button:hover {
+  background-color: #fff0f5; 
+  color: #e91e63; 
+}
+
+.like-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}

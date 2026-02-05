@@ -16,18 +16,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   standalone: true,
   imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, NavbarComponent, RouterOutlet],
   templateUrl: './catalog.html',
-  styleUrls: ['./catalog.css'] 
+  styleUrls: ['./catalog.css']
 })
 export class StoreCatalogComponent implements OnInit {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
-  private wishlistService = inject(WishlistService); 
+  private wishlistService = inject(WishlistService);
   products = signal<any[]>([]);
-  private snackBar = inject(MatSnackBar); 
-  
+  private snackBar = inject(MatSnackBar);
+
+  cartProductIds = signal<Set<number>>(new Set());
+  wishlistProductIds = signal<Set<number>>(new Set());
 
   ngOnInit() {
     this.loadProducts();
+    this.loadUserContext();
   }
 
   loadProducts() {
@@ -39,27 +42,69 @@ export class StoreCatalogComponent implements OnInit {
     });
   }
 
+  loadUserContext() {
+    this.cartService.getCart().subscribe({
+      next: (cartItems: any[]) => {
+  
+        const ids = cartItems.map(item => item.product.id);
+        this.cartProductIds.set(new Set(ids));
+      },
+      error: () => console.log('Usuario no logueado o error en carrito')
+    });
+
+    this.wishlistService.getWishlist().subscribe({
+      next: (wishlistItems: any[]) => {
+        const ids = wishlistItems.map(item => item.id);
+        this.wishlistProductIds.set(new Set(ids));
+      }
+    });
+  }
+
   addToCart(product: any) {
+    if (this.cartProductIds().has(product.id)) return;
+
     this.cartService.addItemToCart(product.id, 1).subscribe({
       next: () => {
-        alert('Producto agregado al carrito');
+        this.snackBar.open('Agregado al carrito', 'Ok', { duration: 2000 });
+
+        this.cartProductIds.update(ids => {
+          const newSet = new Set(ids);
+          newSet.add(product.id);
+          return newSet;
+        });
       },
       error: (err) => {
         console.error(err);
-        alert('Error al agregar. ¿Estás logueado?');
+        this.snackBar.open('Error al agregar', 'Cerrar');
       }
     });
   }
 
   addToWishlist(product: any) {
+    if (this.wishlistProductIds().has(product.id)) return;
+
     this.wishlistService.addToWishlist(product.id).subscribe({
       next: () => {
-        this.snackBar.open(`¡${product.name} agregado a favoritos!`, 'Genial', { duration: 2000 });
+        this.snackBar.open(`¡${product.name} a favoritos!`, 'Genial', { duration: 2000 });
+
+        this.wishlistProductIds.update(ids => {
+          const newSet = new Set(ids);
+          newSet.add(product.id);
+          return newSet;
+        });
       },
       error: (err) => {
         console.error(err);
-        this.snackBar.open('No se pudo agregar a favoritos', 'Error', { duration: 2000 });
+        this.snackBar.open('Error al agregar', 'Cerrar');
       }
     });
-}
+  }
+
+  isInCart(productId: number): boolean {
+    return this.cartProductIds().has(productId);
+  }
+
+  isInWishlist(productId: number): boolean {
+    return this.wishlistProductIds().has(productId);
+  }
 }
