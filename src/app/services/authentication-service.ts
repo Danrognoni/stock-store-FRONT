@@ -75,37 +75,37 @@ export class AuthenticationService {
   }
 
   listUsers() {
-    const url = `${this.apiUrl}/admin`;
+    const url = `${this.apiUrl}/auth/admin`;
     return this.http.get<any>(url);
   }
 
   listBannedUsers() {
-    const url = `${this.apiUrl}/admin/banned`;
+    const url = `${this.apiUrl}/auth/admin/banned`;
     return this.http.get<any>(url);
   }
 
   listEmployees() {
-    const url = `${this.apiUrl}/admin/employees`;
+    const url = `${this.apiUrl}/auth/admin/employees`;
     return this.http.get<any>(url);
   }
 
   getUsersByEmail(email: string) {
-    const url = `${this.apiUrl}/admin/user/${email}`;
+    const url = `${this.apiUrl}/auth/admin/user/${email}`;
     return this.http.get<any>(url);
   }
 
   promoteToEmployee(id: string) {
-    const url = `${this.apiUrl}/admin/promote/employee/${id}`;
+    const url = `${this.apiUrl}/auth/admin/promote/employee/${id}`;
     return this.http.post<any>(url, "");
   }
 
   promoteToAdmin(id: string) {
-    const url = `${this.apiUrl}/admin/promote/admin/${id}`;
+    const url = `${this.apiUrl}/auth/admin/promote/admin/${id}`;
     return this.http.post<any>(url, "");
   }
 
   toggleBan(id: string) {
-    const url = `${this.apiUrl}/admin/ban/${id}`;
+    const url = `${this.apiUrl}/auth/admin/ban/${id}`;
     return this.http.post<any>(url, "");
   }
 

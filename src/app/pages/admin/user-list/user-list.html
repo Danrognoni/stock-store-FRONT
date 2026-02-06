@@ -25,7 +25,7 @@
 
   <!-- Lista de Usuarios -->
   <div class="user-grid">
-    @for (user of users; track user.id) {
+    @for (user of users(); track user.id) {
       <mat-card class="user-card" [class.banned-card]="user.banned">
         <mat-card-header>
           <div mat-card-avatar class="user-avatar">
@@ -77,4 +77,11 @@
       </div>
     }
   </div>
+  
+  <!-- Indicador de carga -->
+  @if (loading()) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+  }
 </div>

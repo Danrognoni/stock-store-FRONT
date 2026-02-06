@@ -5,4 +5,5 @@ export interface UserDet {
     email:string;
     phoneNumber:string;
     role:string;
+    banned: boolean;
 }

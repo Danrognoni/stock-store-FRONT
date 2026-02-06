@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { AuthenticationService } from '../../../services/authentication-service';
-
+import { UserDet } from '../../../models/user/user-det';
 
 @Component({
   selector: 'app-user-list',
@@ -39,8 +39,8 @@ export class UserList implements OnInit {
   private authService = inject(AuthenticationService);
   private snackBar = inject(MatSnackBar);
 
-  users: any[] = [];
-  loading = false;
+  users = signal<UserDet[]>([]);
+  loading = signal<boolean>(false);
   
   filterControl = new FormControl('all');
   searchControl = new FormControl('');
@@ -58,19 +58,19 @@ export class UserList implements OnInit {
         if (!term || term.trim() === '') {
           return this.fetchUsersByFilter(this.filterControl.value || 'all');
         }
-        this.loading = true;
+        this.loading.set(true);
         return this.authService.getUsersByEmail(term).pipe(
           catchError(() => of([]))
         );
       })
     ).subscribe({
       next: (response) => {
-        this.loading = false;
-        this.users = Array.isArray(response) ? response : (response ? [response] : []);
+        this.loading.set(false);
+        this.users.set(Array.isArray(response) ? response : (response ? [response] : []));
       },
       error: () => {
-        this.loading = false;
-        this.users = [];
+        this.loading.set(false);
+        this.users.set([]);
       }
     });
   }
@@ -81,15 +81,15 @@ export class UserList implements OnInit {
   }
 
   loadUsers() {
-    this.loading = true;
+    this.loading.set(true);
     this.fetchUsersByFilter(this.filterControl.value || 'all').subscribe({
       next: (data) => {
-        this.users = Array.isArray(data) ? data : [data];
-        this.loading = false;
+        this.users.set(data.content);
+        this.loading.set(false);
       },
       error: (err) => {
         console.error(err);
-        this.loading = false;
+        this.loading.set(false);
         this.showSnackBar('Error al cargar usuarios');
       }
     });
@@ -107,7 +107,7 @@ export class UserList implements OnInit {
     }
   }
 
-  toggleBan(user: any) {
+  toggleBan(user: UserDet) {
     const action = user.banned ? 'desbanear' : 'banear';
     if (!confirm(`¿Estás seguro de que deseas ${action} a ${user.email}?`)) return;
     
@@ -120,7 +120,7 @@ export class UserList implements OnInit {
     });
   }
 
-  promoteToEmployee(user: any) {
+  promoteToEmployee(user: UserDet) {
     if (!confirm(`¿Ascender a ${user.email} a Empleado?`)) return;
 
     this.authService.promoteToEmployee(user.id).subscribe({
@@ -132,7 +132,7 @@ export class UserList implements OnInit {
     });
   }
 
-  promoteToAdmin(user: any) {
+  promoteToAdmin(user: UserDet) {
     if (!confirm(`¿Ascender a ${user.email} a Administrador?`)) return;
 
     this.authService.promoteToAdmin(user.id).subscribe({
@@ -146,11 +146,11 @@ export class UserList implements OnInit {
 
   private refreshCurrentView() {
     if (this.searchControl.value) {
-       this.loading = true;
+       this.loading.set(true);
        this.authService.getUsersByEmail(this.searchControl.value).subscribe({
          next: (res) => {
-           this.users = Array.isArray(res) ? res : (res ? [res] : []);
-           this.loading = false;
+           this.users.set(Array.isArray(res) ? res : (res ? [res] : []));
+           this.loading.set(false);
          },
          error: () => this.loadUsers()
        });
