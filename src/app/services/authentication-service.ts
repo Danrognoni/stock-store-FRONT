@@ -16,14 +16,6 @@ export class AuthenticationService {
   private http = inject(HttpClient);
   currentUser = signal<any>(null);
 
-  constructor() {
-    this.getProfile().subscribe({
-      error: () => {
-        console.log('No hay sesión activa o el token ha expirado');
-      }
-    });
-  }
-
   register(data: UserRequest) {
     const url = `${this.apiUrl}/auth/register`;
     return this.http.post<any>(url, data).pipe(
@@ -118,7 +110,7 @@ export class AuthenticationService {
   }
 
   getProfile() {
-    const url = `${this.apiUrl}/profile`;
+    const url = `${this.apiUrl}/auth/profile`;
     return this.http.get<any>(url).pipe(
       tap((userResponse) => {
         this.currentUser.set(userResponse);
