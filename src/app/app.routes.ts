@@ -37,6 +37,7 @@ import { ForgotPassword } from './pages/user/forgot-password/forgot-password';
 import { UserDetail } from './pages/user/user-detail/user-detail';
 import { WishlistComponent } from './pages/online-store/wishlist/wishlist';
 import { OrderListComponent } from './pages/online-store/order-list/order-list';
+import { UserList } from './pages/admin/user-list/user-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -116,8 +117,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard, roleGuard],
     data: { roles: ['EMPLOYEE', 'ADMIN'] }
   },
-
-
+  {
+    path: 'admin',
+    component: UserList,
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['ADMIN'] }
+  }
+  ,
   {
     path: 'online-store',
     component: OnlineStoreLayout,
