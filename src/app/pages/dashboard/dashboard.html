@@ -1,0 +1,112 @@
+<div class="dashboard-container fade-in">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">Panel de Control</h1>
+    <p class="text-gray-500">Resumen de operaciones de Stock Store</p>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div class="kpi-card bg-blue-50 border-l-4 border-blue-500">
+      <div class="p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium text-blue-600 uppercase">Productos</p>
+            <p class="text-2xl font-bold text-gray-800">{{ totalProductos() }}</p>
+          </div>
+          <div class="p-3 bg-blue-100 rounded-full text-blue-600">
+            <i class="fas fa-box"></i> </div>
+        </div>
+        <div class="mt-4">
+          <a routerLink="/products" class="text-sm text-blue-600 hover:underline">Ver catálogo &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card bg-purple-50 border-l-4 border-purple-500">
+      <div class="p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium text-purple-600 uppercase">Proveedores</p>
+            <p class="text-2xl font-bold text-gray-800">{{ totalProveedores() }}</p>
+          </div>
+          <div class="p-3 bg-purple-100 rounded-full text-purple-600">
+            <i class="fas fa-truck"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <a routerLink="/suppliers" class="text-sm text-purple-600 hover:underline">Gestionar &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card border-l-4 transition-all"
+         [class.bg-red-50]="alertasStock() > 0 || alertasVencimiento() > 0"
+         [class.border-red-500]="alertasStock() > 0 || alertasVencimiento() > 0"
+         [class.bg-green-50]="alertasStock() === 0 && alertasVencimiento() === 0"
+         [class.border-green-500]="alertasStock() === 0 && alertasVencimiento() === 0">
+      <div class="p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium uppercase"
+               [class.text-red-600]="alertasStock() > 0"
+               [class.text-green-600]="alertasStock() === 0">
+               Estado Inventario
+            </p>
+            <div class="mt-1">
+               @if(alertasStock() > 0 || alertasVencimiento() > 0) {
+                 <div class="flex flex-col">
+                   <span class="text-sm font-bold text-red-700">⚠ {{ alertasStock() }} Bajo Stock</span>
+                   <span class="text-sm font-bold text-orange-600">⏰ {{ alertasVencimiento() }} Vencimientos</span>
+                 </div>
+               } @else {
+                 <p class="text-2xl font-bold text-green-700">Todo OK</p>
+               }
+            </div>
+          </div>
+          <div class="p-3 rounded-full"
+               [class.bg-red-100]="alertasStock() > 0"
+               [class.text-red-600]="alertasStock() > 0"
+               [class.bg-green-100]="alertasStock() === 0"
+               [class.text-green-600]="alertasStock() === 0">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <a routerLink="/inventory" class="text-sm font-medium hover:underline"
+             [class.text-red-600]="alertasStock() > 0"
+             [class.text-green-600]="alertasStock() === 0">
+             Revisar ahora &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card bg-orange-50 border-l-4 border-orange-500">
+      <div class="p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium text-orange-600 uppercase">Pedidos Online</p>
+          </div>
+          <div class="p-3 bg-orange-100 rounded-full text-orange-600">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <p class="text-xs text-gray-500">Pendientes de despacho</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="mt-10 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+    <h2 class="text-xl font-semibold mb-4">Accesos Rápidos</h2>
+    <div class="flex gap-4">
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+            + Nuevo Producto
+        </button>
+        <button class="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition">
+            Registrar Entrada Stock
+        </button>
+    </div>
+  </section>
+</div>
