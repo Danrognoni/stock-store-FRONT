@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { supplierService } from '../../../services/supplier'; // Ajusta la ruta si es necesario
-import { MatIconModule } from '@angular/material/icon'; // IMPORTANTE: Asegúrate de tener Angular Material instalado
+import { supplierService } from '../../../services/supplier';
+import { MatIconModule } from '@angular/material/icon'; 
 import { SupplierOrder } from '../../../models/supplier/supplier-order';
 
 @Component({
