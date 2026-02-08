@@ -1,4 +1,3 @@
-/* Animación de entrada suave */
 @keyframes slideUpFade {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -8,20 +7,16 @@
   animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Utilitarios de Iconos */
 .icon-fix {
   vertical-align: middle;
   line-height: 1;
   display: inline-flex;
 }
 
-/* Ajuste para inputs dentro de tarjetas para que se vean más compactos */
 ::ng-deep .no-bottom-padding .mat-mdc-form-field-subscript-wrapper {
-  /* Si usas subscriptSizing="dynamic" esto ayuda a alinear mejor */
   margin-top: 0; 
 }
 
-/* Estilos de SnackBar (Si no los tienes globales) */
 ::ng-deep .success-snackbar {
   --mdc-snackbar-container-color: #059669 !important;
   --mdc-snackbar-supporting-text-color: white !important;

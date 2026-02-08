@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select'; // Importante para el desplegable
+import { MatSelectModule } from '@angular/material/select'; 
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { supplierService } from '../../../services/supplier';
 import { SupplierOrder } from '../../../models/supplier/supplier-order';
@@ -21,7 +21,7 @@ import { SupplierOrder } from '../../../models/supplier/supplier-order';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatSelectModule, // Agregado
+    MatSelectModule,
     MatSnackBarModule,
     RouterLink
   ],
@@ -38,7 +38,7 @@ export class SupplierOrderComponent implements OnInit {
   orderForm: FormGroup;
   supplierId = signal<string>("");
   supplierName = signal<string>("");
-  supplierProducts = signal<any[]>([]); // Lista de productos del proveedor
+  supplierProducts = signal<any[]>([]);
   isLoading = signal<boolean>(false);
 
   constructor() {

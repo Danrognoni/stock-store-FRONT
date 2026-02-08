@@ -51,4 +51,17 @@ sendOrderToSupplier(items: SupplierOrder[], supplierId: string): Observable<void
   return this.http.post<void>(url, items);
 }
 
+
+getSupplierOrders(page: number, size: number): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<any>(`${this.apiUrl}/orders`, { params });
+  }
+
+  updateOrderStatus(orderId: string, status: string): Observable<void> {
+    const url = `${this.apiUrl}/orders/${orderId}/status`;
+    return this.http.patch<void>(url, { status }); 
+  }
+
 }

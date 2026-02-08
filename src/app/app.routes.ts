@@ -39,6 +39,7 @@ import { WishlistComponent } from './pages/online-store/wishlist/wishlist';
 import { OrderListComponent } from './pages/online-store/order-list/order-list';
 import { UserList } from './pages/admin/user-list/user-list';
 import { DashboardComponent } from './pages/dashboard/dashboard';
+import { SupplierOrderListComponent } from './pages/supplier/supplier-order-list/supplier-order-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -64,6 +65,7 @@ export const routes: Routes = [
        },
        { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
             { path: 'dashboard', component: DashboardComponent },
+            { path: 'supplier-orders', component: SupplierOrderListComponent },
     ]
   },
   // Sección Productos
@@ -71,7 +73,7 @@ export const routes: Routes = [
     path: 'products',
     component: ProductLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['EMPLOYEE', 'ADMIN'] }, // Backend Role.ADMIN
+    data: { roles: ['EMPLOYEE', 'ADMIN'] }, 
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: ProductListComponent },

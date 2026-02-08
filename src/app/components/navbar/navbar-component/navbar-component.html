@@ -76,14 +76,22 @@
       </button>
     }
 
+   
+
+
     @if (user.role === 'ADMIN') {
-      <mat-divider></mat-divider> 
+      <mat-divider></mat-divider>
+      
       <button mat-menu-item routerLink="/admin">
         <mat-icon>settings</mat-icon>
         <span>Administración</span>
       </button>
-    }
 
+      <button mat-menu-item routerLink="/home/supplier-orders">
+        <mat-icon>local_shipping</mat-icon>
+        <span>Pedidos a Proveedores</span>
+      </button>
+    }
     <mat-divider></mat-divider>
 
     <button mat-menu-item (click)="logout()">
