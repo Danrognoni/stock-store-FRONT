@@ -39,6 +39,25 @@
   </mat-list-item>
 }
 
+<mat-divider></mat-divider>
+          <h3 style="margin: 16px 16px 8px;">Proveedores Disponibles</h3>
+
+          @if (p.suppliers && p.suppliers.length > 0) {
+            <mat-list>
+              @for (supplier of p.suppliers; track supplier.id) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>local_shipping</mat-icon>
+                  <div matListItemTitle>{{ supplier.name }}</div>
+                  <div matListItemLine>{{ supplier.email }}</div>
+                </mat-list-item>
+              }
+            </mat-list>
+          } @else {
+            <p style="padding: 0 16px; color: gray; font-style: italic;">
+              No hay proveedores asignados a este producto.
+            </p>
+          }
+
         </mat-list>
       </mat-card-content>
 
@@ -58,5 +77,5 @@
         <button mat-flat-button color="primary" (click)="getBack()">Volver al catálogo</button>
     </div>
   }
-  
+
 </div>

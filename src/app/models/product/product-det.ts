@@ -1,6 +1,7 @@
 import { CategoryDet } from "../category/category-det";
 import { CategoryList } from "../category/category-list";
 import { InventoryItemDet } from "../inventoryItem/inventory-item-det";
+import { SupplierDet } from "../supplier/supplier-det";
 
 export interface ProductDet {
   id:string;
@@ -9,4 +10,5 @@ export interface ProductDet {
   price:number;
   inventoryItems:InventoryItemDet[];
   categories:CategoryList[];
+  suppliers?: SupplierDet[];
 }
