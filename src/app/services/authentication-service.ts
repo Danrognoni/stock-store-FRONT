@@ -127,4 +127,14 @@ export class AuthenticationService {
       })
     );
   }
+
+  getUserById(id: string) {
+    const url = `${this.apiUrl}/auth/admin/user-by-id/${id}`;
+    return this.http.get<any>(url);
+  }
+
+  updateUserAsAdmin(id: string, data: UserUpdate) {
+    const url = `${this.apiUrl}/auth/admin/user/${id}`;
+    return this.http.put<any>(url, data);
+  }
 }

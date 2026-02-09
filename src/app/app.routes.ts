@@ -40,6 +40,7 @@ import { OrderListComponent } from './pages/online-store/order-list/order-list';
 import { UserList } from './pages/admin/user-list/user-list';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { SupplierOrderListComponent } from './pages/supplier/supplier-order-list/supplier-order-list';
+import { UserUpdate } from './pages/user/user-update/user-update';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -63,9 +64,15 @@ export const routes: Routes = [
          component: UserDetail,
          data: { roles: ['ADMIN', 'EMPLOYEE'] }
        },
-       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
+       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'supplier-orders', component: SupplierOrderListComponent },
+       {
+         path: 'user/update/:id',
+         component: UserUpdate,
+         canActivate: [AuthGuard, roleGuard],
+         data: { roles: ['ADMIN'] }
+       }
     ]
   },
   // Sección Productos
@@ -73,7 +80,7 @@ export const routes: Routes = [
     path: 'products',
     component: ProductLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['EMPLOYEE', 'ADMIN'] }, 
+    data: { roles: ['EMPLOYEE', 'ADMIN'] },
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: ProductListComponent },
@@ -154,8 +161,7 @@ export const routes: Routes = [
       },
       { path: 'wishlist', component: WishlistComponent },
       { path: 'order', component: OrderListComponent },
-       { path: 'category/list', component: CategoryListComponent },
-       
+      { path: 'category/list', component: CategoryListComponent },
     ]
   }
 ];
