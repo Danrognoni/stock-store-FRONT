@@ -9,12 +9,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; //
 
 import { AuthenticationService } from '../../../services/authentication-service';
 import { UserRequest } from '../../../models/user/user-request';
+import { W } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     RouterLink,
     MatCardModule,
     MatInputModule,
@@ -46,12 +47,11 @@ export class RegisterComponent {
         next: () => {
 
           this.snackBar.open('¡Cuenta creada con éxito!', 'Cerrar', { duration: 3000 });
-          
- 
-          this.router.navigate(['/home']); 
+
+          this.router.navigate(['/online-store']);
         },
         error: (err) => {
-          console.error(err); 
+          console.error(err);
           this.snackBar.open('Error al crear cuenta. Intenta con otro email.', 'Cerrar', { duration: 5000 });
         }
       });
