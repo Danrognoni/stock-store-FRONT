@@ -31,7 +31,7 @@ export const AuthGuard : CanActivateFn = (route, state) =>{
       verticalPosition: 'bottom'
     });
 
-    router.navigate(['/home']);
+    router.navigate(['/online-store']);
     return false;
   }
 

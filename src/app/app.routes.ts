@@ -58,6 +58,8 @@ export const routes: Routes = [
   {
     path: "home",
     component: HomeLayout,
+    canActivate: [AuthGuard, roleGuard],
+    data: { roles: ['ADMIN', 'EMPLOYEE'] },
     children: [
        {
          path: 'profile',
