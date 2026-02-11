@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { inventoryItemService } from '../../../services/inventory-item';
 import { InventoryItemDet } from '../../../models/inventoryItem/inventory-item-det';
 import { MatCard } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-inventory-item-list',
@@ -24,7 +25,8 @@ import { MatCard } from '@angular/material/card';
     MatTableModule,
     MatPaginatorModule,
     FormsModule,
-    MatCard
+    MatCard,
+    RouterLink
   ],
   templateUrl: './inventory-item-list.html',
   styleUrl: './inventory-item-list.css'

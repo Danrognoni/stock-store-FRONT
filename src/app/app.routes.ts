@@ -41,6 +41,7 @@ import { UserList } from './pages/admin/user-list/user-list';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { SupplierOrderListComponent } from './pages/supplier/supplier-order-list/supplier-order-list';
 import { UserUpdate } from './pages/user/user-update/user-update';
+import { NavbarComponent } from './components/navbar/navbar-component/navbar-component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -133,11 +134,18 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: UserList,
+    component: HomeLayout,
     canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['ADMIN'] }
-  }
-  ,
+    data: { roles: ['ADMIN'] },
+    children: [
+      {
+        path: '',
+        component: UserList,
+        canActivate: [AuthGuard, roleGuard],
+        data: {roles: ['ADMIN']}
+      }
+    ]
+  },
   {
     path: 'online-store',
     component: OnlineStoreLayout,

@@ -14,10 +14,10 @@ import { ProductService } from '../../../services/product';
   selector: 'app-supplier-form',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatButtonModule, 
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     MatSelectModule,
     MatIconModule,
     MatSnackBarModule,
@@ -44,14 +44,14 @@ export class SupplierForm implements OnInit {
     this.formGroup = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9+ -]+$')]],
       productIds: [[]]
     });
   }
 
   ngOnInit(): void {
     this.loadProducts();
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.supplierId.set(id);
@@ -91,7 +91,7 @@ export class SupplierForm implements OnInit {
 
   onSubmit() {
     if (this.formGroup.invalid) {
-      this.formGroup.markAllAsTouched(); 
+      this.formGroup.markAllAsTouched();
       return;
     }
 
