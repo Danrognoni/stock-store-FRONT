@@ -1,3 +1,25 @@
+<div class="filter-container">
+  <mat-chip-listbox aria-label="Seleccionar categoría">
+    
+    <mat-chip-option 
+        [selected]="selectedCategoryId() === null" 
+        (click)="filterByCategory(null)"
+        color="accent">
+      Todas
+    </mat-chip-option>
+
+    @for (cat of categories(); track cat.id) {
+      <mat-chip-option 
+          [selected]="selectedCategoryId() === cat.id" 
+          (click)="filterByCategory(cat.id)"
+          color="accent">
+        {{ cat.name }}
+      </mat-chip-option>
+    }
+
+  </mat-chip-listbox>
+</div>
+
 <div class="catalog-grid">
   @for (product of products(); track product.id) {
     <mat-card class="product-card">
@@ -12,7 +34,9 @@
       <mat-card-content>
         <div class="category-container">
           @for(cat of product.categories; track cat.id) { 
-            <span class="category-pill">{{cat.name}}</span> 
+            <span class="category-pill" (click)="filterByCategory(cat.id)" style="cursor: pointer;">
+              {{cat.name}}
+            </span> 
           }
         </div>
       </mat-card-content>

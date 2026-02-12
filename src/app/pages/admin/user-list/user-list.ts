@@ -58,13 +58,10 @@ export class UserList implements OnInit {
       switchMap(term => {
         const searchTerm = term ? term.trim() : '';
         this.loading.set(true);
-
-        // CASO 1: Buscador vacío (volvemos a cargar el filtro actual)
         if (!searchTerm) {
           const currentFilter = this.filterControl.value || 'all';
           return this.fetchUsersByFilter(currentFilter).pipe(
             map((data: any) => data?.content || []),
-            // IMPORTANTE: Si falla el filtro, devolvemos array vacío para no romper el buscador
             catchError(err => {
               console.error('Error cargando filtro:', err);
               return of([]); 
@@ -72,42 +69,39 @@ export class UserList implements OnInit {
           );
         }
 
-        // CASO 2: Hay texto (Buscamos por email)
-        console.log('Buscando:', searchTerm); // DEBUG
+        console.log('Buscando:', searchTerm);
         return this.authService.searchUsersByEmail(searchTerm).pipe(
-          tap(res => console.log('Respuesta Backend:', res)), // DEBUG: Mira esto en la consola
+          tap(res => console.log('Respuesta Backend:', res)),
           map((res: any) => {
-            // Lógica para extraer la lista sea cual sea el formato del backend
-            if (res && res.content) return res.content; // Es un Page
-            if (Array.isArray(res)) return res;         // Es una lista directa
-            if (res && res.id) return [res];            // Es un objeto único
+            if (res && res.content) return res.content;
+            if (Array.isArray(res)) return res;        
+            if (res && res.id) return [res];         
             return [];
           }),
           catchError((error) => {
             console.error('Error en búsqueda:', error);
-            // IMPORTANTE: Devolvemos observable con array vacío para que el switchMap siga vivo
+
             return of([]); 
           })
         );
       })
     ).subscribe({
       next: (userList: any) => {
-        console.log('Actualizando tabla con:', userList); // DEBUG
+        console.log('Actualizando tabla con:', userList);
         this.users.set(userList);
         this.loading.set(false);
       },
       error: (e) => {
-        // Esto solo debería pasar si hay un error catastrófico de código, no de red
+
         console.error('El buscador murió:', e);
         this.loading.set(false);
       }
     });
   }
 
-  // --- El resto de métodos se mantienen igual ---
+
 
   onFilterChange() {
-    // Limpiamos el buscador sin emitir evento para no disparar el setupSearch doble
     this.searchControl.setValue('', { emitEvent: false });
     this.loadUsers();
   }
@@ -116,7 +110,6 @@ export class UserList implements OnInit {
     this.loading.set(true);
     this.fetchUsersByFilter(this.filterControl.value || 'all').subscribe({
       next: (data: any) => {
-        // Aseguramos que leemos .content si viene paginado
         this.users.set(data?.content || []);
         this.loading.set(false);
       },
