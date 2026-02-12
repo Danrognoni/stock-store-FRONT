@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -21,7 +21,8 @@ import { ProductService } from '../../../services/product';
     MatSelectModule,
     MatIconModule,
     MatSnackBarModule,
-    RouterLink
+    RouterLink,
+    MatInputModule
   ],
   templateUrl: './supplier-form.html',
   styleUrl: './supplier-form.css'

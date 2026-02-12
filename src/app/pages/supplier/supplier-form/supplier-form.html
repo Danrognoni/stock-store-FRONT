@@ -52,7 +52,7 @@
             <mat-form-field appearance="outline" class="w-full">
             <mat-label>Teléfono de Contacto</mat-label>
             <mat-icon matPrefix class="text-slate-400 mr-2">phone</mat-icon>
-            <input matInput formControlName="phoneNumber" placeholder="+54 11 1234 5678">
+            <input matInput type="number" formControlName="phoneNumber" placeholder="+54 11 1234 5678">
             @if (formGroup.get('phoneNumber')?.hasError('required')) {
                 <mat-error>El teléfono es obligatorio</mat-error>
             } @else if (formGroup.get('phoneNumber')?.hasError('pattern')) {
