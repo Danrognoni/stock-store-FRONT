@@ -14,6 +14,5 @@ export class OnlineStoreLayoutComponent {
   storeNavItems: NavItem[] = [
     { label: 'Catálogo', route: '/online-store' },
     { label: 'Carrito', route: '/online-store/cart' },
-
   ];
 }
