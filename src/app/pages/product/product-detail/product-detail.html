@@ -9,62 +9,90 @@
 
   @else if (product(); as p) {
     <mat-card style="max-width: 600px; width: 100%;">
+      
       <mat-card-header>
         <mat-icon mat-card-avatar>inventory_2</mat-icon>
         <mat-card-title>{{ p.name }}</mat-card-title>
-        <mat-card-subtitle>Código: {{ p.id }}</mat-card-subtitle>
+        <mat-card-subtitle>Categoría: {{ p.categories?.[0]?.name || 'General' }}</mat-card-subtitle>
       </mat-card-header>
 
       @if (p.imageUrl) {
-        <img mat-card-image [src]="p.imageUrl" [alt]="p.name" style="object-fit: contain; max-height: 400px;">
+        <div style="padding: 20px; display: flex; justify-content: center;">
+            <img mat-card-image [src]="p.imageUrl" [alt]="p.name" 
+                 style="object-fit: contain; max-height: 300px; max-width: 100%;">
+        </div>
       }
 
       <mat-card-content>
         <mat-list>
+          
           <mat-list-item>
             <mat-icon matListItemIcon>attach_money</mat-icon>
             <div matListItemTitle>Precio</div>
-            <div matListItemLine>$ {{ p.price }}</div>
+            <div matListItemLine style="font-size: 1.2em; font-weight: bold; color: green;">
+                $ {{ p.price }}
+            </div>
           </mat-list-item>
-         @if(p.categories) {
-  <mat-list-item>
-      <mat-icon matListItemIcon>category</mat-icon>
-      <div matListItemTitle>Categorías</div>
-      <div matListItemLine>
-          @for(cat of p.categories; track cat.id) {
-              <span style="background: #eee; padding: 2px 6px; border-radius: 4px; margin-right: 5px; font-size: 0.8em;">
-                  {{ cat.name }}  </span>
-          }
-      </div>
-  </mat-list-item>
-}
 
-<mat-divider></mat-divider>
-          <h3 style="margin: 16px 16px 8px;">Proveedores Disponibles</h3>
-
-          @if (p.suppliers && p.suppliers.length > 0) {
-            <mat-list>
-              @for (supplier of p.suppliers; track supplier.id) {
-                <mat-list-item>
-                  <mat-icon matListItemIcon>local_shipping</mat-icon>
-                  <div matListItemTitle>{{ supplier.name }}</div>
-                  <div matListItemLine>{{ supplier.email }}</div>
-                </mat-list-item>
-              }
-            </mat-list>
-          } @else {
-            <p style="padding: 0 16px; color: gray; font-style: italic;">
-              No hay proveedores asignados a este producto.
-            </p>
+          @if(p.categories && p.categories.length > 0) {
+            <mat-list-item>
+                <mat-icon matListItemIcon>category</mat-icon>
+                <div matListItemTitle>Categorías</div>
+                <div matListItemLine>
+                    @for(cat of p.categories; track cat.id) {
+                        <span style="background: #eee; padding: 2px 6px; border-radius: 4px; margin-right: 5px; font-size: 0.8em;">
+                            {{ cat.name }} 
+                        </span>
+                    }
+                </div>
+            </mat-list-item>
           }
 
+          <mat-divider style="margin: 10px 0;"></mat-divider>
+
+          @if (isAdminOrEmployee()) {
+             <h3 style="margin: 16px 16px 8px; color: #3f51b5;">
+                <mat-icon style="vertical-align: middle; margin-right: 5px;">admin_panel_settings</mat-icon>
+                Panel de Administración
+             </h3>
+             
+             <p style="margin: 0 16px 10px; color: gray;">
+                <strong>ID Interno:</strong> {{ p.id }}
+             </p>
+
+             <h4 style="margin: 0 16px 8px;">Proveedores Disponibles</h4>
+
+             @if (p.suppliers && p.suppliers.length > 0) {
+               <mat-list>
+                 @for (supplier of p.suppliers; track supplier.id) {
+                   <mat-list-item>
+                     <mat-icon matListItemIcon>local_shipping</mat-icon>
+                     <div matListItemTitle>{{ supplier.name }}</div>
+                     <div matListItemLine>{{ supplier.email }}</div>
+                   </mat-list-item>
+                 }
+               </mat-list>
+             } @else {
+               <p style="padding: 0 16px; color: gray; font-style: italic;">
+                 No hay proveedores asignados a este producto.
+               </p>
+             }
+          }
         </mat-list>
       </mat-card-content>
 
-      <mat-card-actions align="end">
+      <mat-card-actions align="end" style="padding: 16px;">
+        
         <button mat-button (click)="getBack()">
-            <mat-icon>arrow_back</mat-icon> Volver al catálogo
+            <mat-icon>arrow_back</mat-icon> Volver
         </button>
+
+        @if (!isAdminOrEmployee()) {
+            <button mat-flat-button color="primary" (click)="addToCart()">
+                <mat-icon>shopping_cart</mat-icon> Agregar al Carrito
+            </button>
+        }
+
       </mat-card-actions>
     </mat-card>
   }

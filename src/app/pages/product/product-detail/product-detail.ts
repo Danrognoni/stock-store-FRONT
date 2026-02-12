@@ -1,55 +1,77 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal, computed } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product';
+import { AuthenticationService } from '../../../services/authentication-service'; 
+import { CartService } from '../../../services/cart-service';
 import { ProductDet } from '../../../models/product/product-det';
 
 @Component({
   selector: 'app-product-detail',
-  standalone: true, 
-  imports: [CommonModule, MatCardModule, MatListModule, MatIconModule, MatButtonModule, RouterLink, MatProgressSpinnerModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './product-detail.html',
-  styleUrl: './product-detail.css',
+  styleUrl: './product-detail.css'
 })
 export class ProductDetail implements OnInit {
-  private router = inject(Router);
-  private ruta = inject(ActivatedRoute);
-  public productService = inject(ProductService);
   
-  public product = signal<ProductDet | null>(null);
-  public loading = signal<boolean>(true);
+  private productService = inject(ProductService);
+  private authService = inject(AuthenticationService);
+  private cartService = inject(CartService); 
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
-  ngOnInit(): void {
-    this.ruta.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.getProductById(id);
-      } else {
-        this.loading.set(false); 
-      }
-    });
+  @Input() id?: string;
+
+  product = signal<ProductDet | null>(null);
+  loading = signal<boolean>(true);
+
+  isAdminOrEmployee = computed(() => {
+    const user = this.authService.currentUser();
+    return user?.role === 'ADMIN' || user?.role === 'EMPLOYEE';
+  });
+
+  ngOnInit() {
+    if (this.id) {
+      this.loadProduct(this.id);
+    }
   }
 
-  getProductById(id: string) {
+  loadProduct(id: string) {
     this.loading.set(true);
     this.productService.getProduct(id).subscribe({
       next: (data) => {
         this.product.set(data);
-        this.loading.set(false); 
+        this.loading.set(false);
       },
-      error: (e) => {
-        console.error('Error cargando producto:', e);
-        this.loading.set(false); 
+      error: () => {
+        this.loading.set(false);
       }
     });
   }
 
+  addToCart() {
+    const p = this.product();
+    if (p) {
+  
+        this.snackBar.open('Producto agregado al carrito', 'Cerrar', { duration: 3000 });
+    }
+  }
+
   getBack() {
-    this.router.navigate(['/online-store']); 
+    window.history.back();
   }
 }
