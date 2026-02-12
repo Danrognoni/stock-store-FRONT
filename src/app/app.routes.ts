@@ -26,7 +26,6 @@ import { ProductLayout } from './components/navbar/stock-manager/product-layout/
 import { SupplierLayout } from './components/navbar/stock-manager/supplier-layout/supplier-layout';
 import { InventoryItemLayout } from './components/navbar/stock-manager/inventory-item-layout/inventory-item-layout';
 import { OnlineStoreLayoutComponent as OnlineStoreLayout } from './components/navbar/online-store/online-store-layout/online-store-layout';
-import { LocalStoreLayout } from './components/navbar/local-store/local-store-layout/local-store-layout';
 import { AuthenticationLayout } from './components/navbar/authentication/authentication-layout/authentication-layout';
 import { LoginComponent } from './pages/login/login-component/login-component';
 import { RegisterComponent } from './pages/register/register-component/register-component';
@@ -41,7 +40,6 @@ import { UserList } from './pages/admin/user-list/user-list';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { SupplierOrderListComponent } from './pages/supplier/supplier-order-list/supplier-order-list';
 import { UserUpdate } from './pages/user/user-update/user-update';
-import { NavbarComponent } from './components/navbar/navbar-component/navbar-component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -124,13 +122,6 @@ export const routes: Routes = [
       { path: 'create', component: InventoryItemForm },
       { path: 'edit/:id', component: InventoryItemForm },
     ]
-  },
-
-  {
-    path: 'local-store',
-    component: LocalStoreLayout,
-    canActivate: [AuthGuard, roleGuard],
-    data: { roles: ['EMPLOYEE', 'ADMIN'] }
   },
   {
     path: 'admin',
