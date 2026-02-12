@@ -1,100 +1,152 @@
+/* Contenedor Principal */
 .container {
+  padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 20px;
-  min-height: 100vh;
-  background-color: #f8f9fa;
+  min-height: 80vh;
+  background-color: #f5f7fa; /* Fondo gris muy suave */
   box-sizing: border-box;
 }
 
-mat-card {
+/* Tarjeta del Producto */
+.product-card {
   width: 100%;
-  max-width: 450px;
-  border-radius: 12px !important;
+  max-width: 700px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Sombra elegante */
+  background: white;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
-  background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Header de la tarjeta */
 mat-card-header {
-  padding: 20px !important;
-  background-color: #ffffff;
+  padding: 24px 24px 0;
 }
 
 mat-card-title {
-  font-size: 1.4rem !important;
+  font-size: 1.5rem !important;
   font-weight: 600 !important;
   color: #2c3e50;
-  margin-bottom: 4px !important;
 }
 
 mat-card-subtitle {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.85rem !important;
-  color: #95a5a6 !important;
-}
-
-img[mat-card-image] {
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-img[mat-card-image]:hover {
-  transform: scale(1.02);
-}
-
-mat-card-content {
-  padding: 16px 24px !important;
-}
-
-mat-list-item {
-  height: auto !important;
-  padding: 12px 0 !important;
-}
-
-[matListItemIcon] {
-  color: #3f51b5;
-  margin-right: 16px !important;
-}
-
-[matListItemTitle] {
-  font-size: 0.75rem !important;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 0.95rem;
   color: #7f8c8d;
-  font-weight: 500;
-  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
-[matListItemLine] {
-  font-size: 1.3rem !important;
-  font-weight: 600;
-  color: #27ae60;
-}
-
-mat-card-actions {
+/* Sección de Imagen */
+.image-wrapper {
+  background-color: #ffffff;
+  padding: 2rem;
   display: flex;
-  justify-content: flex-end;
-  padding: 12px 20px !important;
-  border-top: 1px solid #f1f1f1;
-  background-color: #fafafa;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  min-height: 300px;
 }
 
-button[mat-button] {
-  text-transform: uppercase;
+.product-img {
+  object-fit: contain;
+  max-height: 350px;
+  max-width: 100%;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+}
+
+.product-img:hover {
+  transform: scale(1.08); /* Efecto zoom suave */
+}
+
+/* Precio */
+.price-tag {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #27ae60; /* Verde moderno */
+  letter-spacing: -0.5px;
+}
+
+/* Categorías (Chips) */
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.category-badge {
+  background-color: #eef2f7;
+  color: #5b6e86;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  color: #3f51b5;
+  transition: background-color 0.2s;
+  border: 1px solid #dce4ec;
 }
 
-[mat-card-avatar] {
-  background-color: #e8eaf6;
+.category-badge:hover {
+  background-color: #dce4ec;
+  color: #2c3e50;
+}
+
+/* Sección Admin */
+.admin-section {
+  background-color: #f8f9fa;
+  border: 1px dashed #c5cae9;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px 16px;
+}
+
+.admin-header {
   color: #3f51b5;
+  margin: 0 0 16px 0;
   display: flex;
   align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.admin-id {
+  font-family: 'Roboto Mono', monospace;
+  background: #e8eaf6;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #3949ab;
+  font-size: 0.9rem;
+}
+
+/* Estados de Carga y Error */
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  padding: 60px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.error-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+  color: #e74c3c;
+  margin-bottom: 16px;
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: #7f8c8d;
+  font-weight: 500;
 }

@@ -1,25 +1,26 @@
-<div class="container" style="padding: 20px; display: flex; justify-content: center;">
+<div class="container">
 
   @if (loading()) {
-    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 50px;">
-        <mat-spinner diameter="50"></mat-spinner>
-        <p style="margin-top: 10px; color: #666;">Cargando producto...</p>
+    <div class="state-container">
+        <mat-spinner diameter="60" color="primary"></mat-spinner>
+        <p class="loading-text">Cargando detalles del producto...</p>
     </div>
   }
 
   @else if (product(); as p) {
-    <mat-card style="max-width: 600px; width: 100%;">
+    <mat-card class="product-card">
       
       <mat-card-header>
-        <mat-icon mat-card-avatar>inventory_2</mat-icon>
+        <div mat-card-avatar style="background-color: #e3f2fd; display: flex; align-items: center; justify-content: center;">
+             <mat-icon color="primary">inventory_2</mat-icon>
+        </div>
         <mat-card-title>{{ p.name }}</mat-card-title>
-        <mat-card-subtitle>Categoría: {{ p.categories?.[0]?.name || 'General' }}</mat-card-subtitle>
+        <mat-card-subtitle>Categoría Principal: {{ p.categories?.[0]?.name || 'General' }}</mat-card-subtitle>
       </mat-card-header>
 
       @if (p.imageUrl) {
-        <div style="padding: 20px; display: flex; justify-content: center;">
-            <img mat-card-image [src]="p.imageUrl" [alt]="p.name" 
-                 style="object-fit: contain; max-height: 300px; max-width: 100%;">
+        <div class="image-wrapper">
+            <img class="product-img" [src]="p.imageUrl" [alt]="p.name">
         </div>
       }
 
@@ -27,10 +28,10 @@
         <mat-list>
           
           <mat-list-item>
-            <mat-icon matListItemIcon>attach_money</mat-icon>
+            <mat-icon matListItemIcon class="material-icons-outlined">payments</mat-icon>
             <div matListItemTitle>Precio</div>
-            <div matListItemLine style="font-size: 1.2em; font-weight: bold; color: green;">
-                $ {{ p.price }}
+            <div matListItemLine class="price-tag">
+                $ {{ p.price | number:'1.2-2' }}
             </div>
           </mat-list-item>
 
@@ -38,58 +39,59 @@
             <mat-list-item>
                 <mat-icon matListItemIcon>category</mat-icon>
                 <div matListItemTitle>Categorías</div>
-                <div matListItemLine>
+                <div matListItemLine class="category-container">
                     @for(cat of p.categories; track cat.id) {
-                        <span style="background: #eee; padding: 2px 6px; border-radius: 4px; margin-right: 5px; font-size: 0.8em;">
-                            {{ cat.name }} 
-                        </span>
+                        <span class="category-badge">{{ cat.name }}</span>
                     }
                 </div>
             </mat-list-item>
           }
 
-          <mat-divider style="margin: 10px 0;"></mat-divider>
+          <mat-divider style="margin: 20px 0;"></mat-divider>
 
           @if (isAdminOrEmployee()) {
-             <h3 style="margin: 16px 16px 8px; color: #3f51b5;">
-                <mat-icon style="vertical-align: middle; margin-right: 5px;">admin_panel_settings</mat-icon>
-                Panel de Administración
-             </h3>
-             
-             <p style="margin: 0 16px 10px; color: gray;">
-                <strong>ID Interno:</strong> {{ p.id }}
-             </p>
+             <div class="admin-section">
+                 <h3 class="admin-header">
+                    <mat-icon style="margin-right: 8px;">admin_panel_settings</mat-icon>
+                    Panel de Administración
+                 </h3>
+                 
+                 <p style="margin-bottom: 16px; color: #546e7a;">
+                    <strong>ID Interno:</strong> <span class="admin-id">{{ p.id }}</span>
+                 </p>
 
-             <h4 style="margin: 0 16px 8px;">Proveedores Disponibles</h4>
+                 <h4 style="margin: 0 0 10px; font-weight: 500;">Proveedores Disponibles</h4>
 
-             @if (p.suppliers && p.suppliers.length > 0) {
-               <mat-list>
-                 @for (supplier of p.suppliers; track supplier.id) {
-                   <mat-list-item>
-                     <mat-icon matListItemIcon>local_shipping</mat-icon>
-                     <div matListItemTitle>{{ supplier.name }}</div>
-                     <div matListItemLine>{{ supplier.email }}</div>
-                   </mat-list-item>
+                 @if (p.suppliers && p.suppliers.length > 0) {
+                   <mat-list>
+                     @for (supplier of p.suppliers; track supplier.id) {
+                       <mat-list-item>
+                         <mat-icon matListItemIcon>local_shipping</mat-icon>
+                         <div matListItemTitle>{{ supplier.name }}</div>
+                         <div matListItemLine>{{ supplier.email }}</div>
+                       </mat-list-item>
+                     }
+                   </mat-list>
+                 } @else {
+                   <div style="display: flex; align-items: center; color: #90a4ae; font-style: italic;">
+                     <mat-icon style="font-size: 20px; margin-right: 5px;">info</mat-icon>
+                     No hay proveedores asignados.
+                   </div>
                  }
-               </mat-list>
-             } @else {
-               <p style="padding: 0 16px; color: gray; font-style: italic;">
-                 No hay proveedores asignados a este producto.
-               </p>
-             }
+             </div>
           }
         </mat-list>
       </mat-card-content>
 
-      <mat-card-actions align="end" style="padding: 16px;">
+      <mat-card-actions align="end" style="padding: 24px; background: #fafafa; border-top: 1px solid #f0f0f0;">
         
-        <button mat-button (click)="getBack()">
+        <button mat-stroked-button color="basic" (click)="getBack()" style="margin-right: 8px;">
             <mat-icon>arrow_back</mat-icon> Volver
         </button>
 
         @if (!isAdminOrEmployee()) {
-            <button mat-flat-button color="primary" (click)="addToCart()">
-                <mat-icon>shopping_cart</mat-icon> Agregar al Carrito
+            <button mat-flat-button color="primary" (click)="addToCart()" class="buy-button">
+                <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
             </button>
         }
 
@@ -98,11 +100,13 @@
   }
 
   @else {
-    <div style="text-align: center; margin-top: 50px;">
-        <mat-icon style="font-size: 50px; height: 50px; color: #f44336;">error_outline</mat-icon>
+    <div class="state-container">
+        <mat-icon class="error-icon">search_off</mat-icon>
         <h2>Producto no encontrado</h2>
-        <p>No pudimos cargar la información solicitada.</p>
-        <button mat-flat-button color="primary" (click)="getBack()">Volver al catálogo</button>
+        <p style="color: #7f8c8d; max-width: 300px;">No pudimos encontrar la información solicitada. Es posible que el producto haya sido eliminado.</p>
+        <button mat-raised-button color="primary" (click)="getBack()" style="margin-top: 20px;">
+            Volver al catálogo
+        </button>
     </div>
   }
 

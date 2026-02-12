@@ -34,7 +34,7 @@ export class StoreCatalogComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productService.getProductsWithStock(0, 50).subscribe({
+    this.productService.getProductsWithStock(0, 600).subscribe({
       next: (data: any) => {
         this.products.set(data.content);
       },
