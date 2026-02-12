@@ -1,25 +1,3 @@
-<div class="filter-container">
-  <mat-chip-listbox aria-label="Seleccionar categoría">
-    
-    <mat-chip-option 
-        [selected]="selectedCategoryId() === null" 
-        (click)="filterByCategory(null)"
-        color="accent">
-      Todas
-    </mat-chip-option>
-
-    @for (cat of categories(); track cat.id) {
-      <mat-chip-option 
-          [selected]="selectedCategoryId() === cat.id" 
-          (click)="filterByCategory(cat.id)"
-          color="accent">
-        {{ cat.name }}
-      </mat-chip-option>
-    }
-
-  </mat-chip-listbox>
-</div>
-
 <div class="catalog-grid">
   @for (product of products(); track product.id) {
     <mat-card class="product-card">
@@ -35,11 +13,6 @@
         <div class="category-container">
           @for(cat of product.categories; track cat.id) {
             <span class="category-pill">{{cat.name}}</span>
-          @for(cat of product.categories; track cat.id) { 
-            <span class="category-pill" (click)="filterByCategory(cat.id)" style="cursor: pointer;">
-              {{cat.name}}
-            </span> 
-
           }
         </div>
       </mat-card-content>
@@ -61,8 +34,10 @@
       </mat-card-actions>
 
       <button class="like-button"
-        [class.liked-active]="isInWishlist(product.id)"
-        (click)="addToWishlist(product)"> <mat-icon>thumb_up</mat-icon>
+              [class.liked-active]="isInWishlist(product.id)"
+              (click)="addToWishlist(product)">
+
+        <mat-icon>thumb_up</mat-icon>
 
         {{ isInWishlist(product.id) ? 'Te gusta' : 'Like' }}
       </button>

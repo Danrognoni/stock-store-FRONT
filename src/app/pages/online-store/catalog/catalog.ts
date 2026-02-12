@@ -16,13 +16,13 @@ import { CategoryService } from '../../../services/category';
   selector: 'app-store-catalog',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterLink, 
-    MatCardModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
     MatChipsModule,
-    NavbarComponent, 
+    NavbarComponent,
     RouterOutlet
   ],
   templateUrl: './catalog.html',
@@ -35,14 +35,12 @@ export class StoreCatalogComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
 
-  cartProductIds = signal<Set<string>>(new Set());
-  wishlistProductIds = signal<Set<string>>(new Set());
   products = signal<any[]>([]);
   categories = signal<any[]>([]);
   selectedCategoryId = signal<number | null>(null);
 
-  cartProductIds = signal<Set<number>>(new Set());
-  wishlistProductIds = signal<Set<number>>(new Set());
+  cartProductIds = signal<Set<string>>(new Set());
+  wishlistProductIds = signal<Set<string>>(new Set());
 
   ngOnInit() {
     this.loadCategories();
@@ -83,11 +81,6 @@ export class StoreCatalogComponent implements OnInit {
         this.cartProductIds.set(new Set(ids));
       },
       error: () => console.log('Info: Usuario sin carrito activo')
-      next: (cartItems: any[]) => {
-        const ids = cartItems.map(item => item.product.id);
-        this.cartProductIds.set(new Set(ids));
-      },
-      error: () => {}
     });
 
     this.wishlistService.getWishlist().subscribe({
@@ -143,41 +136,6 @@ export class StoreCatalogComponent implements OnInit {
         error: (err) => console.error('Error al dar like', err)
       });
     }
-    if (this.cartProductIds().has(product.id)) return;
-
-    this.cartService.addItemToCart(product.id, 1).subscribe({
-      next: () => {
-        this.snackBar.open('Agregado al carrito', 'Ok', { duration: 2000 });
-        this.cartProductIds.update(ids => {
-          const newSet = new Set(ids);
-          newSet.add(product.id);
-          return newSet;
-        });
-      },
-      error: (err) => {
-        console.error(err);
-        this.snackBar.open('Error al agregar', 'Cerrar');
-      }
-    });
-  }
-
-  addToWishlist(product: any) {
-    if (this.wishlistProductIds().has(product.id)) return;
-
-    this.wishlistService.addToWishlist(product.id).subscribe({
-      next: () => {
-        this.snackBar.open(`¡${product.name} a favoritos!`, 'Genial', { duration: 2000 });
-        this.wishlistProductIds.update(ids => {
-          const newSet = new Set(ids);
-          newSet.add(product.id);
-          return newSet;
-        });
-      },
-      error: (err) => {
-        console.error(err);
-        this.snackBar.open('Error al agregar', 'Cerrar');
-      }
-    });
   }
 
   isInCart(productId: number): boolean {
