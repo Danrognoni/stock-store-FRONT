@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { UserRequest } from '../models/user/user-request';
@@ -6,6 +6,8 @@ import { AuthenticationRequest } from '../models/authentication/authentication-r
 import { AuthenticationPassword } from '../models/authentication/authentication-password';
 import { UserUpdatePass } from '../models/user/user-update-pass';
 import { UserUpdate } from '../models/user/user-update';
+import { UserDet } from '../models/user/user-det';
+import { UserDetail } from '../pages/user/user-detail/user-detail';
 
 @Injectable({
   providedIn: 'root',
@@ -90,9 +92,12 @@ export class AuthenticationService {
   }
 
   getUsersByEmail(email: string) {
-    const url = `${this.apiUrl}/auth/admin/user/${email}`;
-    return this.http.get<any>(url);
-  }
+  const url = `${this.apiUrl}/auth/admin/user/search`;
+  
+  let params = new HttpParams().set('email', email);
+
+  return this.http.get<UserDet>(url, { params });
+}
 
   promoteToEmployee(id: string) {
     const url = `${this.apiUrl}/auth/admin/promote/employee/${id}`;

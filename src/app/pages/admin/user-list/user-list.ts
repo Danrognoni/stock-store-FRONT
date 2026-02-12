@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
-import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap } from 'rxjs';
 import { AuthenticationService } from '../../../services/authentication-service';
 import { UserDet } from '../../../models/user/user-det';
 
@@ -52,29 +52,35 @@ export class UserList implements OnInit {
   }
 
   setupSearch() {
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => {
-        if (!term || term.trim() === '') {
-          return this.fetchUsersByFilter(this.filterControl.value || 'all');
-        }
-        this.loading.set(true);
-        return this.authService.getUsersByEmail(term).pipe(
-          catchError(() => of([]))
+  this.searchControl.valueChanges.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(term => {
+      if (!term || term.trim() === '') {
+        const currentFilter = this.filterControl.value || 'all';
+        return this.fetchUsersByFilter(currentFilter).pipe(
+          map((data: any) => data.content || []) 
         );
-      })
-    ).subscribe({
-      next: (response) => {
-        this.loading.set(false);
-        this.users.set(Array.isArray(response) ? response : (response ? [response] : []));
-      },
-      error: () => {
-        this.loading.set(false);
-        this.users.set([]);
       }
-    });
-  }
+
+      this.loading.set(true);
+      return this.authService.getUsersByEmail(term).pipe(
+        map((user: any) => user ? [user] : []),
+        catchError(() => of([])) 
+      );
+    })
+  ).subscribe({
+    next: (userList) => {
+      this.loading.set(false);
+      this.users.set(userList);
+    },
+    error: (e) => {
+      console.error(e);
+      this.loading.set(false);
+      this.users.set([]);
+    }
+  });
+}
 
   onFilterChange() {
     this.searchControl.setValue('', { emitEvent: false });
