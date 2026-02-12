@@ -1,85 +1,83 @@
-<mat-toolbar color="primary" class="navbar">
+<mat-toolbar class="navbar">
 
-  <span
-    [routerLink]="!authService.currentUser() ? [] : (authService.currentUser()?.role === 'USER' ? '/online-store' : '/home')"
-    [style.cursor]="authService.currentUser() ? 'pointer' : 'default'" class="brand-logo">
-    <mat-icon style="margin-right: 8px;">store</mat-icon> Stock Store
-  </span>
+  <div class="nav-container">
+    <a [routerLink]="!authService.currentUser() ? [] : (authService.currentUser()?.role === 'USER' ? '/online-store' : '/home')"
+       class="brand-logo"
+       [style.cursor]="authService.currentUser() ? 'pointer' : 'default'">
+      <mat-icon class="brand-icon">inventory_2</mat-icon>
+      StockStore
+    </a>
 
-  @for (item of items(); track item) {
-    @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
-      <button mat-button [routerLink]="item.route" routerLinkActive="active-link" class="nav-link">
-        {{ item.label }}
-      </button>
+    @for (item of items(); track item) {
+      @if (!item.roles || item.roles.includes(authService.currentUser()?.role)) {
+        <a mat-button 
+           [routerLink]="item.route" 
+           routerLinkActive="active-link" 
+           class="nav-link">
+          {{ item.label }}
+        </a>
+      }
     }
-  }
-
-  <span class="spacer"></span>
-
-  @if (authService.currentUser()?.role === 'USER') {
-  <div class="cart-wrapper">
-    <button mat-mini-fab routerLink="/online-store/cart" class="custom-cart-btn" aria-label="Ir al carrito"
-      matTooltip="Ver mi carrito"> <mat-icon [matBadge]="cartService.cartCount()" matBadgeColor="warn"
-        [matBadgeHidden]="cartService.cartCount() === 0"> shopping_cart
-      </mat-icon>
-    </button>
   </div>
-  }
 
-  @if (authService.currentUser(); as user) {
-
-  <button mat-button [matMenuTriggerFor]="userMenu" class="nav-link user-trigger">
-    <mat-icon>account_circle</mat-icon> <span>Hola, {{ user.name }}</span>
-    <mat-icon>arrow_drop_down</mat-icon>
-  </button>
-
-  <mat-menu #userMenu="matMenu">
-    
-    <button mat-menu-item [routerLink]="getProfileRoute()">
-      <mat-icon>face</mat-icon>
-      <span>Mi Perfil</span>
-    </button>
-
-    @if (user.role === 'USER') {
-      <button mat-menu-item routerLink="/online-store/wishlist">
-        <mat-icon color="warn">favorite</mat-icon>
-        <span>Mis Favoritos</span>
-      </button>
-
-      <button mat-menu-item routerLink="/online-store/order">
-        <mat-icon>receipt_long</mat-icon>
-        <span>Mis Pedidos</span>
+  <div class="actions-container">
+    @if (authService.currentUser()?.role === 'USER') {
+      <button mat-icon-button routerLink="/online-store/cart" class="cart-btn" aria-label="Ir al carrito" matTooltip="Ver carrito">
+        <mat-icon [matBadge]="cartService.cartCount()" matBadgeColor="warn" [matBadgeHidden]="cartService.cartCount() === 0">
+          shopping_bag
+        </mat-icon>
       </button>
     }
 
-   
-
-
-    @if (user.role === 'ADMIN') {
-      <mat-divider></mat-divider>
-      
-      <button mat-menu-item routerLink="/admin">
-        <mat-icon>settings</mat-icon>
-        <span>Administración</span>
+    @if (authService.currentUser(); as user) {
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-btn">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
+            {{ user.name.charAt(0) }}
+          </div>
+          <span>{{ user.name }}</span>
+          <mat-icon iconPositionEnd class="text-gray-400">expand_more</mat-icon>
+        </div>
       </button>
 
-      <button mat-menu-item routerLink="/home/supplier-orders">
-        <mat-icon>local_shipping</mat-icon>
-        <span>Pedidos a Proveedores</span>
-      </button>
+      <mat-menu #userMenu="matMenu" xPosition="before" class="mt-2">
+        <button mat-menu-item [routerLink]="getProfileRoute()">
+          <mat-icon class="text-gray-400">person_outline</mat-icon>
+          <span>Mi Perfil</span>
+        </button>
+
+        @if (user.role === 'USER') {
+          <button mat-menu-item routerLink="/online-store/wishlist">
+            <mat-icon class="text-rose-400">favorite_border</mat-icon>
+            <span>Lista de Deseos</span>
+          </button>
+          <button mat-menu-item routerLink="/online-store/order">
+            <mat-icon class="text-gray-400">history</mat-icon>
+            <span>Mis Pedidos</span>
+          </button>
+        }
+
+        @if (user.role === 'ADMIN') {
+          <mat-divider class="my-2"></mat-divider>
+          <button mat-menu-item routerLink="/admin">
+            <mat-icon class="text-indigo-500">admin_panel_settings</mat-icon>
+            <span>Panel Admin</span>
+          </button>
+          <button mat-menu-item routerLink="/home/supplier-orders">
+            <mat-icon class="text-indigo-500">local_shipping</mat-icon>
+            <span>Pedidos a proveedor</span>
+          </button>
+        }
+
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon class="text-red-400">logout</mat-icon>
+          <span class="text-red-500">Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+    } @else {
+      <a mat-button routerLink="/auth/login" class="nav-link login-btn">Iniciar Sesión</a>
+      <a mat-raised-button routerLink="/auth/register" class="register-btn">Registrarse</a>
     }
-    <mat-divider></mat-divider>
-
-    <button mat-menu-item (click)="logout()">
-      <mat-icon>logout</mat-icon> <span>Cerrar Sesión</span>
-    </button>
-  </mat-menu>
-
-  } @else {
-  <button mat-button routerLink="/auth/login" class="nav-link">Iniciar Sesión</button>
-  <button mat-raised-button color="accent" routerLink="/auth/register" class="action-btn">
-    Registrarse
-  </button>
-  }
-
+  </div>
 </mat-toolbar>
