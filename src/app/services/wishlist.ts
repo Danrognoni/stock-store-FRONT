@@ -20,13 +20,11 @@ export class WishlistService {
     return this.http.post<any>(`${this.apiUrl}/first-use`, {}, { headers: this.getHeaders() });
   }
 
-  addToWishlist(productId: string) {
+  addToWishlist(productId: number | string) {
     const url = `${this.apiUrl}/${productId}`;
-
     return this.http.post<any>(url, {}, { headers: this.getHeaders() }).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
-          console.log('Wishlist no encontrada. Creando una nueva...');
           return this.createWishlist().pipe(
             switchMap(() => {
               return this.http.post<any>(url, {}, { headers: this.getHeaders() });
@@ -37,12 +35,12 @@ export class WishlistService {
       })
     );
   }
-  
+
   getWishlist() {
     return this.http.get<any>(this.apiUrl, { headers: this.getHeaders() });
   }
 
-  removeFromWishlist(productId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${productId}`);
+  removeFromWishlist(productId: number | string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${productId}`, { headers: this.getHeaders() });
   }
 }

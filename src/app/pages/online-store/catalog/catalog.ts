@@ -35,6 +35,8 @@ export class StoreCatalogComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
 
+  cartProductIds = signal<Set<string>>(new Set());
+  wishlistProductIds = signal<Set<string>>(new Set());
   products = signal<any[]>([]);
   categories = signal<any[]>([]);
   selectedCategoryId = signal<number | null>(null);
@@ -75,6 +77,12 @@ export class StoreCatalogComponent implements OnInit {
 
   loadUserContext() {
     this.cartService.getCart().subscribe({
+      next: (cartData: any) => {
+        const items = cartData.items || [];
+        const ids = items.map((item: any) => item.product.id.toString());
+        this.cartProductIds.set(new Set(ids));
+      },
+      error: () => console.log('Info: Usuario sin carrito activo')
       next: (cartItems: any[]) => {
         const ids = cartItems.map(item => item.product.id);
         this.cartProductIds.set(new Set(ids));
@@ -83,14 +91,58 @@ export class StoreCatalogComponent implements OnInit {
     });
 
     this.wishlistService.getWishlist().subscribe({
-      next: (wishlistItems: any[]) => {
-        const ids = wishlistItems.map(item => item.id);
+      next: (wishlistData: any) => {
+        const products = wishlistData?.products || [];
+        const ids = products.map((product: any) => product.id.toString());
         this.wishlistProductIds.set(new Set(ids));
-      }
+      },
+      error: (err) => console.log('Error cargando wishlist', err)
     });
   }
 
   addToCart(product: any) {
+     if (this.isInCart(product.id)) return;
+     this.cartService.addItemToCart(product.id, 1).subscribe({
+       next: () => {
+         this.snackBar.open('Agregado al carrito', 'Ok', { duration: 2000 });
+         this.cartProductIds.update(ids => {
+           const newSet = new Set(ids);
+           newSet.add(product.id.toString());
+           return newSet;
+         });
+       },
+       error: (err) => this.snackBar.open('Error al agregar', 'Cerrar')
+     });
+  }
+
+  addToWishlist(product: any) {
+    const productIdStr = product.id.toString();
+
+    if (this.isInWishlist(product.id)) {
+      this.wishlistService.removeFromWishlist(productIdStr).subscribe({
+        next: () => {
+          this.snackBar.open('Eliminado de favoritos', 'Ok', { duration: 2000 });
+          this.wishlistProductIds.update(ids => {
+            const newSet = new Set(ids);
+            newSet.delete(productIdStr);
+            return newSet;
+          });
+        },
+        error: (err) => console.error('Error al quitar like', err)
+      });
+    } else {
+      this.wishlistService.addToWishlist(productIdStr).subscribe({
+        next: () => {
+          this.snackBar.open('¡Añadido a favoritos!', 'Genial', { duration: 2000 });
+          this.wishlistProductIds.update(ids => {
+            const newSet = new Set(ids);
+            newSet.add(productIdStr);
+            return newSet;
+          });
+        },
+        error: (err) => console.error('Error al dar like', err)
+      });
+    }
     if (this.cartProductIds().has(product.id)) return;
 
     this.cartService.addItemToCart(product.id, 1).subscribe({
@@ -129,10 +181,10 @@ export class StoreCatalogComponent implements OnInit {
   }
 
   isInCart(productId: number): boolean {
-    return this.cartProductIds().has(productId);
+    return this.cartProductIds().has(productId.toString());
   }
 
   isInWishlist(productId: number): boolean {
-    return this.wishlistProductIds().has(productId);
+    return this.wishlistProductIds().has(productId.toString());
   }
 }

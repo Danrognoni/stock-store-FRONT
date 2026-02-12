@@ -44,8 +44,8 @@ import { inject } from '@angular/core';
 import { AuthenticationService } from './services/authentication-service';
 
 export const routes: Routes = [
- { 
-    path: '', 
+ {
+    path: '',
     pathMatch: 'full',
     redirectTo: 'auth/login'
   },
@@ -61,10 +61,11 @@ export const routes: Routes = [
             return false;
         }
         return true;
-    }], 
+    }],
     children: [
       { path: "login", component: LoginComponent },
-   
+      { path: "register", component: RegisterComponent }
+
     ]
   },
   {
