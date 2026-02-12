@@ -108,7 +108,7 @@ export class AuthenticationService {
   }
 
   searchUsersByEmail(email: string){
-    const url = `${this.apiUrl}/auth/user/admin/email/${email}`;
+    const url = `${this.apiUrl}/auth/admin/user/email/${email}`;
     return this.http.get<any>(url);
   }
 
