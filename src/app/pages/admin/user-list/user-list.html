@@ -54,16 +54,7 @@
             <mat-icon>{{ user.banned ? 'check_circle' : 'block' }}</mat-icon>
           </button>
 
-          <mat-card class="user-card">
-          <mat-card-actions align="end">
-          <button mat-mini-fab color="primary"
-            (click)="editUser(user)"
-            matTooltip="Editar usuario">
-          <mat-icon>edit</mat-icon>
-          </button>
-
-  </mat-card-actions>
-</mat-card>
+         
 
           @if (user.role !== 'EMPLOYEE' && user.role !== 'ADMIN') {
             <button mat-icon-button color="primary" (click)="promoteToEmployee(user)" matTooltip="Ascender a Empleado">
@@ -86,7 +77,6 @@
     }
   </div>
 
-  <!-- Indicador de carga -->
   @if (loading()) {
     <div class="loading-overlay">
       <div class="spinner"></div>

@@ -174,7 +174,5 @@ export class UserList implements OnInit {
     });
   }
 
-  editUser(user: any) {
-    this.router.navigate(['home/user/update', user.id]);
-  }
+ 
 }
