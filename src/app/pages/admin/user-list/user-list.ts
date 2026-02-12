@@ -64,13 +64,13 @@ export class UserList implements OnInit {
       }
 
       this.loading.set(true);
-      return this.authService.getUsersByEmail(term).pipe(
-        map((user: any) => user ? [user] : []),
+      return this.authService.searchUsersByEmail(term).pipe(
+        map((res: any) => Array.isArray(res) ? res : (res ? [res] : [])),
         catchError(() => of([])) 
       );
     })
   ).subscribe({
-    next: (userList) => {
+    next: (userList: any) => {
       this.loading.set(false);
       this.users.set(userList);
     },

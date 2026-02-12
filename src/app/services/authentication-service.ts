@@ -107,6 +107,11 @@ export class AuthenticationService {
     return this.http.get<any>(url);
   }
 
+  searchUsersByEmail(email: string){
+    const url = `${this.apiUrl}/auth/user/admin/email/${email}`;
+    return this.http.get<any>(url);
+  }
+
   getUsersByEmail(email: string) {
     const url = `${this.apiUrl}/auth/admin/user/search`;
     let params = new HttpParams().set('email', email);
