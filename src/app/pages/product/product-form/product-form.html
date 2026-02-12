@@ -1,14 +1,15 @@
-<div class="form-container">
-  <mat-card class="form-card">
-    <mat-card-header>
-      <mat-card-title>Información del Producto</mat-card-title>
-    </mat-card-header>
+<div class="main-container">
+  <mat-card class="modern-card">
+    <div class="header-section">
+      <h1 class="header-title">Información del Producto</h1>
+      <p class="header-subtitle">Complete los detalles para registrar un nuevo ítem</p>
+    </div>
 
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-      <mat-card-content class="form-content">
-
+      <div class="form-body">
+        
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nombre</mat-label>
+          <mat-label>Nombre del producto</mat-label>
           <input type="text" matInput formControlName="name" placeholder="Ej. Camiseta Deportiva">
           @if (name?.invalid && name?.touched) {
             <mat-error>
@@ -20,7 +21,8 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>URL de la imagen</mat-label>
-          <input type="text" matInput formControlName="imageUrl" placeholder="https://...">
+          <input type="text" matInput formControlName="imageUrl" placeholder="https://ejemplo.com/imagen.jpg">
+          <mat-icon matSuffix>image</mat-icon>
           @if (imageUrl?.invalid && imageUrl?.touched) {
             <mat-error>
               @if (imageUrl?.errors?.['required']) { La imagen es obligatoria }
@@ -29,11 +31,11 @@
           }
         </mat-form-field>
 
-        <div class="form-row">
+        <div class="grid-row">
           <mat-form-field appearance="outline">
             <mat-label>Precio</mat-label>
-            <input type="number" matInput formControlName="price" placeholder="0.00">
             <span matTextPrefix>$&nbsp;</span>
+            <input type="number" matInput formControlName="price" placeholder="0.00">
             @if (price?.invalid && price?.touched) {
               <mat-error>
                 @if (price?.errors?.['required']) { Requerido }
@@ -63,16 +65,16 @@
           }
         </mat-form-field>
 
-      </mat-card-content>
+      </div>
 
       <mat-divider></mat-divider>
 
-      <mat-card-actions>
-        <button mat-button type="button" routerLink="/products">Cancelar</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid">
-          Guardar
+      <div class="action-footer">
+        <button mat-button type="button" routerLink="/products" class="cancel-btn">Cancelar</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid" class="save-btn">
+          Guardar Producto
         </button>
-      </mat-card-actions>
+      </div>
     </form>
   </mat-card>
 </div>
