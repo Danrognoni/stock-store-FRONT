@@ -1,46 +1,45 @@
-<div class="container">
-  <div class="search-wrapper">
-    <mat-card class="search-card">
+<div class="main-container">
+  <div class="toolbar-section">
+    <div class="search-bar">
       <input 
         type="text" 
         #txtSearch 
-        class="search-input" 
+        class="modern-input" 
         placeholder="Buscar productos..." 
         (input)="onSearch(txtSearch.value)">
-    </mat-card>
+    </div>
   </div>
 
-  <section class="product-grid">
+  <div class="grid-layout">
     @for (product of products(); track product.id) {
-      <mat-card class="product-card">
-        <img mat-card-image [src]="product.imageUrl || 'assets/placeholder.png'" [alt]="product.name" class="card-image" />
+      <mat-card class="modern-card">
+        <div class="card-image-wrapper">
+          <img [src]="product.imageUrl || 'assets/placeholder.png'" [alt]="product.name">
+        </div>
         
-        <mat-card-header>
-          <mat-card-title>{{ product.name }}</mat-card-title>
-        </mat-card-header>
-        
-        <mat-card-content>
-        </mat-card-content>
+        <div class="card-body">
+          <h3 class="card-title">{{ product.name }}</h3>
+        </div>
 
         <mat-divider></mat-divider>
         
-        <mat-card-actions >
-          <a mat-button color="primary" [routerLink]='["/products/detail", product.id]'>Ver</a>
-          <a mat-button color="accent" [routerLink]='["/products/edit", product.id]'>Editar</a>
-          <button mat-button color="warn" (click)="deleteProduct(product.id)">Eliminar</button>
+        <mat-card-actions class="card-actions">
+          <a mat-button class="action-btn view-btn" [routerLink]='["/products/detail", product.id]'>Ver</a>
+          <a mat-button class="action-btn edit-btn" [routerLink]='["/products/edit", product.id]'>Editar</a>
+          <button mat-button color="warn" class="action-btn delete-btn" (click)="deleteProduct(product.id)">Eliminar</button>
         </mat-card-actions>
       </mat-card>
     }
-  </section>
+  </div>
 
-  <mat-paginator
-      class="paginator"
+  <div class="paginator-wrapper">
+    <mat-paginator
       [length]="totalElements()"
       [pageSize]="pageSize()"
       [pageSizeOptions]="[5, 10, 18, 25]"
       [pageIndex]="pageIndex()"
       (page)="changePage($event)"
       aria-label="Seleccionar página">
-  </mat-paginator>
+    </mat-paginator>
+  </div>
 </div>
-

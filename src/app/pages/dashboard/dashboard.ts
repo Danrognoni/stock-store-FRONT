@@ -110,13 +110,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     // cargar pedidos
-    this.supplierService.getSupplierOrders(0, 1).subscribe({
+    this.supplierService.getSupplierOrders(0,100).subscribe({
       next: (data: any) => {
-        const total = data.totalElements !== undefined ? data.totalElements : (data.length || 0);
+        console.log('📦 Respuesta API Pedidos:', data); 
+
+        let total = 0;
+
+        if (data.totalElements !== undefined) {
+          total = data.totalElements;
+        } else if (Array.isArray(data)) {
+          total = data.length;
+        } else if (data.content && Array.isArray(data.content)) {
+           total = data.content.length; 
+        } else if (data.total !== undefined) {
+          total = data.total;
+        }
+
         this.totalPedidosProveedores.set(total);
         this.actualizarGrafico();
       },
-      error: (e) => console.error('Error cargando pedidos a proveedores', e)
+      error: (e) => {
+        console.error('❌ Error cargando pedidos:', e);
+        this.totalPedidosProveedores.set(0); 
+      }
     });
 
     this.inventoryService.getAll().subscribe({
