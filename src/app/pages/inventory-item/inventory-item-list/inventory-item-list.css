@@ -1,92 +1,167 @@
-/* Contenedor principal */
+/* --- Variables para fácil configuración --- */
+:host {
+  --primary-color: #3f51b5;
+  --accent-color: #ff4081;
+  --warn-color: #f44336;
+  --success-color: #4caf50;
+  --bg-hover: #f5f7fa;
+  --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius-card: 16px;
+}
+
+/* Contenedor Principal */
 .container {
-  padding: 20px;
-  max-width: 1400px;
+  padding: 2rem;
+  max-width: 1400px; /* Un poco más ancho para que respire */
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Estilos de la barra de búsqueda */
-.search-wrapper {
+/* --- Panel de Control (Buscador y Filtros) --- */
+.control-panel {
   display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.search-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 5px 16px;
-  border-radius: 50px !important;
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
-.search-input {
+.search-field {
   width: 100%;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  padding: 10px;
-  background: transparent;
+  max-width: 350px;
+  font-size: 14px;
 }
 
-/* Grilla de inventario responsiva */
-.inventory-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+/* Customizando el toggle group para que parezca más moderno */
+mat-button-toggle-group {
+  border: none !important;
+  background-color: #f1f5f9;
+  border-radius: 50px !important; /* Redondito */
+  padding: 4px;
 }
 
-/* Tarjeta de inventario */
-.inventory-card {
+mat-button-toggle {
+  background-color: transparent !important;
+  border-radius: 50px !important;
+  border: none !important;
+  margin: 0 2px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+mat-button-toggle:hover {
+  background-color: rgba(0,0,0,0.05) !important;
+}
+
+mat-button-toggle-checked {
+  background-color: white !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+/* --- Tabla y Contenedor --- */
+.table-wrapper {
+  background: white;
+  border-radius: var(--radius-card);
+  overflow: hidden; /* Para que las esquinas de la tabla no se salgan */
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+table {
+  width: 100%;
+}
+
+/* Cabecera de la tabla */
+th.mat-header-cell {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  padding: 24px 16px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Celdas del cuerpo */
+td.mat-cell {
+  padding: 16px;
+  color: #1e293b;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Efecto Reactivo en las Filas (Hover) */
+tr.mat-row {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  cursor: default;
+}
+
+tr.mat-row:hover {
+  background-color: var(--bg-hover);
+  /* Un pequeño borde a la izquierda para indicar selección visual */
+  box-shadow: inset 4px 0 0 var(--primary-color); 
+}
+
+/* --- Badges de Stock (Pastillas de color) --- */
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px; /* Pill shape */
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.stock-badge.low {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.stock-badge.normal {
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* Columna de acciones alineada */
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end; /* Alineado a la derecha */
+}
+
+/* Botones de acción con hover suave */
+.action-btn {
+  transition: transform 0.2s ease, background-color 0.2s;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px); /* Saltito al pasar el mouse */
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.delete-btn:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Estado Vacío */
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  border-radius: 12px !important;
-}
-
-.inventory-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-/* Imagen */
-.card-image {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-  background-color: #f5f5f5;
-}
-
-mat-card-header {
-  padding: 16px 16px 8px;
-}
-
-mat-card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-mat-card-content {
-  flex-grow: 1;
-  padding: 0 16px 16px;
-}
-
-mat-card-actions {
-  padding: 8px;
-}
-
-/* Paginador */
-.paginator {
-  border-radius: 8px;
-  margin-top: 10px;
+  align-items: center;
+  gap: 10px;
 }

@@ -31,8 +31,9 @@ import { RouterLink } from '@angular/router';
   templateUrl: './inventory-item-list.html',
   styleUrl: './inventory-item-list.css'
 })
-export class InventoryItemList implements OnInit {
 
+
+export class InventoryItemList implements OnInit {
   private inventoryService = inject(inventoryItemService);
 
   @ViewChild('filterGroup') filterGroup!: MatButtonToggleGroup;
@@ -42,36 +43,33 @@ export class InventoryItemList implements OnInit {
   searchTerm: string = '';
 
   displayedColumns: string[] = ['id', 'product', 'stock', 'price', 'actions'];
+  private searchTimer: any;
 
   ngOnInit() {
     this.loadAll();
   }
 
-  onSearch(term: string) {
-    this.searchTerm = term;
+onSearch(input: string) {
+    const term = input.trim(); 
+    
+    if (this.searchTimer) clearTimeout(this.searchTimer);
 
-    if (this.filterGroup) {
-      this.filterGroup.value = 'all';
-    }
-
-    if (!term) {
-      this.loadAll();
-      return;
-    }
-
-    this.loading.set(true);
-    this.inventoryService.searchInventoryItem(term).subscribe({
-      next: (data) => {
-        const list = Array.isArray(data) ? data : (data.content || []);
-        this.items.set(list);
-        this.loading.set(false);
-      },
-      error: (e) => {
-        console.error(e);
-        this.loading.set(false);
+    this.searchTimer = setTimeout(() => {
+      if (!term) {
+        this.loadAll(); 
+      } else {
+    
+        this.inventoryService.searchInventoryItem(term).subscribe({
+            next: (data) => {
+               const list = data.content || [];
+               this.items.set(list);
+            },
+            error: (e) => console.error(e)
+        });
       }
-    });
+    }, 400);
   }
+
 
   onFilterChange(filter: string) {
     this.searchTerm = '';
@@ -81,12 +79,9 @@ export class InventoryItemList implements OnInit {
       case 'low':
         this.inventoryService.getLowStockItems(15).subscribe(this.handleResponse());
         break;
-
       case 'top':
         this.inventoryService.getTopStockItems().subscribe(this.handleResponse());
         break;
-
-      case 'all':
       default:
         this.loadAll();
         break;
@@ -110,5 +105,13 @@ export class InventoryItemList implements OnInit {
   loadAll() {
     this.loading.set(true);
     this.inventoryService.getAll().subscribe(this.handleResponse());
+  }
+
+  deleteItem(id: string) {
+    if (confirm('¿Seguro que querés borrar este ítem?')) {
+      this.inventoryService.deleteInventoryItem(id).subscribe(() => {
+        this.loadAll();
+      });
+    }
   }
 }

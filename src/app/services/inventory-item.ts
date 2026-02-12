@@ -53,9 +53,9 @@ export class inventoryItemService {
     return this.http.get<any>(url);
   }
 
-  searchInventoryItem(name : string){
-    const url = `${this.apiUrl}/${name}`;
-    return this.http.get<any>(url);
+searchInventoryItem(name: string): Observable<any> {
+    let params = new HttpParams().set('name', name); 
+    return this.http.get<any>(`${this.apiUrl}/search`, { params });
   }
 
   postInventoryItem(data : InventoryItemRequest){
