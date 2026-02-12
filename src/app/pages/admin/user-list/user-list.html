@@ -48,11 +48,14 @@
         <mat-divider></mat-divider>
 
         <mat-card-actions align="end">
+        @if(!(user.role == "ADMIN")){
           <button mat-icon-button [color]="user.banned ? 'accent' : 'warn'"
                   (click)="toggleBan(user)"
                   [matTooltip]="user.banned ? 'Desbanear usuario' : 'Banear usuario'">
             <mat-icon>{{ user.banned ? 'check_circle' : 'block' }}</mat-icon>
           </button>
+        }
+          
 
          
 
