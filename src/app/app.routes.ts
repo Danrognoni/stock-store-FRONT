@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Router, Routes } from '@angular/router';
 
 // Componentes de "Productos"
 import { ProductListComponent } from './pages/product/product-list-component/product-list-component';
@@ -40,18 +40,31 @@ import { UserList } from './pages/admin/user-list/user-list';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { SupplierOrderListComponent } from './pages/supplier/supplier-order-list/supplier-order-list';
 import { UserUpdate } from './pages/user/user-update/user-update';
+import { inject } from '@angular/core';
+import { AuthenticationService } from './services/authentication-service';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+ { 
+    path: '', 
+    pathMatch: 'full',
+    redirectTo: 'auth/login'
+  },
 
-  // Sección Autenticación
   {
     path: "auth",
     component: AuthenticationLayout,
+    canActivate: [ (route, state) => {
+        const authService = inject(AuthenticationService);
+        const router = inject(Router);
+        if (authService.currentUser()) {
+            router.navigate(['/home']);
+            return false;
+        }
+        return true;
+    }], 
     children: [
       { path: "login", component: LoginComponent },
-      { path: "register", component: RegisterComponent },
-      { path: "forgot-password", component: ForgotPassword }
+   
     ]
   },
   {

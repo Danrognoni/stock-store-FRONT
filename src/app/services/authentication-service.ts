@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, effect } from '@angular/core';
 import { tap } from 'rxjs';
 import { UserRequest } from '../models/user/user-request';
 import { AuthenticationRequest } from '../models/authentication/authentication-request';
@@ -7,7 +7,6 @@ import { AuthenticationPassword } from '../models/authentication/authentication-
 import { UserUpdatePass } from '../models/user/user-update-pass';
 import { UserUpdate } from '../models/user/user-update';
 import { UserDet } from '../models/user/user-det';
-import { UserDetail } from '../pages/user/user-detail/user-detail';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +15,24 @@ export class AuthenticationService {
   private readonly apiUrl = "http://localhost:8080/api";
   private readonly userUrl = 'http://localhost:8080/api/users';
   private http = inject(HttpClient);
-  currentUser = signal<any>(null);
+  
+  currentUser = signal<any>(this.getUserFromStorage());
+
+  constructor() {
+    effect(() => {
+      const user = this.currentUser();
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('currentUser');
+      }
+    });
+  }
+
+  private getUserFromStorage() {
+    const userStr = localStorage.getItem('currentUser');
+    return userStr ? JSON.parse(userStr) : null;
+  }
 
   register(data: UserRequest) {
     const url = `${this.apiUrl}/auth/register`;
@@ -92,12 +108,10 @@ export class AuthenticationService {
   }
 
   getUsersByEmail(email: string) {
-  const url = `${this.apiUrl}/auth/admin/user/search`;
-  
-  let params = new HttpParams().set('email', email);
-
-  return this.http.get<UserDet>(url, { params });
-}
+    const url = `${this.apiUrl}/auth/admin/user/search`;
+    let params = new HttpParams().set('email', email);
+    return this.http.get<UserDet>(url, { params });
+  }
 
   promoteToEmployee(id: string) {
     const url = `${this.apiUrl}/auth/admin/promote/employee/${id}`;
