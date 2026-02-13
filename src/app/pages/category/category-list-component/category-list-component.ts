@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CategoryService } from '../../../services/category';
 import { RouterLink } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 interface Toast {
   message: string;
@@ -13,7 +14,7 @@ interface Toast {
 
 @Component({
   selector: 'app-category-list-component',
-  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatIconModule, RouterLink],
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatIconModule, RouterLink, MatFormFieldModule],
   templateUrl: './category-list-component.html',
   styleUrl: './category-list-component.css',
 })

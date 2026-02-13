@@ -1,57 +1,64 @@
-<mat-card class="search-container my-6 p-6">
-  <div>
-    <input
-      type="text"
-      #txtSearch
-      placeholder="Buscar categoría por nombre..."
-      (input)="onSearch(txtSearch.value)"
-      class="p-3 w-full"
-    >
-  </div>
-</mat-card>
-
-<section class="category-grid">
-  @for (c of categories(); track c.id) {
-    <mat-card class="category-card my-6 mr-6 p-6">
-      <mat-card-header>
-        <mat-card-title>{{ c.name }}</mat-card-title>
-      </mat-card-header>
-
-      <mat-card-actions>
-        <a mat-button [routerLink]='["/products/category/edit", c.id]'>Editar</a>
-        <button mat-button color="warn" (click)="deleteCategory(c.id)">Eliminar</button>
-      </mat-card-actions>
-    </mat-card>
-  } @empty {
-    <p>No se encontraron categorías.</p>
-  }
-</section>
-
-<mat-paginator
-    [length]="totalElements()"
-    [pageSize]="pageSize()"
-    [pageIndex]="pageIndex()"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    (page)="changePage($event)"
-    aria-label="Seleccionar página">
-</mat-paginator>
-
-<div class="container p-4 mx-auto relative"> @if (notification()) {
-    <div
-      class="toast"
-      [class.success]="notification()?.type === 'success'"
-      [class.error]="notification()?.type === 'error'"
-      animate.enter="slide-in"
-      animate.leave="slide-out">
-
-      <span class="icon">
-        @if(notification()?.type === 'success') { ✓ } @else { ⚠ }
-      </span>
-      {{ notification()?.message }}
+<div class="dashboard-container">
+  
+  <header class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Categorías</h1>
+      <span class="page-subtitle">Gestiona el catálogo de productos</span>
     </div>
-  }
 
-  <mat-card appearance="outlined">
-    </mat-card>
+    <div class="search-wrapper">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input 
+        type="text" 
+        #txtSearch 
+        (input)="onSearch(txtSearch.value)"
+        placeholder="Buscar categoría..."
+        class="custom-input"
+      >
+    </div>
+  </header>
+
+  <div class="cards-grid">
+    @for (c of categories(); track c.id) {
+      <div class="pro-card">
+        <div class="card-accent"></div>
+        
+        <div class="card-body">
+          <div class="card-info">
+            <h3 class="card-title">{{ c.name }}</h3>
+            <span class="card-id">ID: #{{ c.id }}</span>
+          </div>
+          
+          <div class="card-icon">
+            {{ c.name.charAt(0)  }}
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-icon edit" [routerLink]='["/products/category/edit", c.id]' title="Editar">
+            <mat-icon>edit_note</mat-icon>
+          </button>
+          <button class="btn-icon delete" (click)="deleteCategory(c.id)" title="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon>folder_off</mat-icon>
+        <p>No hay resultados para tu búsqueda.</p>
+      </div>
+    }
+  </div>
+
+  <div class="paginator-wrapper">
+    <mat-paginator
+      [length]="totalElements()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="changePage($event)"
+      aria-label="Seleccionar página">
+    </mat-paginator>
+  </div>
 
 </div>
