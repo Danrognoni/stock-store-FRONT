@@ -1,0 +1,49 @@
+/* Utilidades de Iconos */
+.icon-fix {
+  vertical-align: middle;
+  display: inline-flex;
+  line-height: 1;
+}
+
+.material-icons-outlined {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ajustes de Angular Material */
+::ng-deep .search-field-dense .mat-mdc-form-field-flex {
+  background-color: white !important;
+}
+
+::ng-deep .no-bottom-padding .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 0; 
+}
+
+/* Snackbars (Notificaciones) */
+::ng-deep .success-snackbar {
+  --mdc-snackbar-container-color: #059669 !important; 
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+::ng-deep .error-snackbar {
+  --mdc-snackbar-container-color: #dc2626 !important; 
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .mat-mdc-raised-button {
+    width: 100%;
+  }
+}
+
+.supplier-card {
+  display: flex;
+  flex-direction: column; 
+}

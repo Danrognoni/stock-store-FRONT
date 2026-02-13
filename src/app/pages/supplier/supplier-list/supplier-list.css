@@ -1,4 +1,10 @@
-/* Ajuste para que los iconos pequeños se alineen bien con el texto */
+/* Utilidades de Iconos */
+.icon-fix {
+  vertical-align: middle;
+  display: inline-flex;
+  line-height: 1;
+}
+
 .material-icons-outlined {
   font-size: 18px !important;
   width: 18px !important;
@@ -8,30 +14,36 @@
   justify-content: center;
 }
 
-/* Animación de entrada suave para la página */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-/* Personalización del Search Field para que sea más compacto */
+/* Ajustes de Angular Material */
 ::ng-deep .search-field-dense .mat-mdc-form-field-flex {
   background-color: white !important;
 }
 
-/* Hover effects adicionales para las tarjetas */
-.supplier-card {
-  /* Asegura que el footer se quede abajo */
-  display: flex;
-  flex-direction: column; 
+::ng-deep .no-bottom-padding .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 0; 
 }
 
-/* Ajustes para modo oscuro si tu app lo soporta automáticamente mediante clase 'dark' en body/html,
-   si no, estos estilos simplemente se ignorarán */
-:host-context(.dark) ::ng-deep .search-field-dense .mat-mdc-form-field-flex {
-  background-color: #1e293b !important; /* slate-800 */
+/* Snackbars (Notificaciones) */
+::ng-deep .success-snackbar {
+  --mdc-snackbar-container-color: #059669 !important; 
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+::ng-deep .error-snackbar {
+  --mdc-snackbar-container-color: #dc2626 !important; 
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .mat-mdc-raised-button {
+    width: 100%;
+  }
+}
+
+.supplier-card {
+  display: flex;
+  flex-direction: column; 
 }

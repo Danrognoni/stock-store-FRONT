@@ -69,6 +69,13 @@
           </button>
         }
 
+        @if(user.role === 'EMPLOYEE'){
+          <button mat-menu-item routerLink="/home/supplier-orders">
+            <mat-icon class="text-indigo-500">local_shipping</mat-icon>
+            <span>Pedidos a proveedor</span>
+          </button>
+        }
+
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">
           <mat-icon class="text-red-400">logout</mat-icon>

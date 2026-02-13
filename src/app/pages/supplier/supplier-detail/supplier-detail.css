@@ -1,20 +1,3 @@
-/* Animación de entrada suave */
-@keyframes fadeInUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
-
-.animate-fade-in {
-  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Utilitarios para iconos */
 .icon-fix {
   vertical-align: middle;
   line-height: 1;
@@ -26,12 +9,10 @@
   height: 18px !important;
 }
 
-/* Ajustes para botones de material dentro del layout Tailwind */
 .mat-mdc-button, .mat-mdc-stroked-button {
-  border-radius: 8px !important; /* Bordes más suaves en botones secundarios */
+  border-radius: 8px !important;
 }
 
-/* Efecto hover suave para las tarjetas de productos */
 .hover\:shadow-indigo-500\/30:hover {
   box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3), 0 8px 10px -6px rgba(99, 102, 241, 0.1);
 }

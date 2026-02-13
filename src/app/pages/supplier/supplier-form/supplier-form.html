@@ -1,14 +1,14 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4 animate-fade-in">
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
 
   <div class="w-full max-w-2xl">
     <div class="mb-6">
-      <a routerLink="/suppliers" class="inline-flex items-center text-slate-500 hover:text-indigo-600 transition-colors text-sm font-medium">
+      <a routerLink="/suppliers" class="inline-flex items-center text-gray-500 hover:text-indigo-600 transition-colors text-sm font-medium">
         <mat-icon class="text-base mr-1 icon-fix">arrow_back</mat-icon>
         Volver al listado
       </a>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
 
       <div class="bg-indigo-600 px-8 py-6">
         <h2 class="text-2xl font-bold text-white flex items-center gap-2">
@@ -27,7 +27,7 @@
           <div class="col-span-1 md:col-span-2">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Nombre de la Empresa / Proveedor</mat-label>
-              <mat-icon matPrefix class="text-slate-400 mr-2">business</mat-icon>
+              <mat-icon matPrefix class="text-gray-400 mr-2">business</mat-icon>
               <input matInput formControlName="name" placeholder="Ej. Tech Solutions S.A.">
               @if (formGroup.get('name')?.hasError('required')) {
                 <mat-error>El nombre es obligatorio</mat-error>
@@ -38,7 +38,7 @@
           <div class="col-span-1">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Correo Electrónico</mat-label>
-              <mat-icon matPrefix class="text-slate-400 mr-2">email</mat-icon>
+              <mat-icon matPrefix class="text-gray-400 mr-2">email</mat-icon>
               <input matInput formControlName="email" type="email" placeholder="contacto@ejemplo.com">
               @if (formGroup.get('email')?.hasError('email')) {
                 <mat-error>Email inválido</mat-error>
@@ -51,20 +51,20 @@
           <div class="col-span-1">
             <mat-form-field appearance="outline" class="w-full">
             <mat-label>Teléfono de Contacto</mat-label>
-            <mat-icon matPrefix class="text-slate-400 mr-2">phone</mat-icon>
+            <mat-icon matPrefix class="text-gray-400 mr-2">phone</mat-icon>
             <input matInput type="number" formControlName="phoneNumber" placeholder="+54 11 1234 5678">
             @if (formGroup.get('phoneNumber')?.hasError('required')) {
                 <mat-error>El teléfono es obligatorio</mat-error>
             } @else if (formGroup.get('phoneNumber')?.hasError('pattern')) {
                 <mat-error>Solo se permiten números</mat-error>
             }
-</mat-form-field>
+            </mat-form-field>
           </div>
 
           <div class="col-span-1 md:col-span-2">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Productos Asociados</mat-label>
-              <mat-icon matPrefix class="text-slate-400 mr-2">inventory_2</mat-icon>
+              <mat-icon matPrefix class="text-gray-400 mr-2">inventory_2</mat-icon>
               <mat-select formControlName="productIds" multiple placeholder="Seleccionar productos...">
                 @for (p of products(); track p.id) {
                   <mat-option [value]="p.id">{{p.name}}</mat-option>
@@ -76,8 +76,8 @@
 
         </div>
 
-        <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-slate-700">
-          <button mat-button type="button" routerLink="/suppliers" class="!text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700">
+        <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
+          <button mat-button type="button" routerLink="/suppliers" class="!text-gray-600 hover:bg-gray-100">
             Cancelar
           </button>
 

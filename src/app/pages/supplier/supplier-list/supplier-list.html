@@ -1,18 +1,18 @@
-<div class="container mx-auto p-4 md:p-8 animate-fade-in">
+<div class="container mx-auto p-4 md:p-8 bg-white min-h-screen">
 
   <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <div>
-      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Proveedores</h1>
-      <p class="text-slate-500 dark:text-slate-400 mt-1">Gestiona tu red de contactos y distribuidores</p>
+      <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Proveedores</h1>
+      <p class="text-gray-500 mt-1">Gestiona tu red de contactos y distribuidores</p>
     </div>
 
     <mat-form-field appearance="outline" class="w-full md:w-80 search-field-dense" subscriptSizing="dynamic">
-      <mat-icon matPrefix class="text-slate-400 mr-2">search</mat-icon>
+      <mat-icon matPrefix class="text-gray-400 mr-2">search</mat-icon>
       <input 
         matInput 
         type="text" 
         #txtSearch 
-        placeholder="Buscar por email de proveedor..." 
+        placeholder="Buscar por email..." 
         (input)="onSearch(txtSearch.value)"
       >
       @if (txtSearch.value) {
@@ -25,62 +25,62 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     @for (s of supplier(); track s.id) {
-      <mat-card class="supplier-card h-full flex flex-col justify-between overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all duration-300 group">
+      <mat-card class="supplier-card bg-white h-full flex flex-col justify-between overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group">
         
         <div class="p-6">
           <div class="flex items-start justify-between mb-4">
-            <div class="h-12 w-12 rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300 flex items-center justify-center font-bold text-lg border border-indigo-100 dark:border-indigo-800/50">
+            <div class="h-12 w-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg border border-indigo-100">
               {{ s.name.charAt(0) }}
             </div>
           </div>
 
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-1 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+          <h3 class="text-lg font-semibold text-gray-900 mb-1 line-clamp-1 group-hover:text-indigo-600 transition-colors">
             {{ s.name }}
           </h3>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mb-5 break-all line-clamp-1">
+          <p class="text-sm text-gray-500 mb-5 break-all line-clamp-1">
             {{ s.email }}
           </p>
 
           <div class="space-y-3">
-            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-              <mat-icon class="material-icons-outlined text-slate-400 text-base leading-none w-4 h-4">phone</mat-icon>
+            <div class="flex items-center gap-3 text-sm text-gray-600">
+              <mat-icon class="material-icons-outlined text-gray-400 text-base leading-none w-4 h-4">phone</mat-icon>
               <span>{{ s.phoneNumber }}</span>
             </div>
-            <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-              <mat-icon class="material-icons-outlined text-slate-400 text-base leading-none w-4 h-4">inventory_2</mat-icon>
+            <div class="flex items-center gap-3 text-sm text-gray-600">
+              <mat-icon class="material-icons-outlined text-gray-400 text-base leading-none w-4 h-4">inventory_2</mat-icon>
               <span>{{ s.products?.length || 0 }} productos</span>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-50 dark:bg-slate-800/50 px-4 py-3 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
+        <div class="bg-white px-4 py-3 border-t border-gray-100 flex justify-between items-center">
           <a mat-button color="primary" [routerLink]="['/suppliers/detail', s.id]" class="!px-4">
             DETALLES
           </a>
           <div class="flex">
             <a mat-icon-button [routerLink]="['/suppliers/edit', s.id]" matTooltip="Editar">
-              <mat-icon class="text-slate-500 hover:text-indigo-600 transition-colors">edit</mat-icon>
+              <mat-icon class="text-gray-400 hover:text-indigo-600 transition-colors">edit</mat-icon>
             </a>
             <button mat-icon-button (click)="deleteSupplier(s.id)" matTooltip="Eliminar">
-              <mat-icon class="text-slate-500 hover:text-red-500 transition-colors">delete</mat-icon>
+              <mat-icon class="text-gray-400 hover:text-red-500 transition-colors">delete</mat-icon>
             </button>
           </div>
         </div>
 
       </mat-card>
     } @empty {
-      <div class="col-span-full py-16 flex flex-col items-center justify-center text-center text-slate-400">
-        <div class="bg-slate-100 dark:bg-slate-800 p-6 rounded-full mb-4">
+      <div class="col-span-full py-16 flex flex-col items-center justify-center text-center text-gray-400">
+        <div class="bg-gray-50 p-6 rounded-full mb-4">
           <mat-icon class="!w-12 !h-12 text-5xl">search_off</mat-icon>
         </div>
-        <h3 class="text-lg font-medium text-slate-900 dark:text-white">No se encontraron proveedores</h3>
+        <h3 class="text-lg font-medium text-gray-900">No se encontraron proveedores</h3>
         <p>Intenta ajustar tu búsqueda o agrega un nuevo proveedor.</p>
       </div>
     }
   </div>
 
   <mat-paginator
-      class="mt-8 rounded-lg border border-slate-200 dark:border-slate-700 !bg-transparent"
+      class="mt-8 rounded-lg border border-gray-200 !bg-white"
       [length]="totalElements()"
       [pageSize]="pageSize()"
       [pageIndex]="pageIndex()"
