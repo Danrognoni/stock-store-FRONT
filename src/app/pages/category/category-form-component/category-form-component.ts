@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../services/category';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface Toast {
   message: string;
@@ -23,7 +24,8 @@ export interface Toast {
     MatFormFieldModule,
     MatCardModule,
     MatDividerModule,
-    RouterLink
+    RouterLink, 
+    MatIconModule
   ],
   templateUrl: './category-form-component.html',
   styleUrl: './category-form-component.css',

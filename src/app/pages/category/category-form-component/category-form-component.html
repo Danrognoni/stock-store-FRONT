@@ -1,35 +1,38 @@
-<div class="container p-4 mx-auto max-w-2xl relative">
-  
+<div class="form-container">
+
   @if (notification()) {
-    <div 
-      class="toast" 
-      [class.success]="notification()?.type === 'success'"
-      [class.error]="notification()?.type === 'error'"
-      animate.enter="slide-in"
-      animate.leave="slide-out">
-      
-      <span class="icon">
-        @if(notification()?.type === 'success') { ✓ } @else { ⚠ }
-      </span>
-      {{ notification()?.message }}
+    <div class="toast-wrapper">
+      <div class="toast"
+           [class.success]="notification()?.type === 'success'"
+           [class.error]="notification()?.type === 'error'">
+        <mat-icon class="toast-icon">
+          {{ notification()?.type === 'success' ? 'check_circle' : 'error' }}
+        </mat-icon>
+        <span class="toast-message">{{ notification()?.message }}</span>
+      </div>
     </div>
   }
 
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        {{ isEditMode() ? 'Editar Categoría' : 'Nueva Categoría' }}
-      </mat-card-title>
-    </mat-card-header>
+  <div class="pro-card form-card">
     
-    <mat-divider></mat-divider>
-    
-    <mat-card-content class="pt-4">
-      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <div class="card-header">
+      <div class="header-icon">
+        <mat-icon>{{ isEditMode() ? 'edit' : 'add_circle' }}</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>{{ isEditMode() ? 'Editar Categoría' : 'Nueva Categoría' }}</h1>
+        <p>Ingresa los detalles para gestionar tu catálogo</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
         
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="full-width-input">
           <mat-label>Nombre de la Categoría</mat-label>
           <input matInput formControlName="name" placeholder="Ej: Bebidas">
+          <mat-icon matSuffix>category</mat-icon>
+          
           @if (name?.invalid && name?.touched) {
             <mat-error>
               @if (name?.hasError('required')) { El nombre es requerido }
@@ -39,16 +42,19 @@
           }
         </mat-form-field>
 
-        <div class="flex justify-end gap-2 mt-4">
-          <button mat-button type="button" routerLink="/products/category/list">
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/products/category/list" class="btn-cancel">
             Cancelar
           </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="formGroup.invalid">
-            {{ isEditMode() ? 'Actualizar' : 'Guardar' }}
+          
+          <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid" class="btn-submit">
+            <mat-icon>save</mat-icon>
+            {{ isEditMode() ? 'Actualizar Cambios' : 'Guardar Categoría' }}
           </button>
         </div>
-        
+
       </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
+
 </div>

@@ -1,70 +1,140 @@
-.toast {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 100;
-  
+/* --- Contenedor Principal --- */
+.form-container {
+  min-height: 80vh; /* Ocupa buena parte de la pantalla */
   display: flex;
-  align-items: center;
-  gap: 12px;
-  
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
+  justify-content: center;
+  align-items: flex-start; /* Alineado arriba con un poco de margen */
+  padding-top: 60px;
+  background-color: #f8fafc; /* Fondo gris suave */
+  position: relative;
+}
+
+/* --- Tarjeta Pro --- */
+.pro-card {
   background: white;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15), 0 4px 6px rgba(0,0,0,0.05);
-  
-  font-weight: 500;
-  font-size: 0.95rem;
-  min-width: 300px;
+  width: 100%;
+  max-width: 500px; /* Ancho máximo elegante */
+  border-radius: 16px; /* Bordes más redondeados */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
   overflow: hidden;
 }
 
-
-/* Tipos de alerta */
-.toast.success {
-  border-left: 6px solid #4caf50;
-  color: #2e7d32;
+/* --- Header del Formulario --- */
+.card-header {
+  padding: 32px 32px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #fff;
 }
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #eff6ff; /* Azul muy claro */
+  color: #3b82f6; /* Azul primario */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.header-text p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* --- Cuerpo del Formulario --- */
+.card-body {
+  padding: 32px;
+}
+
+.full-width-input {
+  width: 100%;
+  font-size: 15px;
+}
+
+/* Ajustes finos de Angular Material para que se vea moderno */
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 8px; /* Espacio para el error */
+}
+
+/* --- Botones y Acciones --- */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed #e2e8f0; /* Separador sutil */
+}
+
+.btn-submit {
+  padding: 0 24px;
+  height: 48px; /* Botones más altos son más modernos */
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn-cancel {
+  height: 48px;
+  color: #64748b;
+}
+
+/* --- Notificaciones Flotantes (Toasts) --- */
+.toast-wrapper {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  min-width: 320px;
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 6px solid #ccc;
+  margin-bottom: 12px;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.success {
+  border-left-color: #22c55e;
+  background-color: #f0fdf4;
+}
+.toast.success .toast-icon { color: #16a34a; }
+.toast.success .toast-message { color: #14532d; }
 
 .toast.error {
-  border-left: 6px solid #f44336;
-  color: #c62828;
+  border-left-color: #ef4444;
+  background-color: #fef2f2;
 }
+.toast.error .toast-icon { color: #dc2626; }
+.toast.error .toast-message { color: #7f1d1d; }
 
-.icon {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-
-.slide-in {
-  animation: slideInRight 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.slide-out {
-  animation: slideOutRight 0.4s cubic-bezier(0.5, 0, 1, 0.5) forwards;
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-.w-full{
-    margin-top: 1.5rem;
-}
-@keyframes slideOutRight {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(100%) scale(0.9);
-  }
+.toast-message {
+  font-weight: 500;
+  font-size: 14px;
 }
