@@ -15,6 +15,5 @@ export class HomeLayout {
         {label: "Inventario", route: "/inventory", roles: ['ADMIN', 'EMPLOYEE']},
         {label: "Proveedores", route:"/suppliers", roles: ['ADMIN', 'EMPLOYEE']},
         {label: "Tienda Online", route: "/online-store", roles: ['ADMIN', 'USER']},
-        {label: 'Dashboard', route: '/home/dashboard', roles: ['ADMIN', 'EMPLOYEE'] },
     ]
 }

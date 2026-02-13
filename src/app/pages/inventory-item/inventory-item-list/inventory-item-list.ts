@@ -42,7 +42,7 @@ export class InventoryItemList implements OnInit {
   loading = signal<boolean>(false);
   searchTerm: string = '';
 
-  displayedColumns: string[] = ['id', 'product', 'stock', 'price', 'actions'];
+  displayedColumns: string[] = ['id', 'product', 'stock', 'price', 'actions', 'expireDate'];
   private searchTimer: any;
 
   ngOnInit() {
