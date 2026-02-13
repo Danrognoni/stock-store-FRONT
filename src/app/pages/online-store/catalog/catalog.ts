@@ -34,7 +34,7 @@ export class StoreCatalogComponent implements OnInit {
   private wishlistService = inject(WishlistService);
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
-
+  isAdmin = signal<boolean>(false);
   products = signal<any[]>([]);
   categories = signal<any[]>([]);
   selectedCategoryId = signal<number | null>(null);
@@ -94,18 +94,18 @@ export class StoreCatalogComponent implements OnInit {
   }
 
   addToCart(product: any) {
-     if (this.isInCart(product.id)) return;
-     this.cartService.addItemToCart(product.id, 1).subscribe({
-       next: () => {
-         this.snackBar.open('Agregado al carrito', 'Ok', { duration: 2000 });
-         this.cartProductIds.update(ids => {
-           const newSet = new Set(ids);
-           newSet.add(product.id.toString());
-           return newSet;
-         });
-       },
-       error: (err) => this.snackBar.open('Error al agregar', 'Cerrar')
-     });
+    if (this.isInCart(product.id)) return;
+    this.cartService.addItemToCart(product.id, 1).subscribe({
+      next: () => {
+        this.snackBar.open('Agregado al carrito', 'Ok', { duration: 2000 });
+        this.cartProductIds.update(ids => {
+          const newSet = new Set(ids);
+          newSet.add(product.id.toString());
+          return newSet;
+        });
+      },
+      error: (err) => this.snackBar.open('Error al agregar', 'Cerrar')
+    });
   }
 
   addToWishlist(product: any) {
