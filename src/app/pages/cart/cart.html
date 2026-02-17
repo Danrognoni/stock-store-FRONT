@@ -1,71 +1,74 @@
-<div class="cart-container">
+<div class="max-w-7xl mx-auto px-4 py-8 md:px-6">
 
-  <header class="cart-header">
-    <h1>Tu Carrito</h1>
-    <span class="item-count">{{ cartItems().length }} artículos</span>
+  <header class="mb-8 flex items-baseline gap-3 border-b border-gray-100 pb-4">
+    <h1 class="text-3xl font-bold text-gray-900 m-0">Tu Carrito</h1>
+    <span class="text-lg text-gray-500 font-medium">{{ cartItems().length }} artículos</span>
   </header>
 
   @if (loading()) {
-    <div class="loading-state">
-      <p>Cargando tu selección...</p>
+    <div class="flex items-center justify-center p-12 bg-gray-50 rounded-2xl animate-pulse">
+      <p class="text-gray-500 font-medium">Cargando tu selección...</p>
     </div>
   }
 
   @if (!loading() && cartItems().length === 0) {
-    <div class="empty-state">
-      <div class="empty-icon-bg">
-        <mat-icon>shopping_bag</mat-icon>
+    <div class="flex flex-col items-center justify-center py-20 px-4 text-center bg-white rounded-3xl border border-dashed border-gray-300">
+      <div class="mb-6 p-6 bg-blue-50 text-blue-600 rounded-full">
+        <mat-icon class="!w-12 !h-12 !text-[48px] !leading-none">shopping_bag</mat-icon>
       </div>
-      <h3>Tu carrito está vacío</h3>
-      <p>Parece que aún no has descubierto nuestros productos.</p>
-      <button mat-flat-button color="primary" [routerLink]='["/online-store"]'>
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">Tu carrito está vacío</h3>
+      <p class="text-gray-500 mb-8 max-w-md">Parece que aún no has descubierto nuestros productos.</p>
+      <button mat-flat-button color="primary" [routerLink]='["/online-store"]' class="!px-8 !py-6 !rounded-xl !text-lg">
         Explorar la Tienda
       </button>
     </div>
   }
 
   @else if (!loading() && cartItems().length > 0) {
-    <div class="cart-layout">
+    <div class="flex flex-col lg:flex-row gap-8 items-start">
 
-      <div class="cart-items-column">
+      <div class="flex-1 flex flex-col gap-4 w-full">
         @for (item of cartItems(); track item.id) {
-          <div class="product-card">
+          <div class="flex bg-white border border-gray-200 rounded-2xl p-4 gap-4 shadow-sm hover:shadow-md transition-shadow">
 
-            <div class="product-image">
+            <div class="w-24 h-24 md:w-32 md:h-32 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
               @if(item.product.imageUrl) {
-                 <img [src]="item.product.imageUrl" [alt]="item.product.name">
+                 <img [src]="item.product.imageUrl" [alt]="item.product.name" class="w-full h-full object-cover">
               } @else {
-                 <mat-icon>image</mat-icon>
+                 <mat-icon class="text-gray-400 !w-8 !h-8 !text-[32px]">image</mat-icon>
               }
             </div>
 
-            <div class="product-details">
-              <div class="header-row">
-                <h3>{{ item.product.name }}</h3>
-                <button mat-icon-button class="delete-btn" (click)="removeItem(item.id)">
+            <div class="flex-1 flex flex-col justify-between">
+              <div class="flex justify-between items-start gap-2">
+                <h3 class="text-lg md:text-xl font-semibold text-gray-900 m-0 line-clamp-2">{{ item.product.name }}</h3>
+                <button mat-icon-button class="text-gray-400 hover:text-red-500 transition-colors -mt-2 -mr-2" (click)="removeItem(item.id)">
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
 
-              <p class="category text-muted">Precio unitario: {{ item.product.price | currency }}</p>
+              <p class="text-sm text-gray-500 font-medium">Precio unitario: {{ item.product.price | currency }}</p>
 
-              <div class="actions-row">
+              <div class="flex flex-wrap justify-between items-end gap-4 mt-3">
                 
-                <div class="quantity-control">
+                <div class="flex items-center bg-gray-100 rounded-full p-1">
                   <button mat-icon-button 
                           (click)="updateQuantity(item, -1)"
-                          [disabled]="item.quantity <= 1">
-                    <mat-icon>remove</mat-icon>
+                          [disabled]="item.quantity <= 1"
+                          class="!w-8 !h-8 !p-0 flex items-center justify-center text-gray-600 disabled:text-gray-300">
+                    <mat-icon class="!text-[18px] !w-[18px] !h-[18px]">remove</mat-icon>
                   </button>
 
-                  <span class="value">{{ item.quantity }}</span>
+                  <span class="w-8 text-center font-bold text-gray-900">{{ item.quantity }}</span>
 
                   <button mat-icon-button 
-                          (click)="updateQuantity(item, 1)">
-                    <mat-icon>add</mat-icon>
+                          (click)="updateQuantity(item, 1)"
+                          class="!w-8 !h-8 !p-0 flex items-center justify-center text-gray-600">
+                    <mat-icon class="!text-[18px] !w-[18px] !h-[18px]">add</mat-icon>
                   </button>
                 </div>
-                <div class="subtotal">
+
+                <div class="text-lg font-bold text-gray-900">
                   {{ item.product.price * item.quantity | currency }}
                 </div>
               </div>
@@ -74,34 +77,35 @@
         }
       </div>
 
-      <div class="cart-summary-column">
-        <div class="summary-card">
-          <h2>Resumen de Compra</h2>
+      <div class="w-full lg:w-[400px] flex-shrink-0">
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 sticky top-6 shadow-sm">
+          <h2 class="text-xl font-bold text-gray-900 mb-6">Resumen de Compra</h2>
 
-          <div class="summary-row">
+          <div class="flex justify-between mb-4 text-gray-600">
             <span>Subtotal</span>
-            <span>{{ total() | currency }}</span>
+            <span class="font-medium">{{ total() | currency }}</span>
           </div>
 
-          <div class="summary-row">
+          <div class="flex justify-between mb-6 text-gray-600">
             <span>Envío</span>
-            <span class="free">Gratis</span>
+            <span class="text-green-600 font-bold bg-green-100 px-2 py-0.5 rounded text-sm">Gratis</span>
           </div>
 
-          <mat-divider></mat-divider>
+          <mat-divider class="!border-gray-300 mb-6"></mat-divider>
 
-          <div class="summary-row total">
+          <div class="flex justify-between mb-8 text-2xl font-bold text-gray-900">
             <span>Total</span>
             <span>{{ total() | currency }}</span>
           </div>
 
-          <button mat-flat-button color="primary" class="checkout-btn" (click)="checkout()">
-            FINALIZAR COMPRA
+          <button mat-flat-button color="primary" class="w-full !py-6 !text-lg !rounded-xl shadow-lg shadow-indigo-200 transition-transform active:scale-[0.98]" (click)="checkout()">
+            <span class="mr-2">FINALIZAR COMPRA</span>
             <mat-icon iconPositionEnd>arrow_forward</mat-icon>
           </button>
 
-          <p class="secure-text">
-            <mat-icon>lock</mat-icon> Compra protegida con MercadoPago
+          <p class="flex items-center justify-center gap-2 text-xs text-gray-500 mt-6 bg-white py-2 rounded-lg border border-gray-100">
+            <mat-icon class="!text-[16px] !w-[16px] !h-[16px] text-green-600">lock</mat-icon> 
+            Compra protegida con MercadoPago
           </p>
         </div>
       </div>
