@@ -1,61 +1,84 @@
-<div class="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-  @for (product of products(); track product.id) {
-    <mat-card class="group flex h-full flex-col overflow-hidden !rounded-xl bg-white !shadow-sm transition-all duration-300 hover:!shadow-lg hover:-translate-y-1">
+<div class="mx-auto min-h-screen w-full max-w-7xl p-4 sm:p-6 lg:p-8">
+  
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    
+    @for (product of products(); track product.id) {
+      <mat-card class="group flex h-full flex-col justify-between overflow-hidden !rounded-xl bg-white !shadow-sm transition-all duration-300 hover:!shadow-lg hover:-translate-y-1 border border-gray-100">
 
-      <div class="relative aspect-[4/3] cursor-pointer overflow-hidden bg-gray-100" [routerLink]="['/online-store/product', product.id]">
-        <img [src]="product.imageUrl" [alt]="product.name" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
-        <div class="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/20 group-hover:opacity-100">
-          <span class="translate-y-4 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-wide text-gray-900 shadow-lg transition-transform duration-300 group-hover:translate-y-0">
-            Ver detalles
-          </span>
-        </div>
-      </div>
-
-      <div class="flex flex-1 flex-col p-4">
-        <div class="mb-2">
-          <h3 class="truncate text-base font-semibold text-gray-900" [title]="product.name">{{ product.name }}</h3>
-          <span class="text-lg font-bold text-indigo-600">$ {{ product.price }}</span>
-        </div>
-
-        <div class="flex flex-wrap gap-1.5">
-          @for(cat of product.categories; track cat.id) {
-            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
-              {{cat.name}}
+        <div class="relative aspect-[4/3] w-full cursor-pointer overflow-hidden bg-gray-50" [routerLink]="['/online-store/product', product.id]">
+          <img [src]="product.imageUrl" [alt]="product.name" class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+          
+          <div class="absolute inset-0 flex items-center justify-center bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[1px]">
+            <span class="translate-y-4 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-900 shadow-lg transition-transform duration-300 group-hover:translate-y-0">
+              Ver detalles
             </span>
-          }
+          </div>
         </div>
-      </div>
 
-      <div class="flex flex-col border-t border-gray-100 bg-white">
-        <div class="flex items-center gap-2 p-3">
-          <button mat-stroked-button class="!h-9 flex-1 !rounded-lg !border-gray-200 !text-gray-600 hover:!bg-gray-50" [routerLink]="['/online-store/product', product.id]">
-            Ver
-          </button>
+        <div class="flex flex-1 flex-col p-4">
+          
+          <div class="mb-3">
+            <h3 class="mb-1 truncate text-base font-semibold text-gray-900" [title]="product.name">
+              {{ product.name }}
+            </h3>
+            <div class="flex items-baseline gap-1">
+              <span class="text-xl font-bold text-indigo-600">$ {{ product.price | number:'1.0-2' }}</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5 mt-auto">
+            @for(cat of product.categories; track cat.id) {
+              <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-gray-600">
+                {{cat.name}}
+              </span>
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-col border-t border-gray-100 bg-white p-3 gap-2">
+          
+          <div class="flex items-center gap-2">
+            <button mat-stroked-button 
+                    class="!h-10 flex-1 !rounded-lg !border-gray-300 !text-gray-700 hover:!bg-gray-50 !px-2" 
+                    [routerLink]="['/online-store/product', product.id]">
+              <span class="text-sm font-medium">Ver</span>
+            </button>
+
+            @if (!isAdmin()) {
+              <button mat-flat-button 
+                      color="primary" 
+                      class="!h-10 flex-[1.5] !rounded-lg !px-2 shadow-sm transition-all hover:shadow-md disabled:!bg-gray-100 disabled:!text-gray-400"
+                      (click)="addToCart(product)"
+                      [disabled]="isInCart(product.id)">
+                
+                <div class="flex items-center justify-center whitespace-nowrap">
+                  @if (isInCart(product.id)) {
+                    <mat-icon class="!mr-1.5 !text-lg !h-5 !w-5">check</mat-icon> 
+                    <span class="text-sm font-medium">En carrito</span>
+                  } @else {
+                    <mat-icon class="!mr-1.5 !text-lg !h-5 !w-5">shopping_cart</mat-icon> 
+                    <span class="text-sm font-medium">Agregar</span>
+                  }
+                </div>
+              </button>
+            }
+          </div>
 
           @if (!isAdmin()) {
-            <button mat-flat-button color="primary" class="!h-9 flex-[2] !rounded-lg !text-sm"
-                    (click)="addToCart(product)"
-                    [disabled]="isInCart(product.id)">
-              @if (isInCart(product.id)) {
-                <mat-icon class="!mr-1 !text-lg">check</mat-icon> En carrito
-              } @else {
-                <mat-icon class="!mr-1 !text-lg">shopping_cart</mat-icon> Agregar
-              }
+            <button mat-button 
+                    class="!h-9 w-full !rounded-lg !text-xs font-medium transition-colors hover:bg-pink-50"
+                    [class.text-pink-600]="isInWishlist(product.id)"
+                    [class.text-gray-500]="!isInWishlist(product.id)"
+                    (click)="addToWishlist(product)">
+              <div class="flex items-center justify-center gap-1.5">
+                <mat-icon class="!h-5 !w-5 !text-[20px]">{{ isInWishlist(product.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+                <span>{{ isInWishlist(product.id) ? 'Te gusta' : 'Me gusta' }}</span>
+              </div>
             </button>
           }
         </div>
 
-        @if (!isAdmin()) {
-          <button mat-button class="!h-10 w-full !rounded-none border-t border-gray-100 !text-xs transition-colors hover:bg-pink-50"
-                  [class.text-pink-600]="isInWishlist(product.id)"
-                  [class.text-gray-500]="!isInWishlist(product.id)"
-                  (click)="addToWishlist(product)">
-            <mat-icon class="!mr-1 !text-lg">{{ isInWishlist(product.id) ? 'thumb_up' : 'thumb_up_off_alt' }}</mat-icon>
-            {{ isInWishlist(product.id) ? 'Te gusta' : 'Me gusta' }}
-          </button>
-        }
-      </div>
-
-    </mat-card>
-  }
+      </mat-card>
+    }
+  </div>
 </div>
