@@ -1,14 +1,15 @@
-<div class="main-container">
-  <mat-card class="modern-card">
-    <div class="header-section">
-      <h1 class="header-title">Información del Producto</h1>
-      <p class="header-subtitle">Complete los detalles para registrar un nuevo ítem</p>
+<div class="flex min-h-screen items-center justify-center bg-gray-50 p-4 sm:p-6">
+  <mat-card class="w-full max-w-2xl !rounded-xl bg-white !shadow-xl overflow-hidden">
+    
+    <div class="border-b border-gray-100 px-6 py-5">
+      <h1 class="text-xl font-bold text-gray-900">Información del Producto</h1>
+      <p class="mt-1 text-sm text-gray-500">Complete los detalles para registrar un nuevo ítem</p>
     </div>
 
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-      <div class="form-body">
+      <div class="flex flex-col gap-5 p-6">
         
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Nombre del producto</mat-label>
           <input type="text" matInput formControlName="name" placeholder="Ej. Camiseta Deportiva">
           @if (name?.invalid && name?.touched) {
@@ -19,10 +20,10 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>URL de la imagen</mat-label>
           <input type="text" matInput formControlName="imageUrl" placeholder="https://ejemplo.com/imagen.jpg">
-          <mat-icon matSuffix>image</mat-icon>
+          <mat-icon matSuffix class="text-gray-400">image</mat-icon>
           @if (imageUrl?.invalid && imageUrl?.touched) {
             <mat-error>
               @if (imageUrl?.errors?.['required']) { La imagen es obligatoria }
@@ -31,10 +32,10 @@
           }
         </mat-form-field>
 
-        <div class="grid-row">
-          <mat-form-field appearance="outline">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <mat-form-field appearance="outline" class="w-full">
             <mat-label>Precio</mat-label>
-            <span matTextPrefix>$&nbsp;</span>
+            <span matTextPrefix class="text-gray-500">$&nbsp;</span>
             <input type="number" matInput formControlName="price" placeholder="0.00">
             @if (price?.invalid && price?.touched) {
               <mat-error>
@@ -44,7 +45,7 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-full">
             <mat-label>Código de barras</mat-label>
             <input type="text" matInput formControlName="barcode" placeholder="123456...">
             @if (barcode?.invalid && barcode?.touched) {
@@ -53,7 +54,7 @@
           </mat-form-field>
         </div>
 
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Categorías</mat-label>
           <mat-select formControlName="categoriesId" multiple>
             @for (c of categories(); track c.id) {
@@ -67,11 +68,11 @@
 
       </div>
 
-      <mat-divider></mat-divider>
-
-      <div class="action-footer">
-        <button mat-button type="button" routerLink="/products" class="cancel-btn">Cancelar</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid" class="save-btn">
+      <div class="flex items-center justify-end gap-3 border-t border-gray-100 bg-gray-50 px-6 py-4">
+        <button mat-button type="button" routerLink="/products" class="!h-10 !rounded-lg text-gray-600 hover:bg-gray-200">
+          Cancelar
+        </button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid" class="!h-10 !rounded-lg !px-6 !font-medium">
           Guardar Producto
         </button>
       </div>

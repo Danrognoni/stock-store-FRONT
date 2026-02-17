@@ -8,11 +8,13 @@ import { WishlistService } from '../../../services/wishlist';
 import { CartService } from '../../../services/cart-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductList } from '../../../models/product/product-list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink, MatDividerModule, MatProgressSpinnerModule],
   templateUrl: './wishlist.html',
   styleUrls: ['./wishlist.css'] 
 })
