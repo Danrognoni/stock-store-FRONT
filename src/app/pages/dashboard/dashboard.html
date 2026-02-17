@@ -1,107 +1,117 @@
-<div class="dashboard-container fade-in">
-  <div class="header-section">
+<div class="max-w-[1400px] mx-auto p-6 md:p-8 animate-[fadeIn_0.5s_ease-in-out]">
+  
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-5">
     <div>
-      <h1 class="page-title">Panel de Control</h1>
-      <p class="page-subtitle">Resumen general y alertas del sistema</p>
+      <h1 class="text-3xl font-bold text-slate-800 m-0 leading-tight">Panel de Control</h1>
+      <p class="text-slate-500 mt-2 text-base">Resumen general y alertas del sistema</p>
     </div>
-    <div class="actions-wrapper">
-      <button mat-flat-button color="primary" routerLink="/products/create">
-        <mat-icon>add</mat-icon> Nuevo Producto
+    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+      <button mat-flat-button color="primary" routerLink="/products/create" class="!py-6 !rounded-xl flex-1 md:flex-none">
+        <mat-icon class="mr-2">add</mat-icon> Nuevo Producto
       </button>
-      <button mat-stroked-button color="accent" routerLink="/inventory/create">
-        <mat-icon>input</mat-icon> Entrada Stock
+      <button mat-stroked-button color="accent" routerLink="/inventory/create" class="!py-6 !rounded-xl flex-1 md:flex-none bg-white">
+        <mat-icon class="mr-2">input</mat-icon> Entrada Stock
       </button>
     </div>
   </div>
 
-  <div class="stats-grid">
-    <mat-card class="stat-card" routerLink="/products/list">
-      <div class="stat-content">
-        <div class="stat-info">
-          <span class="stat-label">Productos Activos</span>
-          <span class="stat-value">{{ totalProductos() }}</span>
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+    
+    <mat-card class="group flex flex-col justify-between h-full bg-white rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200 cursor-pointer overflow-hidden" routerLink="/products/list">
+      <div class="p-6 flex justify-between items-start flex-grow">
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Productos Activos</span>
+          <span class="text-4xl font-extrabold text-slate-900 leading-none">{{ totalProductos() }}</span>
         </div>
-        <div class="stat-icon-box blue">
-          <mat-icon>inventory_2</mat-icon>
-        </div>
-      </div>
-      <div class="stat-footer">
-        <span class="stat-link">Ver catálogo completo</span>
-        <mat-icon class="link-icon">arrow_forward</mat-icon>
-      </div>
-    </mat-card>
-
-    <mat-card class="stat-card" routerLink="/suppliers/list">
-      <div class="stat-content">
-        <div class="stat-info">
-          <span class="stat-label">Proveedores</span>
-          <span class="stat-value">{{ totalProveedores() }}</span>
-        </div>
-        <div class="stat-icon-box purple">
-          <mat-icon>local_shipping</mat-icon>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-blue-50 text-blue-600">
+          <mat-icon class="!w-7 !h-7 !text-[28px]">inventory_2</mat-icon>
         </div>
       </div>
-      <div class="stat-footer">
-        <span class="stat-link">Gestionar socios</span>
-        <mat-icon class="link-icon">arrow_forward</mat-icon>
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-slate-600 text-sm font-medium group-hover:text-blue-600 transition-colors">
+        <span>Ver catálogo completo</span>
+        <mat-icon class="!w-5 !h-5 !text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</mat-icon>
       </div>
     </mat-card>
 
-    <mat-card class="stat-card" [class.alert-active]="alertasStock() > 0 || alertasVencimiento() > 0" routerLink="/inventory/list">
-      <div class="stat-content">
-        <div class="stat-info">
-          <span class="stat-label">Alertas de Stock</span>
-          <div class="alerts-container">
+    <mat-card class="group flex flex-col justify-between h-full bg-white rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200 cursor-pointer overflow-hidden" routerLink="/suppliers/list">
+      <div class="p-6 flex justify-between items-start flex-grow">
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Proveedores</span>
+          <span class="text-4xl font-extrabold text-slate-900 leading-none">{{ totalProveedores() }}</span>
+        </div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-purple-50 text-purple-600">
+          <mat-icon class="!w-7 !h-7 !text-[28px]">local_shipping</mat-icon>
+        </div>
+      </div>
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-slate-600 text-sm font-medium group-hover:text-purple-600 transition-colors">
+        <span>Gestionar socios</span>
+        <mat-icon class="!w-5 !h-5 !text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</mat-icon>
+      </div>
+    </mat-card>
+
+    <mat-card class="group flex flex-col justify-between h-full bg-white rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200 cursor-pointer overflow-hidden"
+              [class.!border-red-200]="alertasStock() > 0 || alertasVencimiento() > 0"
+              routerLink="/inventory/list">
+      <div class="p-6 flex justify-between items-start flex-grow">
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Alertas de Stock</span>
+          <div class="mt-1">
             @if(alertasStock() > 0 || alertasVencimiento() > 0) {
-              <div class="alert-badge error">
-                <mat-icon>warning</mat-icon>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600">
+                <mat-icon class="!w-4 !h-4 !text-[16px]">warning</mat-icon>
                 <span>{{ alertasStock() + alertasVencimiento() }} Incidencias</span>
               </div>
             } @else {
-              <div class="alert-badge success">
-                <mat-icon>check_circle</mat-icon>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-600">
+                <mat-icon class="!w-4 !h-4 !text-[16px]">check_circle</mat-icon>
                 <span>Todo en orden</span>
               </div>
             }
           </div>
         </div>
-        <div class="stat-icon-box" [ngClass]="(alertasStock() > 0 || alertasVencimiento() > 0) ? 'red' : 'green'">
-          <mat-icon>notifications_active</mat-icon>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+             [class.bg-red-50]="alertasStock() > 0 || alertasVencimiento() > 0"
+             [class.text-red-600]="alertasStock() > 0 || alertasVencimiento() > 0"
+             [class.bg-green-50]="!(alertasStock() > 0 || alertasVencimiento() > 0)"
+             [class.text-green-600]="!(alertasStock() > 0 || alertasVencimiento() > 0)">
+          <mat-icon class="!w-7 !h-7 !text-[28px]">notifications_active</mat-icon>
         </div>
       </div>
-      <div class="stat-footer">
-        <span class="stat-link">Revisar inventario</span>
-        <mat-icon class="link-icon">arrow_forward</mat-icon>
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-slate-600 text-sm font-medium group-hover:text-slate-900 transition-colors">
+        <span>Revisar inventario</span>
+        <mat-icon class="!w-5 !h-5 !text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</mat-icon>
       </div>
     </mat-card>
 
-    <mat-card class="stat-card" routerLink="/home/supplier-orders">
-      <div class="stat-content">
-        <div class="stat-info">
-          <span class="stat-label">Pedidos Totales</span>
-          <span class="stat-value">{{ totalPedidosProveedores() }}</span>
+    <mat-card class="group flex flex-col justify-between h-full bg-white rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-200 cursor-pointer overflow-hidden" routerLink="/home/supplier-orders">
+      <div class="p-6 flex justify-between items-start flex-grow">
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2">Pedidos Totales</span>
+          <span class="text-4xl font-extrabold text-slate-900 leading-none">{{ totalPedidosProveedores() }}</span>
         </div>
-        <div class="stat-icon-box orange">
-          <mat-icon>shopping_cart</mat-icon>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-orange-50 text-orange-600">
+          <mat-icon class="!w-7 !h-7 !text-[28px]">shopping_cart</mat-icon>
         </div>
       </div>
-      <div class="stat-footer">
-        <span class="stat-link">Ver historial</span>
-        <mat-icon class="link-icon">arrow_forward</mat-icon>
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-slate-600 text-sm font-medium group-hover:text-orange-600 transition-colors">
+        <span>Ver historial</span>
+        <mat-icon class="!w-5 !h-5 !text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</mat-icon>
       </div>
     </mat-card>
+
   </div>
 
-  <div class="sections-grid">
-    <mat-card class="section-card">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon class="section-icon">bar_chart</mat-icon>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+    
+    <mat-card class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
+      <mat-card-header class="p-6 pb-0 border-b border-transparent">
+        <mat-card-title class="flex items-center text-lg font-bold text-slate-800">
+          <mat-icon class="mr-2 text-slate-400">bar_chart</mat-icon>
           Resumen de Gestión
         </mat-card-title>
       </mat-card-header>
-      <mat-card-content>
-        <div class="chart-container">
+      <mat-card-content class="p-6 relative flex-grow min-h-[300px] md:min-h-[350px]">
+        <div class="absolute inset-4">
             <canvas baseChart
                 [data]="barChartData"
                 [options]="barChartOptions"
@@ -111,26 +121,27 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="section-card highlight-card">
-      <div class="highlight-content">
-        <h2>Gestión Rápida</h2>
-        <p>Accesos directos a las funciones más utilizadas</p>
+    <mat-card class="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white rounded-2xl shadow-md border-0 flex flex-col h-full">
+      <div class="p-6 flex flex-col h-full">
+        <h2 class="text-2xl font-bold mb-2">Gestión Rápida</h2>
+        <p class="text-indigo-100 mb-6 text-sm">Accesos directos a las funciones más utilizadas</p>
         
-        <div class="quick-links">
-          <a routerLink="/suppliers/create" class="quick-link-item">
-            <mat-icon>person_add</mat-icon>
+        <div class="flex flex-col gap-3 mt-auto sm:grid sm:grid-cols-2 lg:flex lg:flex-col">
+          <a routerLink="/suppliers/create" class="flex items-center gap-3 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:translate-x-1 text-white no-underline font-medium cursor-pointer backdrop-blur-sm">
+            <mat-icon class="!w-5 !h-5 !text-[20px]">person_add</mat-icon>
             <span>Nuevo Proveedor</span>
           </a>
-          <a routerLink="/products/list" class="quick-link-item">
-            <mat-icon>search</mat-icon>
+          <a routerLink="/products/list" class="flex items-center gap-3 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:translate-x-1 text-white no-underline font-medium cursor-pointer backdrop-blur-sm">
+            <mat-icon class="!w-5 !h-5 !text-[20px]">search</mat-icon>
             <span>Buscar Producto</span>
           </a>
-          <a routerLink="/inventory/create" class="quick-link-item">
-            <mat-icon>add_box</mat-icon>
+          <a routerLink="/inventory/create" class="flex items-center gap-3 p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:translate-x-1 text-white no-underline font-medium cursor-pointer backdrop-blur-sm">
+            <mat-icon class="!w-5 !h-5 !text-[20px]">add_box</mat-icon>
             <span>Agregar Stock</span>
           </a>
         </div>
       </div>
     </mat-card>
+
   </div>
 </div>
