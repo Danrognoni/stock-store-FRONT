@@ -11,6 +11,7 @@ import { NavbarComponent } from '../../../components/navbar/navbar-component/nav
 import { WishlistService } from '../../../services/wishlist';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../services/category';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-store-catalog',
@@ -23,7 +24,8 @@ import { CategoryService } from '../../../services/category';
     MatIconModule,
     MatChipsModule,
     NavbarComponent,
-    RouterOutlet
+    RouterOutlet,
+    MatDividerModule
   ],
   templateUrl: './catalog.html',
   styleUrls: ['./catalog.css']

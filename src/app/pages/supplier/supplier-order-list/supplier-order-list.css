@@ -1,4 +1,3 @@
-/* Utilidades de Iconos */
 .icon-fix {
   vertical-align: middle;
   display: inline-flex;
@@ -14,7 +13,6 @@
   justify-content: center;
 }
 
-/* Ajustes de Angular Material */
 ::ng-deep .search-field-dense .mat-mdc-form-field-flex {
   background-color: white !important;
 }
@@ -23,7 +21,6 @@
   margin-top: 0; 
 }
 
-/* Snackbars (Notificaciones) */
 ::ng-deep .success-snackbar {
   --mdc-snackbar-container-color: #059669 !important; 
   --mdc-snackbar-supporting-text-color: white !important;
@@ -36,7 +33,6 @@
   --mat-snack-bar-button-color: white !important;
 }
 
-/* Responsive */
 @media (max-width: 640px) {
   .mat-mdc-raised-button {
     width: 100%;
