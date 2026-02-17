@@ -69,18 +69,18 @@
     </div>
 
     <button mat-menu-item [routerLink]="getProfileRoute()" class="hover:!bg-slate-50">
-      <mat-icon class="!text-slate-400 !mr-3">person_outline</mat-icon>
-      <span class="text-slate-700 font-medium">Mi Perfil</span>
+      <mat-icon class="!text-indigo-500 !mr-3">person_outline</mat-icon>
+      <span class="text-indigo-700 font-medium">Mi Perfil</span>
     </button>
 
     @if (user.role === 'USER') {
       <button mat-menu-item routerLink="/online-store/wishlist" class="hover:!bg-slate-50">
-        <mat-icon class="!text-rose-400 !mr-3">favorite_border</mat-icon>
-        <span class="text-slate-700 font-medium">Lista de Deseos</span>
+        <mat-icon class="!text-indigo-500 !mr-3">favorite_border</mat-icon>
+        <span class="text-indigo-700 font-medium">Lista de Deseos</span>
       </button>
       <button mat-menu-item routerLink="/online-store/order" class="hover:!bg-slate-50">
-        <mat-icon class="!text-slate-400 !mr-3">receipt_long</mat-icon>
-        <span class="text-slate-700 font-medium">Mis Pedidos</span>
+        <mat-icon class="!text-indigo-500 !mr-3">receipt_long</mat-icon>
+        <span class="text-indigo-700 font-medium">Mis Pedidos</span>
       </button>
     }
 
