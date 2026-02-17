@@ -1,11 +1,8 @@
-/* =========================================
-   Estilos Base y Contenedor Principal
-   ========================================= */
+
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 32px 24px;
-  /* Animación de entrada suave */
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -14,9 +11,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* =========================================
-   Header y Acciones
-   ========================================= */
+
 .header-section {
   display: flex;
   justify-content: space-between;
@@ -45,12 +40,8 @@
   gap: 12px;
 }
 
-/* =========================================
-   Grilla de Estadísticas (KPIs)
-   ========================================= */
 .stats-grid {
   display: grid;
-  /* Auto-fit ayuda, pero en media queries lo ajustaremos mejor */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
@@ -67,7 +58,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   background: white;
   overflow: hidden;
-  height: 100%; /* Asegura altura igual en filas */
+  height: 100%; 
 }
 
 .stat-card:hover {
@@ -105,7 +96,6 @@
   line-height: 1;
 }
 
-/* Iconos de las tarjetas */
 .stat-icon-box {
   width: 56px;
   height: 56px;
@@ -115,7 +105,7 @@
   justify-content: center;
   background-color: #f1f5f9;
   color: #64748b;
-  flex-shrink: 0; /* Evita que el icono se aplaste */
+  flex-shrink: 0; 
 }
 
 .stat-icon-box mat-icon {
@@ -124,16 +114,14 @@
   height: 28px;
 }
 
-/* Variantes de color */
 .stat-icon-box.blue { background-color: #eff6ff; color: #3b82f6; }
 .stat-icon-box.purple { background-color: #f3e8ff; color: #a855f7; }
 .stat-icon-box.orange { background-color: #fff7ed; color: #f97316; }
 .stat-icon-box.green { background-color: #ecfdf5; color: #10b981; }
 .stat-icon-box.red { background-color: #fef2f2; color: #ef4444; }
 
-/* Alertas */
 .stat-card.alert-active {
-  border-color: #fecaca; /* Borde rojo suave si hay alerta */
+  border-color: #fecaca; 
 }
 
 .alerts-container {
@@ -183,12 +171,10 @@
   transition: transform 0.2s;
 }
 
-/* =========================================
-   Grillas de Secciones (Gráfico + Accesos)
-   ========================================= */
+
 .sections-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* Ratio original: Gráfico ancho, Accesos angosto */
+  grid-template-columns: 2fr 1fr; 
   gap: 24px;
   align-items: stretch;
 }
@@ -210,7 +196,6 @@
   vertical-align: middle;
 }
 
-/* Gráfico */
 .chart-container {
   position: relative;
   height: 300px;
@@ -218,7 +203,6 @@
   margin-top: 16px;
 }
 
-/* Tarjeta Highlight (Gestión Rápida) */
 .highlight-card {
   background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
   color: white;
@@ -249,7 +233,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: auto; /* Empuja los links hacia abajo si hay espacio extra */
+  margin-top: auto; 
 }
 
 .quick-link-item {
@@ -276,26 +260,20 @@
   height: 20px;
 }
 
-/* =========================================
-   MEDIA QUERIES (Responsive Design)
-   ========================================= */
 
-/* Tablet y Laptops Pequeñas (max-width: 1024px) */
 @media (max-width: 1024px) {
   .dashboard-container {
-    padding: 24px 16px; /* Reducimos padding lateral */
+    padding: 24px 16px;
   }
 
   .sections-grid {
-    grid-template-columns: 1fr; /* Cambia a una sola columna */
+    grid-template-columns: 1fr;
   }
 
-  /* Ajustamos la altura del gráfico para tablets */
   .chart-container {
     height: 350px; 
   }
 
-  /* Los accesos rápidos se ven mejor en grid de 2 columnas cuando la tarjeta es ancha */
   .highlight-content .quick-links {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -304,7 +282,6 @@
   }
 }
 
-/* Móviles Grandes y Tablets Pequeñas (max-width: 768px) */
 @media (max-width: 768px) {
   .header-section {
     flex-direction: column;
@@ -316,29 +293,27 @@
   .actions-wrapper {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Botones lado a lado */
+    grid-template-columns: 1fr 1fr; 
   }
 
   .actions-wrapper button {
-    width: 100%; /* Botones ocupan todo el espacio */
+    width: 100%;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr; /* Una tarjeta por fila en móviles para mejor lectura */
-    gap: 16px;
+    grid-template-columns: 1fr; 
     margin-bottom: 24px;
   }
   
   .stat-value {
-    font-size: 2rem; /* Valor un poco más pequeño */
+    font-size: 2rem; 
   }
 
   .highlight-content .quick-links {
-    grid-template-columns: 1fr; /* Volvemos a lista vertical en móvil */
+    grid-template-columns: 1fr;
   }
 }
 
-/* Móviles Pequeños (max-width: 480px) */
 @media (max-width: 480px) {
   .dashboard-container {
     padding: 16px 12px;
@@ -349,7 +324,7 @@
   }
 
   .actions-wrapper {
-    grid-template-columns: 1fr; /* Botones apilados verticalmente en pantallas muy angostas */
+    grid-template-columns: 1fr;
   }
 
   .stat-content {
@@ -361,6 +336,6 @@
   }
 
   .chart-container {
-    height: 250px; /* Gráfico más compacto */
+    height: 250px; 
   }
 }
