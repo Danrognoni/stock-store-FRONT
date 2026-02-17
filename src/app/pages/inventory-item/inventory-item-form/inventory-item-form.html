@@ -1,13 +1,15 @@
-<div class="container">
-  <mat-card class="form-card">
-    <mat-card-header>
-      <mat-card-title>{{ isEditMode() ? 'Editar Item de Inventario' : 'Nuevo Item de Inventario' }}</mat-card-title>
+<div class="min-h-[80vh] flex justify-center items-start p-4 md:p-10 bg-gray-50">
+  <mat-card class="w-full max-w-[500px] !rounded-2xl !shadow-md !bg-white border border-gray-100 overflow-hidden">
+    <mat-card-header class="!p-6 !border-b !border-gray-100 !justify-center bg-white">
+      <mat-card-title class="!text-xl md:!text-2xl !font-bold text-gray-800 !m-0 text-center">
+        {{ isEditMode() ? 'Editar Item de Inventario' : 'Nuevo Item de Inventario' }}
+      </mat-card-title>
     </mat-card-header>
     
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card-content class="!p-6 md:!p-8">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-2">
         
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Producto</mat-label>
           <mat-select formControlName="productId">
             @for (product of products(); track product.id) {
@@ -19,9 +21,9 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Stock</mat-label>
-          <input matInput type="number" formControlName="stock" min="1">
+          <input matInput type="number" formControlName="stock" min="1" class="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
           @if (form.get('stock')?.hasError('required')) {
             <mat-error>El stock es requerido</mat-error>
           }
@@ -33,7 +35,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Fecha de Vencimiento</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="expireDate" [min]="minDate">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -43,9 +45,11 @@
           }
         </mat-form-field>
 
-        <div class="actions">
-          <a mat-button routerLink="/inventory">Cancelar</a>
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        <div class="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-100">
+          <a mat-button routerLink="/inventory" class="!text-gray-500 hover:!bg-gray-50 !rounded-lg !px-4">
+            Cancelar
+          </a>
+          <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid" class="!rounded-lg !px-6">
             {{ isEditMode() ? 'Actualizar' : 'Crear' }}
           </button>
         </div>
