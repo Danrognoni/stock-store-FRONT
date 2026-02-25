@@ -1,6 +1,6 @@
 <div class="flex min-h-screen items-center justify-center bg-gray-50 p-4 sm:p-6">
   <mat-card class="w-full max-w-2xl !rounded-xl bg-white !shadow-xl overflow-hidden">
-    
+
     <div class="border-b border-gray-100 px-6 py-5">
       <h1 class="text-xl font-bold text-gray-900">Información del Producto</h1>
       <p class="mt-1 text-sm text-gray-500">Complete los detalles para registrar un nuevo ítem</p>
@@ -8,7 +8,7 @@
 
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
       <div class="flex flex-col gap-5 p-6">
-        
+
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Nombre del producto</mat-label>
           <input type="text" matInput formControlName="name" placeholder="Ej. Camiseta Deportiva">
@@ -23,7 +23,7 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>URL de la imagen</mat-label>
           <input type="text" matInput formControlName="imageUrl" placeholder="https://ejemplo.com/imagen.jpg">
-          <mat-icon matSuffix class="text-gray-400">image</mat-icon>
+          <mat-icon matSuffix class="text-gray-400"></mat-icon>
           @if (imageUrl?.invalid && imageUrl?.touched) {
             <mat-error>
               @if (imageUrl?.errors?.['required']) { La imagen es obligatoria }
