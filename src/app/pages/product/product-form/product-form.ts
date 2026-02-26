@@ -11,6 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from "@angular/material/divider";
 import { ProductRequest } from '../../../models/product/product-request';
 import { ProductDet } from '../../../models/product/product-det';
+import { Toast } from '../../category/category-form-component/category-form-component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-form',
@@ -26,7 +28,8 @@ import { ProductDet } from '../../../models/product/product-det';
     MatSelectModule,
     MatCardModule,
     MatDivider,
-    RouterLink
+    RouterLink, 
+    MatIconModule
   ],
 })
 export class ProductForm implements OnInit {
@@ -39,6 +42,7 @@ export class ProductForm implements OnInit {
   formGroup: FormGroup;
   productId = signal<string>("");
   categories = signal<any[]>([]);
+  notification = signal<Toast | null>(null);
 
   constructor() {
     this.formGroup = this.fb.group({
@@ -88,26 +92,26 @@ onSubmit() {
   if (this.productId().trim() !== "") {
     this.productService.patchProduct(this.productId(), payload).subscribe({
       next: () => {
-        alert("Producto editado correctamente");
-        this.router.navigate(["/products/list"]);
+        this.showToast("Producto editado correctamente", "success");
+        setTimeout(() => this.router.navigate(["/products/list"]), 1000);
       },
       error: (error) => {
         console.error(error);
-        alert("Error al editar: " + (error.error?.message || "Ver consola"));
+        this.showToast("Error al editar: " + (error.error?.message || "Ver consola"), "error");
       }
     });
   } else {
     this.productService.postProduct(payload).subscribe({
       next: () => {
-        alert('Producto creado con éxito');
-        this.router.navigate(['/products/list']);
+        this.showToast('Producto creado con éxito', "success");
+        setTimeout(() => this.router.navigate(['/products/list']), 1000);
       },
       error: (error) => {
         console.error(error);
         if (error.error?.message?.includes("Duplicate entry")) {
-          alert("Error: Ya existe un producto con ese Código de Barras o Nombre.");
+          this.showToast("Error: Ya existe un producto con ese Código de Barras o Nombre.", "error");
         } else {
-          alert("Error al crear el producto. Revisa los datos.");
+          this.showToast("Error al crear el producto. Revisa los datos.", "error");
         }
       },
     });
@@ -123,6 +127,13 @@ onSubmit() {
         console.error(error);
       },
     });
+  }
+
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 
   get name() { return this.formGroup.get('name'); }
