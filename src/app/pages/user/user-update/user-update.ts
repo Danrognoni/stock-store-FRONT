@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -7,9 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthenticationService } from '../../../services/authentication-service';
+import { Toast } from '../../category/category-form-component/category-form-component';
 
 @Component({
   selector: 'app-user-update',
@@ -22,7 +22,6 @@ import { AuthenticationService } from '../../../services/authentication-service'
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatSnackBarModule,
     MatIconModule,
     RouterLink
   ],
@@ -35,11 +34,11 @@ export class UserUpdate implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private authService = inject(AuthenticationService);
-  private snackBar = inject(MatSnackBar);
 
   form: FormGroup;
   userId: string | null = null;
   loading = false;
+  notification = signal<Toast | null>(null);
 
   constructor() {
     this.form = this.fb.group({
@@ -57,8 +56,8 @@ export class UserUpdate implements OnInit {
     if (this.userId) {
       this.loadUser(this.userId);
     } else {
-      this.showError('No se especificó un ID de usuario');
-      this.router.navigate(['/admin']);
+      this.showToast('No se especificó un ID de usuario', 'error');
+      setTimeout(() => this.router.navigate(['/admin']), 1000);
     }
   }
 
@@ -77,9 +76,9 @@ export class UserUpdate implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.showError('Error al cargar el usuario');
+        this.showToast('Error al cargar el usuario', 'error');
         this.loading = false;
-        this.router.navigate(['/admin']);
+        setTimeout(() => this.router.navigate(['/admin']), 1000);
       }
     });
   }
@@ -92,22 +91,22 @@ export class UserUpdate implements OnInit {
 
       this.authService.updateUserAsAdmin(this.userId, updateData).subscribe({
         next: () => {
-          this.snackBar.open('Usuario actualizado correctamente', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.router.navigate(['/admin']);
+          this.showToast('Usuario actualizado correctamente', 'success');
+          setTimeout(() => this.router.navigate(['/admin']), 1000);
         },
         error: (err) => {
           console.error(err);
-          this.showError('Error al guardar los cambios');
+          this.showToast('Error al guardar los cambios', 'error');
           this.loading = false;
         }
       });
     }
   }
 
-  private showError(msg: string) {
-    this.snackBar.open(msg, 'Cerrar', { duration: 3000, panelClass: ['error-snackbar'] });
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }

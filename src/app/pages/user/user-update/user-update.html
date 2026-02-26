@@ -1,4 +1,26 @@
-<div class="flex min-h-screen items-center justify-center bg-gray-50 p-4 sm:p-6">
+<div class="flex min-h-screen items-center justify-center bg-gray-50 p-4 sm:p-6 relative">
+
+  @if (notification()) {
+    <div class="fixed top-[90px] right-6 z-[9999] pointer-events-none flex flex-col items-end gap-3">
+      <div class="pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-xl bg-white shadow-lg min-w-[320px] border-l-[6px] mb-3 transition-all duration-300 transform translate-x-0"
+           [class.border-green-500]="notification()?.type === 'success'"
+           [class.bg-green-50]="notification()?.type === 'success'"
+           [class.border-red-500]="notification()?.type === 'error'"
+           [class.bg-red-50]="notification()?.type === 'error'">
+        <mat-icon class="!w-6 !h-6 !text-[24px]"
+                  [class.text-green-600]="notification()?.type === 'success'"
+                  [class.text-red-600]="notification()?.type === 'error'">
+          {{ notification()?.type === 'success' ? 'check_circle' : 'error' }}
+        </mat-icon>
+        <span class="font-medium text-sm"
+              [class.text-green-900]="notification()?.type === 'success'"
+              [class.text-red-900]="notification()?.type === 'error'">
+          {{ notification()?.message }}
+        </span>
+      </div>
+    </div>
+  }
+
   <mat-card class="w-full max-w-lg !rounded-xl bg-white !p-2 !shadow-lg sm:!p-6">
     
     <mat-card-header class="!mb-6 block border-b border-gray-100 !pb-4">

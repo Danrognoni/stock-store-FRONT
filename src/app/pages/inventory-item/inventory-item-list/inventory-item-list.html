@@ -1,5 +1,26 @@
-<div class="min-h-screen bg-slate-50 p-4 md:p-8">
-  
+<div class="min-h-screen bg-slate-50 p-4 md:p-8 relative">
+
+  @if (notification()) {
+    <div class="fixed top-6 right-6 z-[1000] pointer-events-none flex flex-col items-end gap-3">
+      <div class="pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-xl bg-white shadow-lg min-w-[320px] border-l-[6px] mb-3 transition-all duration-300 transform translate-x-0"
+           [class.border-green-500]="notification()?.type === 'success'"
+           [class.bg-green-50]="notification()?.type === 'success'"
+           [class.border-red-500]="notification()?.type === 'error'"
+           [class.bg-red-50]="notification()?.type === 'error'">
+        <mat-icon class="!w-6 !h-6 !text-[24px]"
+                  [class.text-green-600]="notification()?.type === 'success'"
+                  [class.text-red-600]="notification()?.type === 'error'">
+          {{ notification()?.type === 'success' ? 'check_circle' : 'error' }}
+        </mat-icon>
+        <span class="font-medium text-sm"
+              [class.text-green-900]="notification()?.type === 'success'"
+              [class.text-red-900]="notification()?.type === 'error'">
+          {{ notification()?.message }}
+        </span>
+      </div>
+    </div>
+  }
+
   <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
     <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full md:max-w-[350px]">
       <mat-label>Buscar producto</mat-label>

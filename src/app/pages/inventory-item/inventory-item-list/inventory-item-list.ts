@@ -12,6 +12,7 @@ import { inventoryItemService } from '../../../services/inventory-item';
 import { InventoryItemDet } from '../../../models/inventoryItem/inventory-item-det';
 import { MatCard } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+import { Toast } from '../../category/category-form-component/category-form-component';
 
 @Component({
   selector: 'app-inventory-item-list',
@@ -37,7 +38,8 @@ export class InventoryItemList implements OnInit {
   private inventoryService = inject(inventoryItemService);
 
   @ViewChild('filterGroup') filterGroup!: MatButtonToggleGroup;
-
+    notification = signal<Toast | null>(null);
+  
   items = signal<InventoryItemDet[]>([]);
   loading = signal<boolean>(false);
   searchTerm: string = '';
@@ -107,11 +109,25 @@ onSearch(input: string) {
     this.inventoryService.getAll().subscribe(this.handleResponse());
   }
 
-  deleteItem(id: string) {
-    if (confirm('¿Seguro que querés borrar este ítem?')) {
-      this.inventoryService.deleteInventoryItem(id).subscribe(() => {
-        this.loadAll();
+ deleteItem(id: string) {
+    if (confirm('Eliminar este item de inventario?')) {
+      this.inventoryService.deleteInventoryItem(id).subscribe({
+        next: () => {
+          this.showToast('item de inventario eliminado con exito', 'success');
+          this.items.update((item) => item.filter((p) => p.id !== id));
+        },
+        error: (error) => {
+          this.showToast('Error al eliminar el item de inventario', 'error');
+        },
       });
     }
+  }
+
+
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }

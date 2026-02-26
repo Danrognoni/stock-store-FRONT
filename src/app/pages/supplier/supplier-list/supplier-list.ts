@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { RouterLink } from '@angular/router';
+import { Toast } from '../../category/category-form-component/category-form-component';
 
 @Component({
   selector: 'app-supplier-list',
@@ -23,15 +24,16 @@ import { RouterLink } from '@angular/router';
     MatInputModule,
     MatSnackBarModule,
     MatTooltipModule,
-    RouterLink
+    RouterLink,
+    MatIconModule
   ],
   templateUrl: './supplier-list.html',
   styleUrl: './supplier-list.css',
 })
 export class SupplierList {
   private supplierService = inject(supplierService);
-  private snackBar = inject(MatSnackBar); 
-
+    notification = signal<Toast | null>(null);
+  
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
   pageSize = signal<number>(10);
@@ -73,7 +75,6 @@ export class SupplierList {
 
 
   deleteSupplier(id: string): void {
-
     if (confirm('¿Estás seguro de que deseas eliminar este proveedor?')) {
       this.supplierService.deleteSupplier(id).subscribe({
         next: () => {
@@ -94,12 +95,10 @@ export class SupplierList {
     this.getSuppliers();
   }
 
-  private showToast(message: string, type: 'success' | 'error' = 'success') {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: type === 'error' ? ['bg-red-500', 'text-white'] : ['bg-green-600', 'text-white']
-    });
+   private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }

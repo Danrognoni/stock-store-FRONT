@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { supplierService } from '../../../services/supplier';
 import { ProductService } from '../../../services/product';
+import { Toast } from '../../category/category-form-component/category-form-component';
 
 @Component({
   selector: 'app-supplier-form',
@@ -20,9 +20,7 @@ import { ProductService } from '../../../services/product';
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
-    MatSnackBarModule,
-    RouterLink,
-    MatInputModule
+    RouterLink
   ],
   templateUrl: './supplier-form.html',
   styleUrl: './supplier-form.css'
@@ -33,7 +31,8 @@ export class SupplierForm implements OnInit {
   private productService = inject(ProductService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private snackBar = inject(MatSnackBar);
+  
+  notification = signal<Toast | null>(null);
 
   formGroup: FormGroup;
   supplierId = signal<string>("");
@@ -85,7 +84,7 @@ export class SupplierForm implements OnInit {
       error: (e) => {
         console.error(e);
         this.showToast('Error al cargar datos del proveedor', 'error');
-        this.router.navigate(['/suppliers']);
+        setTimeout(() => this.router.navigate(['/suppliers']), 1000);
       }
     });
   }
@@ -107,7 +106,7 @@ export class SupplierForm implements OnInit {
       next: () => {
         const msg = this.isEditMode() ? 'Proveedor actualizado correctamente' : 'Proveedor creado con éxito';
         this.showToast(msg, 'success');
-        this.router.navigate(['/suppliers']);
+        setTimeout(() => this.router.navigate(['/suppliers']), 1000);
       },
       error: (e) => {
         console.error(e);
@@ -118,11 +117,9 @@ export class SupplierForm implements OnInit {
   }
 
   private showToast(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: type === 'error' ? ['error-snackbar'] : ['success-snackbar']
-    });
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }

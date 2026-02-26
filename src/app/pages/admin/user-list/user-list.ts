@@ -8,12 +8,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { AuthenticationService } from '../../../services/authentication-service';
 import { UserDet } from '../../../models/user/user-det';
+
+interface Toast {
+  message: string;
+  type: 'success' | 'error';
+}
 
 @Component({
   selector: 'app-user-list',
@@ -29,7 +33,6 @@ import { UserDet } from '../../../models/user/user-det';
     MatSelectModule,
     MatIconModule,
     ReactiveFormsModule,
-    MatSnackBarModule,
     MatTooltipModule
   ],
   templateUrl: './user-list.html',
@@ -37,11 +40,11 @@ import { UserDet } from '../../../models/user/user-det';
 })
 export class UserList implements OnInit {
   private authService = inject(AuthenticationService);
-  private snackBar = inject(MatSnackBar);
   private router = inject(Router);
 
   users = signal<UserDet[]>([]);
   loading = signal<boolean>(false);
+  notification = signal<Toast | null>(null);
 
   filterControl = new FormControl('all');
   searchControl = new FormControl('');
@@ -80,7 +83,6 @@ export class UserList implements OnInit {
           }),
           catchError((error) => {
             console.error('Error en búsqueda:', error);
-
             return of([]); 
           })
         );
@@ -92,14 +94,11 @@ export class UserList implements OnInit {
         this.loading.set(false);
       },
       error: (e) => {
-
         console.error('El buscador murió:', e);
         this.loading.set(false);
       }
     });
   }
-
-
 
   onFilterChange() {
     this.searchControl.setValue('', { emitEvent: false });
@@ -116,7 +115,7 @@ export class UserList implements OnInit {
       error: (err) => {
         console.error(err);
         this.loading.set(false);
-        this.showSnackBar('Error al cargar usuarios');
+        this.showToast('Error al cargar usuarios', 'error');
       }
     });
   }
@@ -135,10 +134,10 @@ export class UserList implements OnInit {
     
     this.authService.toggleBan(user.id).subscribe({
       next: () => {
-        this.showSnackBar(`Usuario ${user.banned ? 'desbaneado' : 'baneado'} correctamente`);
+        this.showToast(`Usuario ${user.banned ? 'desbaneado' : 'baneado'} correctamente`, 'success');
         this.refreshCurrentView();
       },
-      error: () => this.showSnackBar('Error al cambiar estado')
+      error: () => this.showToast('Error al cambiar estado', 'error')
     });
   }
 
@@ -146,10 +145,10 @@ export class UserList implements OnInit {
     if (!confirm(`¿Ascender a ${user.email}?`)) return;
     this.authService.promoteToEmployee(user.id).subscribe({
       next: () => {
-        this.showSnackBar('Usuario ascendido a Empleado');
+        this.showToast('Usuario ascendido a Empleado', 'success');
         this.refreshCurrentView();
       },
-      error: () => this.showSnackBar('Error al ascender')
+      error: () => this.showToast('Error al ascender', 'error')
     });
   }
 
@@ -157,15 +156,18 @@ export class UserList implements OnInit {
     if (!confirm(`¿Ascender a ${user.email} a Admin?`)) return;
     this.authService.promoteToAdmin(user.id).subscribe({
       next: () => {
-        this.showSnackBar('Usuario ascendido a Administrador');
+        this.showToast('Usuario ascendido a Administrador', 'success');
         this.refreshCurrentView();
       },
-      error: () => this.showSnackBar('Error al ascender')
+      error: () => this.showToast('Error al ascender', 'error')
     });
   }
 
-  private showSnackBar(message: string) {
-    this.snackBar.open(message, 'Cerrar', { duration: 3000, horizontalPosition: 'end', verticalPosition: 'top' });
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 
   private refreshCurrentView() {

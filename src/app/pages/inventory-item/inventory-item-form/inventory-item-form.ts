@@ -12,6 +12,8 @@ import { inventoryItemService } from '../../../services/inventory-item';
 import { ProductService } from '../../../services/product';
 import { ProductDet } from '../../../models/product/product-det';
 import { InventoryItemRequest } from '../../../models/inventoryItem/inventory-item-request';
+import { Toast } from '../../category/category-form-component/category-form-component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Injectable()
 class CustomDateAdapter extends NativeDateAdapter {
@@ -67,7 +69,8 @@ const MY_DATE_FORMATS = {
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    RouterLink
+    RouterLink,
+    MatIconModule
   ],
   templateUrl: './inventory-item-form.html',
   styleUrl: './inventory-item-form.css',
@@ -78,7 +81,8 @@ export class InventoryItemForm implements OnInit {
   private route = inject(ActivatedRoute);
   private inventoryService = inject(inventoryItemService);
   private productService = inject(ProductService);
-
+  notification = signal<Toast | null>(null);
+  
   minDate = new Date(new Date().setDate(new Date().getDate() + 1));
 
   form: FormGroup = this.fb.group({
@@ -106,7 +110,10 @@ export class InventoryItemForm implements OnInit {
       next: (data: any) => {
         this.products.set(data.content || []);
       },
-      error: (err) => console.error('Error cargando productos', err)
+      error: (err) => {
+        console.error('Error cargando productos', err);
+        this.showToast('Error cargando productos', 'error');
+      }
     });
   }
 
@@ -119,7 +126,10 @@ export class InventoryItemForm implements OnInit {
           expireDate: item.expireDate
         });
       },
-      error: (err) => console.error('Error cargando item', err)
+      error: (err) => {
+        console.error('Error cargando item', err);
+        this.showToast('Error cargando el item', 'error');
+      }
     });
   }
 
@@ -137,11 +147,21 @@ export class InventoryItemForm implements OnInit {
       : this.inventoryService.postInventoryItem(request);
 
     operation.subscribe({
-      next: () => this.router.navigate(['/inventory']),
+      next: () => {
+        this.showToast(this.isEditMode() ? 'Item actualizado correctamente' : 'Item creado correctamente', 'success');
+        setTimeout(() => this.router.navigate(['/inventory']), 1000);
+      },
       error: (err) => {
         console.error('Error guardando item', err);
-        alert('Error al guardar el item');
+        this.showToast('Error al guardar el item', 'error');
       }
     });
+  }
+
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }
