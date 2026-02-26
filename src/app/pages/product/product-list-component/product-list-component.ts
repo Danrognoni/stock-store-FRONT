@@ -6,12 +6,14 @@ import { ProductService } from '../../../services/product';
 import { ProductDet } from '../../../models/product/product-det';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
+import { Toast } from '../../category/category-form-component/category-form-component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list-component.html',
   styleUrl: './product-list-component.css',
-  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink],
+  imports: [MatCardModule, MatButtonModule, MatPaginatorModule, MatDividerModule, RouterLink, MatIconModule],
 })
 export class ProductListComponent implements OnInit{
   totalElements = signal<number>(0);
@@ -21,7 +23,7 @@ export class ProductListComponent implements OnInit{
   productService = inject(ProductService);
   products = signal<ProductDet[]>([]);
   private searchTimer: any;
-
+  notification = signal<Toast | null>(null);
   ngOnInit(): void {
     this.getProducts();
   }
@@ -71,11 +73,11 @@ export class ProductListComponent implements OnInit{
     if (confirm('Eliminar este producto?')) {
       this.productService.deleteProduct(id).subscribe({
         next: () => {
-          alert('Producto eliminado con exito');
+          this.showToast('Producto eliminado con exito', 'success');
           this.products.update((products) => products.filter((p) => p.id !== id));
         },
         error: (error) => {
-          alert('Error al eliminar el producto');
+          this.showToast('Error al eliminar el producto', 'error');
         },
       });
     }
@@ -85,6 +87,13 @@ export class ProductListComponent implements OnInit{
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
     this.getProducts();
+  }
+
+  private showToast(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 
 }
