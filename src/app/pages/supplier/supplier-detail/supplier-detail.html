@@ -1,116 +1,128 @@
 @if (supplier(); as s) {
-  <div class="min-h-screen bg-white p-4 md:p-8">
-    <div class="max-w-6xl mx-auto">
-      
-      <div class="mb-6">
-        <a routerLink="/suppliers" class="inline-flex items-center text-gray-500 hover:text-indigo-600 transition-colors text-sm font-medium group">
-          <mat-icon class="text-base mr-1 icon-fix transition-transform group-hover:-translate-x-1">arrow_back</mat-icon>
-          Volver al listado
-        </a>
+<div class="min-h-screen bg-white p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="mb-6">
+      <a routerLink="/suppliers"
+        class="inline-flex items-center text-gray-500 hover:text-indigo-600 transition-colors text-sm font-medium group">
+        <mat-icon class="text-base mr-1 icon-fix transition-transform group-hover:-translate-x-1">arrow_back</mat-icon>
+        Volver al listado
+      </a>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+
+      <div class="p-8 md:p-10 border-b border-gray-100 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+
+          <div
+            class="h-24 w-24 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+            <span class="text-4xl font-bold">{{ s.name.charAt(0) }}</span>
+          </div>
+
+          <div class="flex-1">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-2">{{ s.name }}</h1>
+
+            <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm md:text-base">
+              <span class="flex items-center gap-1.5 hover:text-indigo-600 transition-colors cursor-pointer">
+                <mat-icon class="icon-sm text-gray-400">email</mat-icon> {{ s.email }}
+              </span>
+              <span class="hidden md:inline text-gray-300">•</span>
+              <span class="flex items-center gap-1.5">
+                <mat-icon class="icon-sm text-gray-400">phone</mat-icon> {{ s.phoneNumber }}
+              </span>
+            </div>
+          </div>
+
+          <div class="mt-4 md:mt-0 flex gap-3">
+            <a mat-flat-button color="primary" [routerLink]="['/suppliers/order', s.id]"
+              class="!py-6 !px-6 !rounded-xl text-lg shadow-lg shadow-indigo-100">
+              <mat-icon class="mr-2">add_shopping_cart</mat-icon>
+              Nueva Orden
+            </a>
+          </div>
+        </div>
       </div>
 
-      <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-        
-        <div class="p-8 md:p-10 border-b border-gray-100 relative overflow-hidden">
-          <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-            
-            <div class="h-24 w-24 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
-              <span class="text-4xl font-bold">{{ s.name.charAt(0) }}</span>
-            </div>
-            
-            <div class="flex-1">
-              <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-2">{{ s.name }}</h1>
-              
-              <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm md:text-base">
-                <span class="flex items-center gap-1.5 hover:text-indigo-600 transition-colors cursor-pointer">
-                  <mat-icon class="icon-sm text-gray-400">email</mat-icon> {{ s.email }}
-                </span>
-                <span class="hidden md:inline text-gray-300">•</span>
-                <span class="flex items-center gap-1.5">
-                  <mat-icon class="icon-sm text-gray-400">phone</mat-icon> {{ s.phoneNumber }}
+      <div class="p-8 md:p-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        <div class="lg:col-span-1 space-y-8">
+
+          <section>
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Información del Sistema</h3>
+            <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+              <div class="mb-4">
+                <span class="block text-xs text-gray-500 mb-1">ID de Proveedor</span>
+                <span class="font-mono text-sm text-gray-700 break-all">{{ s.id }}</span>
+              </div>
+              <div>
+                <span class="block text-xs text-gray-500 mb-1">Estado</span>
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                  Activo
                 </span>
               </div>
             </div>
+          </section>
 
-            <div class="mt-4 md:mt-0 flex gap-3">
-               <a mat-flat-button color="primary" [routerLink]="['/suppliers/order', s.id]" class="!py-6 !px-6 !rounded-xl text-lg shadow-lg shadow-indigo-100">
-                <mat-icon class="mr-2">add_shopping_cart</mat-icon>
-                Nueva Orden
-              </a>
+          <section>
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Gestión</h3>
+            <div class="flex flex-col gap-3">
+              <button mat-stroked-button class="w-full !justify-start !border-gray-300 !text-gray-600"
+                [routerLink]="['/suppliers/edit', s.id]">
+                <mat-icon class="mr-2 text-gray-400">edit</mat-icon>
+                Editar Datos
+              </button>
+              <button mat-stroked-button color="warn" class="w-full !justify-start" (click)="deleteSupplier(s.id)">
+                <mat-icon class="mr-2">delete</mat-icon>
+                Eliminar Proveedor
+              </button>
             </div>
-          </div>
+          </section>
+
         </div>
 
-        <div class="p-8 md:p-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
-          
-          <div class="lg:col-span-1 space-y-8">
-            
-            <section>
-              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Información del Sistema</h3>
-              <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
-                <div class="mb-4">
-                  <span class="block text-xs text-gray-500 mb-1">ID de Proveedor</span>
-                  <span class="font-mono text-sm text-gray-700 break-all">{{ s.id }}</span>
-                </div>
-                <div>
-                  <span class="block text-xs text-gray-500 mb-1">Estado</span>
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                    Activo
-                  </span>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Gestión</h3>
-              <div class="flex flex-col gap-3">
-                 <button mat-stroked-button class="w-full !justify-start !border-gray-300 !text-gray-600" [routerLink]="['/suppliers/edit', s.id]">
-                   <mat-icon class="mr-2 text-gray-400">edit</mat-icon>
-                   Editar Datos
-                 </button>
-                 <button mat-stroked-button color="warn" class="w-full !justify-start" (click)="deleteSupplier(s.id)">
-                   <mat-icon class="mr-2">delete</mat-icon>
-                   Eliminar Proveedor
-                 </button>
-              </div>
-            </section>
-          
+        <div class="lg:col-span-2">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <mat-icon class="text-indigo-500">inventory_2</mat-icon>
+              Catálogo de Productos
+              <span
+                class="ml-2 bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded-full border border-gray-200">{{
+                s.products?.length || 0 }}</span>
+            </h2>
           </div>
 
-          <div class="lg:col-span-2">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <mat-icon class="text-indigo-500">inventory_2</mat-icon>
-                Catálogo de Productos
-                <span class="ml-2 bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded-full border border-gray-200">{{ s.products?.length || 0 }}</span>
-              </h2>
+          @if (s.products && s.products.length > 0) {
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            @for (prod of s.products; track prod.id) {
+            <div
+              class="group bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4 hover:border-indigo-300 hover:shadow-md transition-all cursor-default">
+              <div
+                class="h-10 w-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                <mat-icon class="icon-sm">local_offer</mat-icon>
+              </div>
+              <div class="overflow-hidden">
+                <h4 class="font-medium text-gray-900 truncate group-hover:text-indigo-600 transition-colors">{{
+                  prod.name }}</h4>
+                <p class="text-xs text-gray-500 truncate">SKU: {{ prod.id.substring(0,8) }}...</p>
+              </div>
             </div>
-
-            @if (s.products && s.products.length > 0) {
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                @for (prod of s.products; track prod.id) {
-                  <div class="group bg-white border border-gray-200 rounded-xl p-4 flex items-start gap-4 hover:border-indigo-300 hover:shadow-md transition-all cursor-default">
-                    <div class="h-10 w-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                      <mat-icon class="icon-sm">local_offer</mat-icon>
-                    </div>
-                    <div class="overflow-hidden">
-                      <h4 class="font-medium text-gray-900 truncate group-hover:text-indigo-600 transition-colors">{{ prod.name }}</h4>
-                      <p class="text-xs text-gray-500 truncate">SKU: {{ prod.id.substring(0,8) }}...</p>
-                    </div>
-                  </div>
-                }
-              </div>
-            } @else {
-              <div class="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
-                <mat-icon class="text-gray-300 text-6xl mb-3">inventory_2</mat-icon>
-                <p class="text-gray-500 font-medium">Este proveedor no tiene productos asignados.</p>
-                <button mat-button color="primary" class="mt-2">Asignar Productos</button>
-              </div>
             }
           </div>
-
+          } @else {
+          <div class="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+            <mat-icon class="text-gray-300 text-6xl mb-3">inventory_2</mat-icon>
+            <p class="text-gray-500 font-medium">Este proveedor no tiene productos asignados.</p>
+            <button mat-button color="primary" class="mt-2" [routerLink]="['/suppliers/edit', supplier()?.id]">
+              Asignar Productos
+            </button>
+          </div>
+          }
         </div>
+
       </div>
     </div>
   </div>
+</div>
 }

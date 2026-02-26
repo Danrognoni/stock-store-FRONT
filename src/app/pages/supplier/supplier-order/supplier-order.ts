@@ -7,9 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select'; 
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { supplierService } from '../../../services/supplier';
 import { SupplierOrder } from '../../../models/supplier/supplier-order';
+import { Toast } from '../../category/category-form-component/category-form-component';
 
 @Component({
   selector: 'app-supplier-order',
@@ -22,7 +22,6 @@ import { SupplierOrder } from '../../../models/supplier/supplier-order';
     MatIconModule,
     MatCardModule,
     MatSelectModule,
-    MatSnackBarModule,
     RouterLink
   ],
   templateUrl: './supplier-order.html',
@@ -33,8 +32,9 @@ export class SupplierOrderComponent implements OnInit {
   private supplierService = inject(supplierService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-
+  
+  notification = signal<Toast | null>(null);
+  
   orderForm: FormGroup;
   supplierId = signal<string>("");
   supplierName = signal<string>("");
@@ -72,7 +72,7 @@ export class SupplierOrderComponent implements OnInit {
       error: (e) => {
         console.error(e);
         this.showToast('Error al cargar datos del proveedor', 'error');
-        this.router.navigate(['/suppliers']);
+        setTimeout(() => this.router.navigate(['/suppliers']), 1000);
       }
     });
   }
@@ -121,7 +121,7 @@ export class SupplierOrderComponent implements OnInit {
     this.supplierService.sendOrderToSupplier(orderItems, supplierIdParam as any).subscribe({
       next: () => {
         this.showToast('Orden enviada correctamente', 'success');
-        this.router.navigate(['/suppliers']);
+        setTimeout(() => this.router.navigate(['/suppliers']), 1000);
       },
       error: (e) => {
         console.error('Error detallado:', e);
@@ -133,11 +133,9 @@ export class SupplierOrderComponent implements OnInit {
   }
 
   private showToast(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: type === 'error' ? ['error-snackbar'] : ['success-snackbar']
-    });
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 3000);
   }
 }
