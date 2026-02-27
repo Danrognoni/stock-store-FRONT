@@ -11,6 +11,7 @@ export class CartService {
   private http = inject(HttpClient);
 
   cartCount = signal<number>(0);
+  cartProductIds = signal<Set<string>>(new Set());
 
   constructor() {
     this.refreshCartCount();
@@ -82,10 +83,14 @@ export class CartService {
         }, 0);
 
         this.cartCount.set(totalQuantity);
+
+        const ids = items.map((item: any) => item.product.id.toString());
+        this.cartProductIds.set(new Set(ids));
       },
       error: (err) => {
         console.warn('Usuario no autenticado o error de carrito', err.status);
         this.cartCount.set(0);
+        this.cartProductIds.set(new Set());
       }
     });
   }
@@ -102,7 +107,7 @@ export class CartService {
 
 modifyCartItemQuantity(cartItemId: number, quantity: number) {
   const url = `${this.apiUrl}/items/${cartItemId}/${quantity}`;
-  
+
   return this.http.patch(url, {});
 }
 }

@@ -1,8 +1,8 @@
 <div class="mx-auto min-h-screen w-full max-w-7xl p-4 sm:p-6 lg:p-8">
-  
+
   <div class="mb-8 flex items-center justify-between border-b border-gray-200 pb-4">
     <div class="flex items-center gap-2">
-      <mat-icon class="!text-red-500">favorite</mat-icon> 
+      <mat-icon class="!text-red-500">favorite</mat-icon>
       <h2 class="text-2xl font-bold text-gray-900">Mi Lista de Deseos</h2>
     </div>
     <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600" *ngIf="!isLoading()">
@@ -16,7 +16,7 @@
       <p class="mt-4 text-sm font-medium text-gray-500">Cargando tus favoritos...</p>
     </div>
   } @else if (products().length === 0) {
-    
+
     <div class="flex flex-col items-center justify-center py-16 text-center">
       <div class="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gray-50">
         <mat-icon class="!h-10 !w-10 !text-4xl text-gray-300">favorite_border</mat-icon>
@@ -31,11 +31,11 @@
     </div>
 
   } @else {
-    
+
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       @for (product of products(); track product.id) {
         <mat-card class="group flex flex-col overflow-hidden !rounded-xl bg-white !shadow-sm transition-all duration-300 hover:!shadow-lg hover:-translate-y-1">
-          
+
           <div class="relative aspect-[4/3] cursor-pointer overflow-hidden bg-gray-100" [routerLink]="['/online-store/product', product.id]">
             <img [src]="product.imageUrl" [alt]="product.name" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
             <div class="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/20 group-hover:opacity-100">
@@ -44,7 +44,7 @@
               </span>
             </div>
           </div>
-          
+
           <div class="flex flex-1 flex-col p-4">
             <h3 class="mb-1 truncate text-base font-semibold text-gray-900" [title]="product.name">{{ product.name }}</h3>
             <span class="text-lg font-bold text-indigo-600">$ {{ product.price | number:'1.2-2' }}</span>
@@ -56,12 +56,25 @@
             <button mat-icon-button color="warn" (click)="removeFromWishlist(product.id)" matTooltip="Eliminar" class="!h-10 !w-10 rounded-full hover:bg-red-50">
               <mat-icon class="!text-red-500">delete</mat-icon>
             </button>
-            
-            <button mat-stroked-button color="primary" (click)="moveToCart(product)" class="!flex-1 !rounded-lg border-indigo-200 !text-indigo-600 hover:!bg-indigo-50">
-              <mat-icon class="mr-2">shopping_cart</mat-icon> Mover
+
+            <button mat-stroked-button color="primary"
+                    (click)="moveToCart(product)"
+                    [disabled]="isInCart(product.id)"
+                    class="!flex-1 !rounded-lg border-indigo-200 !text-indigo-600 hover:!bg-indigo-50 disabled:!border-gray-200 disabled:!bg-gray-50 disabled:!text-gray-400">
+
+              <div class="flex items-center justify-center whitespace-nowrap">
+                @if (isInCart(product.id)) {
+                  <mat-icon class="mr-1.5 !text-lg !h-5 !w-5">check</mat-icon>
+                  <span class="text-sm font-medium">En carrito</span>
+                } @else {
+                  <mat-icon class="mr-1.5 !text-lg !h-5 !w-5">shopping_cart</mat-icon>
+                  <span class="text-sm font-medium">Mover</span>
+                }
+              </div>
+
             </button>
           </mat-card-actions>
-          
+
         </mat-card>
       }
     </div>

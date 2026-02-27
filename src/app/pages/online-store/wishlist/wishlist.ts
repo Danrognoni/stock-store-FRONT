@@ -16,15 +16,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink, MatDividerModule, MatProgressSpinnerModule],
   templateUrl: './wishlist.html',
-  styleUrls: ['./wishlist.css'] 
+  styleUrls: ['./wishlist.css']
 })
 export class WishlistComponent implements OnInit {
   private wishlistService = inject(WishlistService);
   private cartService = inject(CartService);
   private snackBar = inject(MatSnackBar);
 
-  products = signal<ProductList[]>([]);
+  products = signal<any[]>([]);
   isLoading = signal<boolean>(true);
+  cartProductIds = signal<Set<string>>(new Set());
 
   ngOnInit() {
     this.loadWishlist();
@@ -34,7 +35,7 @@ export class WishlistComponent implements OnInit {
     this.wishlistService.getWishlist().subscribe({
       next: (data) => {
 
-        this.products.set(data.products || []); 
+        this.products.set(data.products || []);
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -55,12 +56,17 @@ export class WishlistComponent implements OnInit {
   }
 
   moveToCart(product: any) {
+    if (this.isInCart(product.id)) return;
+
     this.cartService.addItemToCart(product.id, 1).subscribe({
       next: () => {
         this.snackBar.open('¡Movido al carrito!', 'Ok', { duration: 2000 });
-      
       },
       error: () => this.snackBar.open('Error al agregar al carrito', 'Cerrar')
     });
+  }
+
+  isInCart(productId: string | number): boolean {
+    return this.cartService.cartProductIds().has(productId.toString());
   }
 }

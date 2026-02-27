@@ -41,7 +41,6 @@ export class StoreCatalogComponent implements OnInit {
   categories = signal<any[]>([]);
   selectedCategoryId = signal<number | null>(null);
 
-  cartProductIds = signal<Set<string>>(new Set());
   wishlistProductIds = signal<Set<string>>(new Set());
 
   ngOnInit() {
@@ -76,15 +75,6 @@ export class StoreCatalogComponent implements OnInit {
   }
 
   loadUserContext() {
-    this.cartService.getCart().subscribe({
-      next: (cartData: any) => {
-        const items = cartData.items || [];
-        const ids = items.map((item: any) => item.product.id.toString());
-        this.cartProductIds.set(new Set(ids));
-      },
-      error: () => console.log('Info: Usuario sin carrito activo')
-    });
-
     this.wishlistService.getWishlist().subscribe({
       next: (wishlistData: any) => {
         const products = wishlistData?.products || [];
@@ -100,15 +90,12 @@ export class StoreCatalogComponent implements OnInit {
     this.cartService.addItemToCart(product.id, 1).subscribe({
       next: () => {
         this.snackBar.open('Agregado al carrito', 'Ok', { duration: 2000 });
-        this.cartProductIds.update(ids => {
-          const newSet = new Set(ids);
-          newSet.add(product.id.toString());
-          return newSet;
-        });
       },
       error: (err) => this.snackBar.open('Error al agregar', 'Cerrar')
     });
   }
+
+
 
   addToWishlist(product: any) {
     const productIdStr = product.id.toString();
@@ -141,7 +128,7 @@ export class StoreCatalogComponent implements OnInit {
   }
 
   isInCart(productId: number): boolean {
-    return this.cartProductIds().has(productId.toString());
+    return this.cartService.cartProductIds().has(productId.toString());
   }
 
   isInWishlist(productId: number): boolean {
