@@ -21,10 +21,10 @@ export class SupplierOrderListComponent implements OnInit {
   public totalElements = signal<number>(0);
 
   ngOnInit(): void {
-    this.cargarPedidos();
+    this.loadOrders();
   }
 
-  cargarPedidos() {
+  loadOrders() {
     this.supplierService.getSupplierOrders(this.page(), this.size()).subscribe({
       next: (data: any) => {
         if (data.content) {

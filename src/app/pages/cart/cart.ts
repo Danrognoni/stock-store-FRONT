@@ -61,7 +61,7 @@ export class Cart implements OnInit {
     this.cartService.removeFromCart(cartItemId).subscribe({
       next: () => {
         if (user && user.id) {
-            this.loadCart(user.id);
+          this.loadCart(user.id);
         }
       },
       error: (err) => console.error('Error eliminando item:', err)
@@ -97,28 +97,23 @@ export class Cart implements OnInit {
   }
 
 
-updateQuantity(item: any, change: number) {
-  const newQuantity = item.quantity + change;
+  updateQuantity(item: any, change: number) {
+    const newQuantity = item.quantity + change;
 
-  if (newQuantity < 1) return;
+    if (newQuantity < 1) return;
 
-  this.cartService.modifyCartItemQuantity(item.id, newQuantity).subscribe({
-    next: (updatedCartData: any) => {
-      
-      
-     
-      
-      this.cartItems.set(updatedCartData.items); 
-      
-      if (updatedCartData.totalPrice) { 
-         this.total.set(updatedCartData.totalPrice);
-      } else {
-         this.calculateTotal(updatedCartData.items);
+    this.cartService.modifyCartItemQuantity(item.id, newQuantity).subscribe({
+      next: (updatedCartData: any) => {
+        this.cartItems.set(updatedCartData.items);
+        if (updatedCartData.totalPrice) {
+          this.total.set(updatedCartData.totalPrice);
+        } else {
+          this.calculateTotal(updatedCartData.items);
+        }
+      },
+      error: (err) => {
+        console.error('Error actualizando cantidad', err);
       }
-    },
-    error: (err) => {
-      console.error('Error actualizando cantidad', err);
-    }
-  });
-}
+    });
+  }
 }
