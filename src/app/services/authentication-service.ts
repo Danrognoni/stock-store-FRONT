@@ -120,12 +120,12 @@ export class AuthenticationService {
 
   promoteToEmployee(id: string) {
     const url = `${this.apiUrl}/auth/admin/promote/employee/${id}`;
-    return this.http.post<any>(url, "");
+    return this.http.patch<any>(url, "");
   }
 
   promoteToAdmin(id: string) {
     const url = `${this.apiUrl}/auth/admin/promote/admin/${id}`;
-    return this.http.post<any>(url, "");
+    return this.http.patch<any>(url, "");
   }
 
   toggleBan(id: string) {
