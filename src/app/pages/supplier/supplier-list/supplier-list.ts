@@ -36,7 +36,7 @@ export class SupplierList {
   
   totalElements = signal<number>(0);
   pageIndex = signal<number>(0);
-  pageSize = signal<number>(10);
+  pageSize = signal<number>(12);
   readonly supplier = signal<SupplierDet[]>([]);
   private searchTimer : any;
 

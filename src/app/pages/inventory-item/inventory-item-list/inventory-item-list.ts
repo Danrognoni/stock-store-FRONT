@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 
 import { inventoryItemService } from '../../../services/inventory-item';
 import { InventoryItemDet } from '../../../models/inventoryItem/inventory-item-det';
-import { MatCard } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { Toast } from '../../category/category-form-component/category-form-component';
 
@@ -26,7 +25,6 @@ import { Toast } from '../../category/category-form-component/category-form-comp
     MatTableModule,
     MatPaginatorModule,
     FormsModule,
-    MatCard,
     RouterLink
   ],
   templateUrl: './inventory-item-list.html',
@@ -38,8 +36,8 @@ export class InventoryItemList implements OnInit {
   private inventoryService = inject(inventoryItemService);
 
   @ViewChild('filterGroup') filterGroup!: MatButtonToggleGroup;
-    notification = signal<Toast | null>(null);
-  
+  notification = signal<Toast | null>(null);
+
   items = signal<InventoryItemDet[]>([]);
   loading = signal<boolean>(false);
   searchTerm: string = '';
@@ -51,22 +49,22 @@ export class InventoryItemList implements OnInit {
     this.loadAll();
   }
 
-onSearch(input: string) {
-    const term = input.trim(); 
-    
+  onSearch(input: string) {
+    const term = input.trim();
+
     if (this.searchTimer) clearTimeout(this.searchTimer);
 
     this.searchTimer = setTimeout(() => {
       if (!term) {
-        this.loadAll(); 
+        this.loadAll();
       } else {
-    
+
         this.inventoryService.searchInventoryItem(term).subscribe({
-            next: (data) => {
-               const list = data.content || [];
-               this.items.set(list);
-            },
-            error: (e) => console.error(e)
+          next: (data) => {
+            const list = data.content || [];
+            this.items.set(list);
+          },
+          error: (e) => console.error(e)
         });
       }
     }, 400);
@@ -93,7 +91,19 @@ onSearch(input: string) {
   private handleResponse() {
     return {
       next: (data: any) => {
-        const list = Array.isArray(data) ? data : (data.content || []);
+        let list = Array.isArray(data) ? [...data] : [...(data.content || [])];
+
+        const now = new Date().getTime();
+        list.sort((a: any, b: any) => {
+          if (!a.expireDate && !b.expireDate) return 0;
+          if (!a.expireDate) return 1;
+          if (!b.expireDate) return -1;
+
+          const diffA = Math.abs(new Date(a.expireDate).getTime() - now);
+          const diffB = Math.abs(new Date(b.expireDate).getTime() - now);
+          return diffA - diffB;
+        });
+
         this.items.set(list);
         this.loading.set(false);
       },
@@ -109,7 +119,7 @@ onSearch(input: string) {
     this.inventoryService.getAll().subscribe(this.handleResponse());
   }
 
- deleteItem(id: string) {
+  deleteItem(id: string) {
     if (confirm('Eliminar este item de inventario?')) {
       this.inventoryService.deleteInventoryItem(id).subscribe({
         next: () => {

@@ -9,6 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { CartService } from '../../services/cart-service';
 import { AuthenticationService } from '../../services/authentication-service';
+import { ProductService } from '../../services/product';
 
 @Component({
   selector: 'app-cart',
@@ -20,6 +21,7 @@ import { AuthenticationService } from '../../services/authentication-service';
 export class Cart implements OnInit {
   private cartService = inject(CartService);
   private authService = inject(AuthenticationService);
+  private productService = inject(ProductService);
 
   cartItems = signal<any[]>([]);
   total = signal<number>(0);
@@ -47,6 +49,24 @@ export class Cart implements OnInit {
         this.cartItems.set(items);
         this.calculateTotal(items);
         this.loading.set(false);
+
+        // Fetch real stock
+        items.forEach((item: any) => {
+          this.productService.getProduct(item.product.id).subscribe({
+            next: (productData: any) => {
+              const totalStock = productData.inventoryItems?.reduce((acc: number, inv: any) => acc + inv.stock, 0) || 0;
+              this.cartItems.update(currentItems => {
+                const idx = currentItems.findIndex(i => i.id === item.id);
+                if (idx !== -1) {
+                  const updated = [...currentItems];
+                  updated[idx].product.stock = totalStock;
+                  return updated;
+                }
+                return currentItems;
+              });
+            }
+          });
+        });
       },
       error: (err) => {
         console.error('Error cargando el carrito:', err);
@@ -102,13 +122,24 @@ export class Cart implements OnInit {
 
     if (newQuantity < 1) return;
 
+    if (newQuantity > item.product.stock) {
+      alert(`No puedes agregar más, solo hay ${item.product.stock} unidades disponibles de este producto.`);
+      return;
+    }
+
     this.cartService.modifyCartItemQuantity(item.id, newQuantity).subscribe({
       next: (updatedCartData: any) => {
-        this.cartItems.set(updatedCartData.items);
+        const currentStocks = new Map(this.cartItems().map(i => [i.product.id, i.product.stock]));
+        const newItems = updatedCartData.items.map((ni: any) => {
+          ni.product.stock = currentStocks.get(ni.product.id);
+          return ni;
+        });
+
+        this.cartItems.set(newItems);
         if (updatedCartData.totalPrice) {
           this.total.set(updatedCartData.totalPrice);
         } else {
-          this.calculateTotal(updatedCartData.items);
+          this.calculateTotal(newItems);
         }
       },
       error: (err) => {

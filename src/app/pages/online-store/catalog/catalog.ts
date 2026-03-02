@@ -12,6 +12,7 @@ import { WishlistService } from '../../../services/wishlist';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../services/category';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthenticationService } from '../../../services/authentication-service';
 
 @Component({
   selector: 'app-store-catalog',
@@ -36,6 +37,7 @@ export class StoreCatalogComponent implements OnInit {
   private wishlistService = inject(WishlistService);
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
+  private authService = inject(AuthenticationService);
   isAdmin = signal<boolean>(false);
   products = signal<any[]>([]);
   categories = signal<any[]>([]);
@@ -75,14 +77,21 @@ export class StoreCatalogComponent implements OnInit {
   }
 
   loadUserContext() {
-    this.wishlistService.getWishlist().subscribe({
-      next: (wishlistData: any) => {
-        const products = wishlistData?.products || [];
-        const ids = products.map((product: any) => product.id.toString());
-        this.wishlistProductIds.set(new Set(ids));
-      },
-      error: (err) => console.log('Error cargando wishlist', err)
-    });
+    const userRole = this.authService.currentUser()?.role;
+    if (userRole && userRole !== 'USER') {
+      this.isAdmin.set(true);
+    }
+
+    if (userRole === 'USER') {
+      this.wishlistService.getWishlist().subscribe({
+        next: (wishlistData: any) => {
+          const products = wishlistData?.products || [];
+          const ids = products.map((product: any) => product.id.toString());
+          this.wishlistProductIds.set(new Set(ids));
+        },
+        error: (err) => console.log('Error cargando wishlist', err)
+      });
+    }
   }
 
   addToCart(product: any) {

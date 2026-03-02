@@ -44,7 +44,7 @@ import { inject } from '@angular/core';
 import { AuthenticationService } from './services/authentication-service';
 
 export const routes: Routes = [
- {
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'auth/login'
@@ -53,20 +53,20 @@ export const routes: Routes = [
   {
     path: "auth",
     component: AuthenticationLayout,
-    canActivate: [ (route, state) => {
-        const authService = inject(AuthenticationService);
-        const router = inject(Router);
-        if (authService.currentUser()) {
-            router.navigate(['/home']);
-            return false;
-        }
-        return true;
+    canActivate: [(route, state) => {
+      const authService = inject(AuthenticationService);
+      const router = inject(Router);
+      if (authService.currentUser()) {
+        router.navigate(['/home']);
+        return false;
+      }
+      return true;
     }],
     children: [
       { path: "login", component: LoginComponent },
       { path: "register", component: RegisterComponent },
       {
-        path : "forgot-password", component:ForgotPassword
+        path: "forgot-password", component: ForgotPassword
       }
 
     ]
@@ -77,20 +77,20 @@ export const routes: Routes = [
     canActivate: [AuthGuard, roleGuard],
     data: { roles: ['ADMIN', 'EMPLOYEE'] },
     children: [
-       {
-         path: 'profile',
-         component: UserDetail,
-         data: { roles: ['ADMIN', 'EMPLOYEE'] }
-       },
-       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent },
-            { path: 'supplier-orders', component: SupplierOrderListComponent },
-       {
-         path: 'user/update/:id',
-         component: UserUpdate,
-         canActivate: [AuthGuard, roleGuard],
-         data: { roles: ['ADMIN'] }
-       }
+      {
+        path: 'profile',
+        component: UserDetail,
+        data: { roles: ['ADMIN', 'EMPLOYEE'] }
+      },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'supplier-orders', component: SupplierOrderListComponent },
+      {
+        path: 'user/update/:id',
+        component: UserUpdate,
+        canActivate: [AuthGuard, roleGuard],
+        data: { roles: ['ADMIN'] }
+      }
     ]
   },
   // Sección Productos
@@ -107,7 +107,7 @@ export const routes: Routes = [
       { path: 'detail/:id', component: ProductDetail },
       { path: 'category/create', component: CategoryFormComponent },
       { path: 'category/list', component: CategoryListComponent },
-      {path: 'category/edit/:id', component: CategoryFormComponent}
+      { path: 'category/edit/:id', component: CategoryFormComponent }
     ]
   },
 
@@ -150,7 +150,7 @@ export const routes: Routes = [
         path: '',
         component: UserList,
         canActivate: [AuthGuard, roleGuard],
-        data: {roles: ['ADMIN']}
+        data: { roles: ['ADMIN'] }
       }
     ]
   },
@@ -170,15 +170,17 @@ export const routes: Routes = [
       },
       {
         path: 'cart',
-        component: Cart
+        component: Cart,
+        canActivate: [roleGuard],
+        data: { roles: ['USER'] }
       },
       {
         path: 'profile',
         component: UserDetail,
         data: { roles: ['USER', 'EMPLOYEE', 'ADMIN'] }
       },
-      { path: 'wishlist', component: WishlistComponent },
-      { path: 'order', component: OrderListComponent },
+      { path: 'wishlist', component: WishlistComponent, canActivate: [roleGuard], data: { roles: ['USER'] } },
+      { path: 'order', component: OrderListComponent, canActivate: [roleGuard], data: { roles: ['USER'] } },
       { path: 'category/list', component: CategoryListComponent },
     ]
   }

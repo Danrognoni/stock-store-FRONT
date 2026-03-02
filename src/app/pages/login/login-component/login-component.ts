@@ -45,7 +45,16 @@ export class LoginComponent {
             this.router.navigate(['/home']);
           }
         },
-        error: () => alert('Credenciales incorrectas')
+        error: (err) => {
+          const errorMessage: string = err.error?.message || (typeof err.error === 'string' ? err.error : '');
+          const lowerMsg = errorMessage.toLowerCase();
+
+          if (lowerMsg.includes('locked')) {
+            alert('El usuario está bloqueado. Por favor, comuníquese con el administrador.');
+          } else {
+            alert('Credenciales incorrectas');
+          }
+        }
       });
     }
   }
