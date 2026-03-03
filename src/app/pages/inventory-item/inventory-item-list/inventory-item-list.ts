@@ -80,7 +80,7 @@ export class InventoryItemList implements OnInit {
         this.inventoryService.getLowStockItems(15).subscribe(this.handleResponse());
         break;
       case 'top':
-        this.inventoryService.getTopStockItems().subscribe(this.handleResponse());
+        this.inventoryService.getTopStockItems().subscribe(this.handleResponse(true));
         break;
       default:
         this.loadAll();
@@ -88,13 +88,17 @@ export class InventoryItemList implements OnInit {
     }
   }
 
-  private handleResponse() {
+  private handleResponse(isTopStock: boolean = false) {
     return {
       next: (data: any) => {
         let list = Array.isArray(data) ? [...data] : [...(data.content || [])];
 
         const now = new Date().getTime();
         list.sort((a: any, b: any) => {
+          if (isTopStock && a.stock !== b.stock) {
+            return b.stock - a.stock;
+          }
+
           if (!a.expireDate && !b.expireDate) return 0;
           if (!a.expireDate) return 1;
           if (!b.expireDate) return -1;
@@ -112,6 +116,14 @@ export class InventoryItemList implements OnInit {
         this.loading.set(false);
       }
     };
+  }
+
+  isNearExpiration(dateStr: string | null | undefined): boolean {
+    if (!dateStr) return false;
+    const expire = new Date(dateStr).getTime();
+    const now = new Date().getTime();
+    const diffDays = (expire - now) / (1000 * 60 * 60 * 24);
+    return diffDays < 45;
   }
 
   loadAll() {

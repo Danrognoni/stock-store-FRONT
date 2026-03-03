@@ -1,55 +1,49 @@
 <div class="min-h-screen bg-slate-50 p-4 md:p-8 relative">
 
   @if (notification()) {
-    <div class="fixed top-6 right-6 z-[1000] pointer-events-none flex flex-col items-end gap-3">
-      <div class="pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-xl bg-white shadow-lg min-w-[320px] border-l-[6px] mb-3 transition-all duration-300 transform translate-x-0"
-           [class.border-green-500]="notification()?.type === 'success'"
-           [class.bg-green-50]="notification()?.type === 'success'"
-           [class.border-red-500]="notification()?.type === 'error'"
-           [class.bg-red-50]="notification()?.type === 'error'">
-        <mat-icon class="!w-6 !h-6 !text-[24px]"
-                  [class.text-green-600]="notification()?.type === 'success'"
-                  [class.text-red-600]="notification()?.type === 'error'">
-          {{ notification()?.type === 'success' ? 'check_circle' : 'error' }}
-        </mat-icon>
-        <span class="font-medium text-sm"
-              [class.text-green-900]="notification()?.type === 'success'"
-              [class.text-red-900]="notification()?.type === 'error'">
-          {{ notification()?.message }}
-        </span>
-      </div>
+  <div class="fixed top-6 right-6 z-[1000] pointer-events-none flex flex-col items-end gap-3">
+    <div
+      class="pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-xl bg-white shadow-lg min-w-[320px] border-l-[6px] mb-3 transition-all duration-300 transform translate-x-0"
+      [class.border-green-500]="notification()?.type === 'success'"
+      [class.bg-green-50]="notification()?.type === 'success'" [class.border-red-500]="notification()?.type === 'error'"
+      [class.bg-red-50]="notification()?.type === 'error'">
+      <mat-icon class="!w-6 !h-6 !text-[24px]" [class.text-green-600]="notification()?.type === 'success'"
+        [class.text-red-600]="notification()?.type === 'error'">
+        {{ notification()?.type === 'success' ? 'check_circle' : 'error' }}
+      </mat-icon>
+      <span class="font-medium text-sm" [class.text-green-900]="notification()?.type === 'success'"
+        [class.text-red-900]="notification()?.type === 'error'">
+        {{ notification()?.message }}
+      </span>
     </div>
+  </div>
   }
 
-  <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+  <div
+    class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
     <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full md:max-w-[350px]">
       <mat-label>Buscar producto</mat-label>
-      <input matInput 
-             [(ngModel)]="searchTerm" 
-             (ngModelChange)="onSearch($event)"
-             placeholder="Ej. Teclado Gamer">
+      <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Ej. Teclado Gamer">
       @if (searchTerm) {
-        <button matIconButton matSuffix (click)="searchTerm=''; onSearch('')">
-          <mat-icon>close</mat-icon>
-        </button>
+      <button matIconButton matSuffix (click)="searchTerm=''; onSearch('')">
+        <mat-icon>close</mat-icon>
+      </button>
       }
       <mat-icon matSuffix class="text-slate-400">search</mat-icon>
     </mat-form-field>
 
-    <mat-button-toggle-group #filterGroup="matButtonToggleGroup" 
-                               value="all" 
-                               (change)="onFilterChange($event.value)"
-                               class="w-full md:w-auto">
+    <mat-button-toggle-group #filterGroup="matButtonToggleGroup" value="all" (change)="onFilterChange($event.value)"
+      class="w-full md:w-auto">
       <mat-button-toggle value="all" class="!px-4">Todo</mat-button-toggle>
       <mat-button-toggle value="low" class="!px-4">
         <div class="flex items-center gap-2">
-          <mat-icon class="!w-5 !h-5 !text-[20px]">warning_amber</mat-icon> 
+          <mat-icon class="!w-5 !h-5 !text-[20px]">warning_amber</mat-icon>
           <span>Bajo Stock</span>
         </div>
       </mat-button-toggle>
       <mat-button-toggle value="top" class="!px-4">
         <div class="flex items-center gap-2">
-          <mat-icon class="!w-5 !h-5 !text-[20px]">trending_up</mat-icon> 
+          <mat-icon class="!w-5 !h-5 !text-[20px]">trending_up</mat-icon>
           <span>Top Stock</span>
         </div>
       </mat-button-toggle>
@@ -61,57 +55,76 @@
       <table mat-table [dataSource]="items()" class="w-full">
 
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> ID </th>
+          <th mat-header-cell *matHeaderCellDef
+            class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> ID </th>
           <td mat-cell *matCellDef="let element" class="!px-6 !text-slate-400 !text-xs font-mono"> #{{element.id}} </td>
         </ng-container>
 
         <ng-container matColumnDef="product">
-          <th mat-header-cell *matHeaderCellDef class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Producto </th>
-          <td mat-cell *matCellDef="let element" class="!px-6"> 
+          <th mat-header-cell *matHeaderCellDef
+            class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Producto
+          </th>
+          <td mat-cell *matCellDef="let element" class="!px-6">
             <span class="font-semibold text-slate-800 block min-w-[120px]">{{element.product?.name}}</span>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="stock">
-          <th mat-header-cell *matHeaderCellDef class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Stock </th>
+          <th mat-header-cell *matHeaderCellDef
+            class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Stock </th>
           <td mat-cell *matCellDef="let element" class="!px-6">
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border"
-                  [class.bg-red-50]="element.stock < 15"
-                  [class.text-red-700]="element.stock < 15"
-                  [class.border-red-100]="element.stock < 15"
-                  [class.bg-green-50]="element.stock >= 15"
-                  [class.text-green-700]="element.stock >= 15"
-                  [class.border-green-100]="element.stock >= 15">
+              [class.bg-red-50]="element.stock < 15" [class.text-red-700]="element.stock < 15"
+              [class.border-red-100]="element.stock < 15" [class.bg-green-50]="element.stock >= 15"
+              [class.text-green-700]="element.stock >= 15" [class.border-green-100]="element.stock >= 15">
               {{element.stock}} u.
             </span>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Precio </th>
-          <td mat-cell *matCellDef="let element" class="!px-6 font-mono font-medium text-slate-700"> 
-            ${{element.product?.price | number:'1.0-2'}} 
+          <th mat-header-cell *matHeaderCellDef
+            class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Precio
+          </th>
+          <td mat-cell *matCellDef="let element" class="!px-6 font-mono font-medium text-slate-700">
+            ${{element.product?.price | number:'1.0-2'}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="expireDate">
-          <th mat-header-cell *matHeaderCellDef class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Vencimiento </th>
-          <td mat-cell *matCellDef="let element" class="!px-6"> 
-            <div class="flex items-center gap-2 text-slate-600">
-              <mat-icon class="!w-4 !h-4 !text-[16px] text-slate-400">calendar_today</mat-icon>
-              <span class="whitespace-nowrap">{{element.expireDate | date:'dd/MM/yyyy'}}</span>
-            </div>
+          <th mat-header-cell *matHeaderCellDef
+            class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6"> Vencimiento
+          </th>
+          <td mat-cell *matCellDef="let element" class="!px-6">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border"
+              [class.bg-red-50]="isNearExpiration(element.expireDate)"
+              [class.text-red-700]="isNearExpiration(element.expireDate)"
+              [class.border-red-100]="isNearExpiration(element.expireDate)"
+              [class.bg-green-50]="element.expireDate && !isNearExpiration(element.expireDate)"
+              [class.text-green-700]="element.expireDate && !isNearExpiration(element.expireDate)"
+              [class.border-green-100]="element.expireDate && !isNearExpiration(element.expireDate)"
+              [class.text-slate-500]="!element.expireDate" [class.border-transparent]="!element.expireDate">
+              <mat-icon class="!w-4 !h-4 !text-[16px]" [class.text-red-500]="isNearExpiration(element.expireDate)"
+                [class.text-green-600]="element.expireDate && !isNearExpiration(element.expireDate)"
+                [class.text-slate-400]="!element.expireDate">calendar_today</mat-icon>
+              <span class="whitespace-nowrap">{{ element.expireDate ? (element.expireDate | date:'dd/MM/yyyy') : 'N/A'
+                }}</span>
+            </span>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6 text-right"> Acciones </th>
+          <th mat-header-cell *matHeaderCellDef
+            class="!bg-slate-50 !text-slate-500 !font-bold !uppercase !text-xs !tracking-wider !py-4 !px-6 text-right">
+            Acciones </th>
           <td mat-cell *matCellDef="let element" class="!px-6">
             <div class="flex justify-end gap-1">
-              <button mat-icon-button class="!text-blue-600 hover:!bg-blue-50" [routerLink]="['/inventory/edit', element.id]" matTooltip="Editar">
+              <button mat-icon-button class="!text-blue-600 hover:!bg-blue-50"
+                [routerLink]="['/inventory/edit', element.id]" matTooltip="Editar">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button class="!text-red-600 hover:!bg-red-50" (click)="deleteItem(element.id)" matTooltip="Eliminar">
+              <button mat-icon-button class="!text-red-600 hover:!bg-red-50" (click)="deleteItem(element.id)"
+                matTooltip="Eliminar">
                 <mat-icon>delete_outline</mat-icon>
               </button>
             </div>
@@ -119,25 +132,26 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          class="hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0"></tr>
       </table>
     </div>
 
     @if (loading()) {
-      <div class="flex flex-col items-center justify-center py-12 text-slate-500 gap-3">
-        <div class="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
-        <p class="text-sm font-medium">Cargando inventario...</p>
-      </div>
+    <div class="flex flex-col items-center justify-center py-12 text-slate-500 gap-3">
+      <div class="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
+      <p class="text-sm font-medium">Cargando inventario...</p>
+    </div>
     }
 
     @if (items().length === 0 && !loading()) {
-      <div class="flex flex-col items-center justify-center py-16 px-4 text-center">
-        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-          <mat-icon class="!w-10 !h-10 !text-[40px] text-slate-300">inventory_2</mat-icon>
-        </div>
-        <h3 class="text-lg font-bold text-slate-700 mb-1">No se encontraron productos</h3>
-        <p class="text-slate-500">Intenta ajustar tu búsqueda o los filtros.</p>
+    <div class="flex flex-col items-center justify-center py-16 px-4 text-center">
+      <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+        <mat-icon class="!w-10 !h-10 !text-[40px] text-slate-300">inventory_2</mat-icon>
       </div>
+      <h3 class="text-lg font-bold text-slate-700 mb-1">No se encontraron productos</h3>
+      <p class="text-slate-500">Intenta ajustar tu búsqueda o los filtros.</p>
+    </div>
     }
   </div>
 </div>
