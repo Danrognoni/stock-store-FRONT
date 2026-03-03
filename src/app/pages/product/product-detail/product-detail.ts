@@ -1,14 +1,14 @@
-import { Component, inject, Input, OnInit, signal, computed } from '@angular/core'; 
+import { Component, inject, Input, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product';
-import { AuthenticationService } from '../../../services/authentication-service'; 
+import { AuthenticationService } from '../../../services/authentication-service';
 import { CartService } from '../../../services/cart-service';
 import { ProductDet } from '../../../models/product/product-det';
 
@@ -27,10 +27,10 @@ import { ProductDet } from '../../../models/product/product-det';
   styleUrl: './product-detail.css'
 })
 export class ProductDetail implements OnInit {
-  
+
   private productService = inject(ProductService);
   private authService = inject(AuthenticationService);
-  private cartService = inject(CartService); 
+  private cartService = inject(CartService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
 
@@ -66,9 +66,23 @@ export class ProductDetail implements OnInit {
   addToCart() {
     const p = this.product();
     if (p) {
-  
-        this.snackBar.open('Producto agregado al carrito', 'Cerrar', { duration: 3000 });
+      if (this.isInCart()) return;
+      this.cartService.addItemToCart(p.id, 1).subscribe({
+        next: () => {
+          this.snackBar.open('Producto agregado al carrito', 'Cerrar', { duration: 3000 });
+        },
+        error: (err) => {
+          console.error(err);
+          this.snackBar.open('Error al agregar al carrito', 'Cerrar');
+        }
+      });
     }
+  }
+
+  isInCart(): boolean {
+    const p = this.product();
+    if (!p) return false;
+    return this.cartService.cartProductIds().has(p.id.toString());
   }
 
   getBack() {
