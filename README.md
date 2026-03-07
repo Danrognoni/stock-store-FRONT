@@ -1,59 +1,68 @@
-# StockStoreFRONT
+# 🛒 Stock-Store Frontend (Angular Client)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+The official web application client for the **Stock-Store** ecosystem. Built as a dynamic and responsive Single Page Application (SPA) using Angular, this frontend serves a dual purpose: it provides a complete **E-commerce storefront** for end-users, and a robust **Backoffice Management System** for employees and administrators to handle physical inventory, suppliers, and user roles.
 
-## Development server
+This application is specifically designed to consume the Stock-Store Spring Boot REST API.
 
-To start a local development server, run:
+## 🚀 Technologies & Tools
 
-```bash
-ng serve
-```
+* **Framework:** Angular
+* **Language:** TypeScript
+* **UI Components & Styling:** Angular Material, custom SCSS (`material-theme.scss`), CSS
+* **State Management & Asynchrony:** RxJS (Observables, Subjects)
+* **Security:** JWT via HttpOnly Cookies handling, custom HttpInterceptors
+* **Routing:** Advanced Angular Router with specialized Guards
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🏗️ Architecture & Security
 
-## Code scaffolding
+The project relies heavily on a secure, Role-Based Access Control (RBAC) architecture, segregating the platform into different domains protected by Angular Route Guards:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Authentication Interceptor (`authentication-interceptor.ts`):** Automatically intercepts outgoing HTTP requests to attach necessary credentials and handle global unauthorized (401/403) responses.
+* **AuthGuard (`auth-guard.ts`):** Prevents unauthenticated access to private routes.
+* **RoleGuard (`role-guard.ts`):** Validates the user's role (`USER`, `EMPLOYEE`, `ADMIN`) before activating specific modules, preventing a standard user from accessing the backoffice.
+* **LoginRedirectGuard:** Prevents users who are already logged in from navigating back to the login or registration screens.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🧩 Key Features & Modules
 
-```bash
-ng generate --help
-```
+### 🛍️ Online Store (E-Commerce Client) - *Role: USER*
+The storefront dedicated to end customers for standard e-commerce operations.
+* **Product Catalog (`/online-store/catalog`):** Browse the active product list and filter by categories.
+* **Shopping Cart (`/cart`):** Manage items selected for purchase, updating amounts in real-time. Includes integration preparation for Mercado Pago checkout.
+* **Wishlist (`/online-store/wishlist`):** A dedicated space for users to save products they are interested in buying later.
+* **Order History (`/online-store/order-list`):** Customers can review their past purchases and order details.
 
-## Building
+### 📦 Stock Manager (Backoffice) - *Role: EMPLOYEE & ADMIN*
+The internal management system used to maintain the business.
+* **Dashboard (`/dashboard`):** The main hub providing quick overviews of stock levels and business metrics.
+* **Inventory Control (`/inventory-items`):** The core module to manage physical stock on hand.
+* **Catalog Management (`/products` & `/categories`):** Create, update, or apply logical deletion to products and categories, reflecting instantly on the storefront.
+* **Supplier Management (`/suppliers` & `/supplier-orders`):** Maintain a database of providers and generate purchase orders to restock internal inventory.
 
-To build the project run:
+### 🔐 Admin Panel - *Role: ADMIN*
+Exclusive area for system administrators.
+* **User Management (`/admin/user-list`):** View all registered accounts, promote users to `EMPLOYEE` or `ADMIN`, and manage account bans/suspensions.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📁 Project Structure
 
-## Running unit tests
+The codebase is organized by feature and domain to ensure scalability:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+* `src/app/models/`: TypeScript interfaces and classes representing data transfer objects (DTOs) like `ProductDet`, `CartItemRequest`, and `UserUpdate`.
+* `src/app/services/`: Injectable services handling HTTP communication with the backend (e.g., `inventory-item.ts`, `cart-service.ts`, `mercado-pago-service.ts`).
+* `src/app/pages/`: Smart components representing individual routes, split into sub-domains (`/admin`, `/cart`, `/online-store`, `/inventory-item`, etc.). Contains Lists, Forms, and Detail views.
+* `src/app/components/`: Reusable presentation components. Notably, it contains role-specific layout wrappers (`home-layout`, `online-store-layout`, `stock-manager-layout`) to display context-aware navigation bars.
+* `src/app/guard/`: Contains all routing security logic.
 
-```bash
-ng test
-```
+## 🛠️ Local Development Setup
 
-## Running end-to-end tests
+To run this project on your local machine, ensure you have **Node.js** and the **Angular CLI** installed.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. **Clone the repository.**
+2. **Navigate into the frontend directory.**
+3. **Install the required dependencies:**
+   ```bash
+   npm install
+   ng serve -o
