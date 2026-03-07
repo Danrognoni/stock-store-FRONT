@@ -12,6 +12,7 @@ import { WishlistService } from '../../../services/wishlist';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../services/category';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { AuthenticationService } from '../../../services/authentication-service';
 
 @Component({
@@ -26,7 +27,8 @@ import { AuthenticationService } from '../../../services/authentication-service'
     MatChipsModule,
     NavbarComponent,
     RouterOutlet,
-    MatDividerModule
+    MatDividerModule,
+    MatPaginatorModule
   ],
   templateUrl: './catalog.html',
   styleUrls: ['./catalog.css']
@@ -42,6 +44,10 @@ export class StoreCatalogComponent implements OnInit {
   products = signal<any[]>([]);
   categories = signal<any[]>([]);
   selectedCategoryId = signal<number | null>(null);
+
+  totalElements = signal<number>(0);
+  pageSize = signal<number>(10);
+  pageIndex = signal<number>(0);
 
   wishlistProductIds = signal<Set<string>>(new Set());
 
@@ -63,9 +69,10 @@ export class StoreCatalogComponent implements OnInit {
   loadProducts(categoryId?: number | null) {
     const idToFilter = categoryId === null ? undefined : categoryId;
 
-    this.productService.getProductsWithStock(0, 600, idToFilter).subscribe({
+    this.productService.getProductsWithStock(this.pageIndex(), this.pageSize(), idToFilter).subscribe({
       next: (data: any) => {
         this.products.set(data.content);
+        this.totalElements.set(data.totalElements);
       },
       error: (err) => console.error(err)
     });
@@ -73,7 +80,14 @@ export class StoreCatalogComponent implements OnInit {
 
   filterByCategory(categoryId: number | null) {
     this.selectedCategoryId.set(categoryId);
+    this.pageIndex.set(0); // Reset to first page
     this.loadProducts(categoryId);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+    this.loadProducts(this.selectedCategoryId());
   }
 
   loadUserContext() {
